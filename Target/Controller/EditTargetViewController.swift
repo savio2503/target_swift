@@ -19,6 +19,18 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
     
     var target: Target!
     var listDebit: [Debit] = []
+    
+    @IBAction func SalvarAtualizacao(_ sender: Any) {
+        
+        let descricao = descricaoTarget.text
+        let valor = Utils.getDoubleValue(value: valorFinalTarget.text)
+        
+        target.descricao = descricao
+        target.valorFinal = valor
+        
+        TargetManager.updateTarget(target: target)
+    }
+    
 
   @IBAction func depositar(_ sender: Any) {
       
@@ -33,13 +45,6 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
               let valorDouble = self.getDoubleValue(value: valor.text!)
               
               if valorDouble > 0.0 {
-                  /*let deposito = DataManager.shared.deposit(data: Date(), value: valorDouble, target: self.target)
-                  self.deposits.append(deposito)
-                  self.tableViewDebit.reloadData()
-                  
-                  self.target.valorAtual += valorDouble
-                  
-                  DataManager.shared.save()*/
                   
                   DebitManager.createDebit(target: self.target, valor: valorDouble)
                   self.listDebit = DebitManager.debitsFromTarget(target: self.target)
@@ -64,7 +69,9 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
       alert.addAction(createAction)
       alert.addAction(cancelAction)
       
-      present(alert, animated: true, completion: nil)}
+      present(alert, animated: true, completion: nil)
+      
+  }
 
   func getDoubleValue(value: String) -> Double {
 

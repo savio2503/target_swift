@@ -31,6 +31,23 @@ class Utils {
         
         return formatter.string(from: number)!
     }
+    
+    static func getDoubleValue(value: String?) -> Double {
+
+      var cleanedAmount = ""
+      var result: Double = 0.0
+
+      for character in value ?? "" {
+        if character.isNumber {
+          cleanedAmount.append(character)
+        }
+      }
+
+      let amount = Double(cleanedAmount) ?? 0.0
+      result = (amount / 100.0)
+
+      return result
+    }
 }
 
 extension UIViewController {

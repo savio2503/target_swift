@@ -17,8 +17,8 @@ class AddTargetViewController: UIViewController {
   @IBOutlet weak var valorFinalText: UITextField!
 
   @IBAction func salvarBtn(_ sender: Any) {
-      let valorInicial = getDoubleValue(value: valorInicialText.text)
-      let valorFinal = getDoubleValue(value: valorFinalText.text)
+      let valorInicial = Utils.getDoubleValue(value: valorInicialText.text)
+      let valorFinal = Utils.getDoubleValue(value: valorFinalText.text)
       let descricao = descricaoTarget.text
       
       if descricao == nil || descricao?.isEmpty ?? false {
@@ -33,10 +33,17 @@ class AddTargetViewController: UIViewController {
       
       print("chamando a funcao para salvar")
       //salvarTarget(descricao: descricao!, inicial: valorInicial, final: valorFinal)
-      TargetManager.createTarget(descricao: descricao!, valorInicial: valorInicial, valorFinal: valorFinal)
+      TargetManager.createTarget(descricao: descricao!, valorInicial: valorInicial, valorFinal: valorFinal) { (result) -> () in self.close(success: result)}
       
-      self.navigationController?.popViewController(animated: true)
   }
+    
+    func close(success: Bool) {
+        if success {
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -45,22 +52,7 @@ class AddTargetViewController: UIViewController {
       valorFinalText.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
   }
 
-  func getDoubleValue(value: String?) -> Double {
-
-    var cleanedAmount = ""
-    var result: Double = 0.0
-
-    for character in value ?? "" {
-      if character.isNumber {
-        cleanedAmount.append(character)
-      }
-    }
-
-    let amount = Double(cleanedAmount) ?? 0.0
-    result = (amount / 100.0)
-
-    return result
-  }
+  
 
   @objc func myTextFieldDidChange(_ textField: UITextField) {
 

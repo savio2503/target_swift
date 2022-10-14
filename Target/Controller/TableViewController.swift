@@ -44,9 +44,20 @@ class TableViewController: UITableViewController {
     }
     
     func recuperarTargets() {
-        listaTarget = TargetManager.readAllTarget()
+        print("chamando recuperarTargets()")
+        TargetManager.readAllTarget() { (result) -> () in
+            print("chamando setTargetResult(size: \(result.count)")
+            self.setTargetResult(result: result)
+        }
+    }
+    
+    func setTargetResult(result: [Target]) {
+        
+        listaTarget = result
         
         self.tableView.reloadData()
+        
+        print("finish")
     }
 
     // MARK: - Table view data source

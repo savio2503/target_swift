@@ -9,6 +9,13 @@ import Foundation
 
 class TargetManager {
     
+    static func updateTarget(target: Target) {
+        
+        target.save { result in
+            print("Atualização salva com sucesso! \(target.objectId)")
+        }
+    }
+    
     static func deleteTarget(target: Target) {
         
         var listDebit = DebitManager.debitsFromTarget(target: target)
@@ -22,7 +29,7 @@ class TargetManager {
         }
     }
     
-    static func createTarget(descricao: String, valorInicial: Double, valorFinal: Double) {
+    static func createTarget(descricao: String, valorInicial: Double, valorFinal: Double, completion: @escaping (Bool) -> ()) {
         
         var newTarget = Target()
         
@@ -30,7 +37,7 @@ class TargetManager {
         newTarget.valorFinal = valorFinal
         newTarget.usuario = UserManager.manager.user?.objectId!
         
-        let savedTarget = try? newTarget.save()
+        /*let savedTarget = try? newTarget.save()
         
         if savedTarget != nil {
             print("Salvo o target com sucesso \(savedTarget)")
@@ -42,10 +49,25 @@ class TargetManager {
             
         } else {
             print("Erro ao tentar criar")
+        } */
+        
+        newTarget.save { result in
+            switch result {
+            case .success(let targetResult) :
+                print("salvo o target com Sucesso \(targetResult)")
+                
+                if (valorInicial > 0.0) {
+                    DebitManager.createDebit(target: targetResult, valor: valorInicial)
+                }
+                
+                completion(true)
+            case .failure(let error) :
+                print("Error ao criar o target: \(error)")
+            }
         }
     }
     
-    static func readAllTarget() -> [Target] {
+    static func readAllTarget(completion: @escaping ([Target]) -> ()) {
         
         var res: [Target] = []
         
@@ -53,7 +75,7 @@ class TargetManager {
         
         let query = Target.query()//("usuario" == userId)
         
-        let fetchedItems = try? query.find()
+        /*let fetchedItems = try? query.find()
         
         if fetchedItems != nil {
             if !fetchedItems!.isEmpty {
@@ -65,9 +87,24 @@ class TargetManager {
                     }
                 }
             }
-        }
+        }*/
         
-        return res
+        query.find { result in
+            switch result {
+                case .success (let targets):
+                
+                for item in targets {
+                    if (item.usuario == userId) {
+                        res.append(item)
+                    }
+                }
+                
+                completion(res)
+                
+            case .failure(let error):
+                print ("Error ao buscar os targets: \(error)")
+            }
+        }
         
     }
 }

@@ -513,7 +513,13 @@
                             <constraint firstItem="XQO-65-XZj" firstAttribute="leading" secondItem="Af3-lW-4MR" secondAttribute="trailing" constant="77" id="unK-5B-Stk"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Editar objetivo" id="xva-jN-1F8"/>
+                    <navigationItem key="navigationItem" title="Editar objetivo" id="xva-jN-1F8">
+                        <barButtonItem key="rightBarButtonItem" title="Salvar" id="SWG-dO-4TA">
+                            <connections>
+                                <action selector="SalvarAtualizacao:" destination="1uh-3Y-lbS" id="qRk-fB-iEa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="descricaoTarget" destination="XQO-65-XZj" id="bqT-ve-3rV"/>
                         <outlet property="tableViewDebit" destination="Rbr-U3-AkN" id="Sip-v1-B0F"/>

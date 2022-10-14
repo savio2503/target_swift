@@ -20,11 +20,14 @@ class LoginViewController: UIViewController {
     //print("viewDidLoad-> \(UserManager.manager.user)")
 
     if UserManager.manager.user != nil {
-
-        performSegue(withIdentifier: "login_main", sender: nil)
+        callAfterLoginSuccess()
     }
 
   }
+    
+    private func callAfterLoginSuccess() {
+        performSegue(withIdentifier: "login_main", sender: nil)
+    }
     
     
 
@@ -38,7 +41,7 @@ class LoginViewController: UIViewController {
 
   private func logIn(username: String, password: String) {
 
-    do {
+    /*do {
       let loggedInUser = try User.login(username: username, password: password)
 
       UserManager.manager.user = loggedInUser
@@ -49,7 +52,18 @@ class LoginViewController: UIViewController {
       showMessage(title: "Error", message: "Failed to log in: \(error.message)")
     } catch {
       showMessage(title: "Error", message: "Failed to log in: \(error.localizedDescription)")
-    }
+    }*/
+      
+      User.login(username: username, password: password) { [weak self] result in switch result {
+      case .success(let loggedInUser):
+          
+          UserManager.manager.user = loggedInUser
+          
+          self?.callAfterLoginSuccess()
+          
+      case .failure(let error):
+          self?.showMessage(title: "Error", message: "Failed to log in: \(error.message)")
+      }}
 
   }
 
