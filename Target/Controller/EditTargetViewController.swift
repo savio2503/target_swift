@@ -97,8 +97,9 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
           self.descricaoTarget.text = target.descricao
           
           let valorFinal = Utils.rounded(valor: target.valorFinal!)
+          let tipo = target.tipoValor == 1 ? TypeValue.Real : TypeValue.Dolar
           
-          self.valorFinalTarget.text = String(format: "%.2f", valorFinal).currencyInputFormatting()
+          self.valorFinalTarget.text = String(format: "%.2f", valorFinal).currencyInputFormatting(tipo: tipo)
           self.tituloInicial = target.descricao
           self.valorFinalInicial = self.valorFinalTarget.text
           
@@ -119,8 +120,10 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
   }
 
   @objc func myTextFieldDidChange(_ textField: UITextField) {
+      
+      let tipo = target.tipoValor == 1 ? TypeValue.Real : TypeValue.Dolar
 
-    if let amountString = textField.text?.currencyInputFormatting() {
+      if let amountString = textField.text?.currencyInputFormatting(tipo: tipo) {
       textField.text = amountString
     }
   }
@@ -139,15 +142,18 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "dd/MM/YY"
       
-      let data = listDebit[indexPath.row].createdAt!
-      let valor = listDebit[indexPath.row].valor!
+      let debit = listDebit[indexPath.row]
+      
+      let data = debit.createdAt!
+      let valor = debit.valor!
+      let tipo = debit.tipo == 1 ? TypeValue.Real : TypeValue.Dolar
       
       let valorString = String(format: "%.2f", valor)
       
       print("valor[\(indexPath.row)]: \(valorString)")
       
       cell.dataDebit.text = dateFormatter.string(from: data)
-      cell.valueDebit.text = valorString.currencyInputFormatting()
+      cell.valueDebit.text = valorString.currencyInputFormatting(tipo: tipo)
     return cell
   }
 

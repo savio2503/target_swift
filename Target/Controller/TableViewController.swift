@@ -78,10 +78,11 @@ class TableViewController: UITableViewController {
         let descricao = target.descricao!
         let valorInicial = Utils.rounded(valor: DebitManager.someDebitFromTarget(target: target))
         let valorFinal = Utils.rounded(valor: target.valorFinal!)
+        let tipo = target.tipoValor == 1 ? TypeValue.Real : TypeValue.Dolar
         
         cell.tituloObjetivo.text = descricao
-        cell.valorAtual.text = Utils.doubleToCurrency(value: valorInicial)
-        cell.valorFinal.text = Utils.doubleToCurrency(value: valorFinal)
+        cell.valorAtual.text = Utils.doubleToCurrency(value: valorInicial, tipo: tipo)
+        cell.valorFinal.text = Utils.doubleToCurrency(value: valorFinal, tipo: tipo)
         
         print("target[\(indexPath.row)]: vd: \(valorFinal), vs: \(cell.valorFinal.text!)")
         

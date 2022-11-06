@@ -19,4 +19,5 @@ struct Target: ParseObject {
     var descricao: String?
     var usuario: String?
     var valorFinal: Double?
+    var tipoValor: Double?
 }

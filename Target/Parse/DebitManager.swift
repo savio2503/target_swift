@@ -59,10 +59,22 @@ class DebitManager {
         
         var lista: [Debit] = debitsFromTarget(target: target)
         var res: Double = 0.0
+        let tipoTarget = target.tipoValor == 1 ? TypeValue.Real : TypeValue.Dolar
         
         for item in lista {
             
-            res += item.valor!
+            let tipo = item.tipo == 1 ? TypeValue.Real : TypeValue.Dolar
+            
+            if (tipoTarget == TypeValue.Dolar) {
+                if (tipo == TypeValue.Dolar) {
+                    res += item.valor!
+                } else {
+                    res += (item.valor! * Utils.realtodollar)
+                    print ("preco real: \(item.valor!) -> dolar: \(item.valor! * Utils.realtodollar)")
+                }
+            } else {
+                res += item.valor!
+            }
         }
         
         return res

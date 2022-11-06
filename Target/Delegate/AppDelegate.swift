@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        Utils().getValueRealToDollar()
+        
         ParseSwift.initialize(
           applicationId: "8uFlHKY1yHG6cSC6Eme1O1RF5w2aGx7FxccVduNR",
           clientKey: "Mz67KJ18u6XkjDbpXYuBcjBhJLVNYSSdcferLYJ2",

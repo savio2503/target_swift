@@ -17,4 +17,5 @@ struct Debit: ParseObject {
     
     var valor: Double?
     var target: Target?
+    var tipo: Double?
 }

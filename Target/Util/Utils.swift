@@ -9,17 +9,25 @@ import Foundation
 import UIKit
 
 class Utils {
+    
+    static var _realtodollar: Double = 0.0
+    
+    static var realtodollar: Double {
+        get {
+            return _realtodollar
+        }
+    }
 
     static func rounded(valor: Double) -> Double {
         return Double(round(100 * valor) / 100)
     }
     
-    static func doubleToCurrency(value: Double) -> String {
+    static func doubleToCurrency(value: Double, tipo: TypeValue) -> String {
         
         let formatter = NumberFormatter()
         
         formatter.numberStyle = .currencyAccounting
-        formatter.currencySymbol = "R$"
+        formatter.currencySymbol = tipo == TypeValue.Real ? "R$" : "U$"
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
         
@@ -47,6 +55,35 @@ class Utils {
       result = (amount / 100.0)
 
       return result
+    }
+    
+    func getValueRealToDollar() {
+        
+        let url = URL(string: "https://economia.awesomeapi.com.br/json/last/BRL-USD")
+        
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+            guard let data = data else { return }
+            
+            let response = String(data: data, encoding: .utf8)!
+            
+            print(response)
+            
+            do {
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any]
+                
+                let root = jsonResult!["BRLUSD"] as! [String:Any]
+                let value: Double = Double(root["bid"] as! String)!
+                
+                Utils._realtodollar = value
+                
+                print("1")
+            } catch {
+              print(error)
+            }
+        }
+        
+        task.resume()
+        
     }
 }
 
@@ -79,11 +116,11 @@ extension UIViewController {
 
 extension String {
 
-  func currencyInputFormatting() -> String {
+    func currencyInputFormatting(tipo: TypeValue) -> String {
 
     let formatter = NumberFormatter()
     formatter.numberStyle = .currencyAccounting
-    formatter.currencySymbol = "R$"
+        formatter.currencySymbol = tipo == TypeValue.Real ? "R$" : "U$"
     formatter.maximumFractionDigits = 2
     formatter.minimumFractionDigits = 2
 

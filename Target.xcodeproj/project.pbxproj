@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A24FEB5028F3864C005B22CC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24FEB4F28F3864C005B22CC /* Utils.swift */; };
+		A257A0802917243E0040FFED /* TypeValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257A07F2917243E0040FFED /* TypeValue.swift */; };
 		A286787528EBBB8E007B56EA /* ParseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A286787428EBBB8E007B56EA /* ParseSwift */; };
 		A286787A28EBC1E1007B56EA /* AddTargetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286787928EBC1E1007B56EA /* AddTargetViewController.swift */; };
 		A286787C28EBC20B007B56EA /* CriarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A286787B28EBC20B007B56EA /* CriarViewController.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		A24FEB4F28F3864C005B22CC /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		A257A07F2917243E0040FFED /* TypeValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeValue.swift; sourceTree = "<group>"; };
 		A286787928EBC1E1007B56EA /* AddTargetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTargetViewController.swift; sourceTree = "<group>"; };
 		A286787B28EBC20B007B56EA /* CriarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriarViewController.swift; sourceTree = "<group>"; };
 		A286787D28EBC232007B56EA /* EditTargetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTargetViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				A286788928EBC4B6007B56EA /* User.swift */,
 				A29A356728F6E4B80006BF8E /* Target.swift */,
 				A296FAD028F7A9DA00FB6AB7 /* Debit.swift */,
+				A257A07F2917243E0040FFED /* TypeValue.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				A286788228EBC263007B56EA /* TableViewController.swift in Sources */,
 				A286789028EBCA54007B56EA /* UserRepository.swift in Sources */,
 				A24FEB5028F3864C005B22CC /* Utils.swift in Sources */,
+				A257A0802917243E0040FFED /* TypeValue.swift in Sources */,
 				A286787C28EBC20B007B56EA /* CriarViewController.swift in Sources */,
 				A286788728EBC29B007B56EA /* ObjetivoCelula.swift in Sources */,
 				A29A39AC28EBBA0A008D4560 /* AppDelegate.swift in Sources */,

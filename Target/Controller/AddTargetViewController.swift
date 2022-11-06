@@ -15,6 +15,8 @@ class AddTargetViewController: UIViewController {
   @IBOutlet weak var descricaoTarget: UITextField!
   @IBOutlet weak var valorInicialText: UITextField!
   @IBOutlet weak var valorFinalText: UITextField!
+    @IBOutlet weak var typeInit: UIButton!
+    @IBOutlet weak var typeFinish: UIButton!
 
   @IBAction func salvarBtn(_ sender: Any) {
       let valorInicial = Utils.getDoubleValue(value: valorInicialText.text)
@@ -50,15 +52,39 @@ class AddTargetViewController: UIViewController {
       
       valorInicialText.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
       valorFinalText.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
+      
+      createSpaceTypeMenu()
+      
   }
 
   
 
   @objc func myTextFieldDidChange(_ textField: UITextField) {
 
-    if let amountString = textField.text?.currencyInputFormatting() {
+      if let amountString = textField.text?.currencyInputFormatting(tipo: TypeValue.Real) {
       textField.text = amountString
     }
   }
-
+    
+//MARK: - MENU TYPE
+    
+    private var spaceTypeMenuItems: [UIAction] {
+        return [
+            UIAction(title: "Real", handler: { (_) in }),
+            UIAction(title: "Dolar", handler: { (_) in })
+        ]
+    }
+    
+    var spaceTypeMenu: UIMenu {
+        return UIMenu(title: "Tipo da Moeda", image: nil, identifier: nil, options: [], children: spaceTypeMenuItems)
+    }
+    
+    func createSpaceTypeMenu() {
+        typeInit.menu = spaceTypeMenu
+        typeInit.showsMenuAsPrimaryAction = true
+        
+        typeFinish.menu = spaceTypeMenu
+        typeFinish.showsMenuAsPrimaryAction = true
+    }
+    
 }
