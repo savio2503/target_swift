@@ -11,6 +11,7 @@ import ParseSwift
 class TableViewController: UITableViewController {
     
     var listaTarget: [Target] = []
+    var listaValorInicial: [Double] = []
     
     override func viewDidLoad() {
       super.viewDidLoad()
@@ -54,6 +55,13 @@ class TableViewController: UITableViewController {
     func setTargetResult(result: [Target]) {
         
         listaTarget = result
+        listaValorInicial.removeAll()
+        
+        for _target in listaTarget {
+            
+            listaValorInicial.append(Utils.rounded(valor: DebitManager.someDebitFromTarget(target: _target)))
+            
+        }
         
         self.tableView.reloadData()
         
@@ -76,7 +84,7 @@ class TableViewController: UITableViewController {
         let target = listaTarget[indexPath.row]
         
         let descricao = target.descricao!
-        let valorInicial = Utils.rounded(valor: DebitManager.someDebitFromTarget(target: target))
+        let valorInicial = listaValorInicial[indexPath.row]
         let valorFinal = Utils.rounded(valor: target.valorFinal!)
         let tipo = target.tipoValor == 1 ? TypeValue.Real : TypeValue.Dolar
         

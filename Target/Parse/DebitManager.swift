@@ -17,12 +17,13 @@ class DebitManager {
         }
     }
     
-    static func createDebit(target: Target, valor: Double) {
+    static func createDebit(target: Target, valor: Double, tipo: TypeValue) {
         
         var newDebit = Debit()
         
         newDebit.target = target
         newDebit.valor = valor
+        if (tipo == TypeValue.Real) { newDebit.tipo = 1 } else { newDebit.tipo = 2 }
         
         let savedDebit = try? newDebit.save()
         

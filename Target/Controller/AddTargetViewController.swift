@@ -17,6 +17,9 @@ class AddTargetViewController: UIViewController {
   @IBOutlet weak var valorFinalText: UITextField!
     @IBOutlet weak var typeInit: UIButton!
     @IBOutlet weak var typeFinish: UIButton!
+    
+    private var _typeInit: TypeValue!
+    private var _typeFins: TypeValue!
 
   @IBAction func salvarBtn(_ sender: Any) {
       let valorInicial = Utils.getDoubleValue(value: valorInicialText.text)
@@ -34,8 +37,8 @@ class AddTargetViewController: UIViewController {
       }
       
       print("chamando a funcao para salvar")
-      //salvarTarget(descricao: descricao!, inicial: valorInicial, final: valorFinal)
-      TargetManager.createTarget(descricao: descricao!, valorInicial: valorInicial, valorFinal: valorFinal) { (result) -> () in self.close(success: result)}
+      
+      TargetManager.createTarget(descricao: descricao!, valorInicial: valorInicial, tipoInicial: _typeInit, valorFinal: valorFinal, tipoFinal: _typeFins) { (result) -> () in self.close(success: result)}
       
   }
     
@@ -50,40 +53,61 @@ class AddTargetViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
       
-      valorInicialText.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
-      valorFinalText.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
+      valorInicialText.addTarget(self, action: #selector(myTextFieldDidChangeIni), for: .editingChanged)
+      valorFinalText.addTarget(self, action: #selector(myTextFieldDidChangeFin), for: .editingChanged)
       
       createSpaceTypeMenu()
       
+      
+      _typeInit = TypeValue.Real
+      _typeFins = TypeValue.Real
+      
   }
 
-  
-
-  @objc func myTextFieldDidChange(_ textField: UITextField) {
-
-      if let amountString = textField.text?.currencyInputFormatting(tipo: TypeValue.Real) {
+  @objc func myTextFieldDidChangeIni(_ textField: UITextField) {
+      
+      if let amountString = textField.text?.currencyInputFormatting(tipo: self._typeInit) {
       textField.text = amountString
     }
   }
     
+    @objc func myTextFieldDidChangeFin(_ textField: UITextField) {
+        
+        if let amountString = textField.text?.currencyInputFormatting(tipo: self._typeFins) {
+        textField.text = amountString
+      }
+    }
+    
 //MARK: - MENU TYPE
     
-    private var spaceTypeMenuItems: [UIAction] {
+    private var spaceTypeMenuItemsIni: [UIAction] {
         return [
-            UIAction(title: "Real", handler: { (_) in }),
-            UIAction(title: "Dolar", handler: { (_) in })
+            UIAction(title: "Real", handler: { (_) in self._typeInit = TypeValue.Real }),
+            UIAction(title: "Dolar", handler: { (_) in self._typeInit = TypeValue.Dolar })
         ]
     }
     
-    var spaceTypeMenu: UIMenu {
-        return UIMenu(title: "Tipo da Moeda", image: nil, identifier: nil, options: [], children: spaceTypeMenuItems)
+    var spaceTypeMenuIni: UIMenu {
+        return UIMenu(title: "Tipo da Moeda", image: nil, identifier: nil, options: [], children: spaceTypeMenuItemsIni)
+    }
+    
+    
+    private var spaceTypeMenuItemsFin: [UIAction] {
+        return [
+            UIAction(title: "Real", handler: { (_) in self._typeFins = TypeValue.Real }),
+            UIAction(title: "Dolar", handler: { (_) in self._typeFins = TypeValue.Dolar })
+        ]
+    }
+    
+    var spaceTypeMenuFin: UIMenu {
+        return UIMenu(title: "Tipo da Moeda", image: nil, identifier: nil, options: [], children: spaceTypeMenuItemsFin)
     }
     
     func createSpaceTypeMenu() {
-        typeInit.menu = spaceTypeMenu
+        typeInit.menu = spaceTypeMenuIni
         typeInit.showsMenuAsPrimaryAction = true
         
-        typeFinish.menu = spaceTypeMenu
+        typeFinish.menu = spaceTypeMenuFin
         typeFinish.showsMenuAsPrimaryAction = true
     }
     

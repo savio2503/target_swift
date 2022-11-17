@@ -46,7 +46,7 @@ class EditTargetViewController: UIViewController, UITableViewDataSource, UITable
               
               if valorDouble > 0.0 {
                   
-                  DebitManager.createDebit(target: self.target, valor: valorDouble)
+                  DebitManager.createDebit(target: self.target, valor: valorDouble, tipo: TypeValue.Real)
                   self.listDebit = DebitManager.debitsFromTarget(target: self.target)
                   self.tableViewDebit.reloadData()
                   

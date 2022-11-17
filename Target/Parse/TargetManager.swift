@@ -29,13 +29,14 @@ class TargetManager {
         }
     }
     
-    static func createTarget(descricao: String, valorInicial: Double, valorFinal: Double, completion: @escaping (Bool) -> ()) {
+    static func createTarget(descricao: String, valorInicial: Double, tipoInicial: TypeValue, valorFinal: Double, tipoFinal: TypeValue, completion: @escaping (Bool) -> ()) {
         
         var newTarget = Target()
         
         newTarget.descricao = descricao
         newTarget.valorFinal = valorFinal
         newTarget.usuario = UserManager.manager.user?.objectId!
+        if (tipoFinal == TypeValue.Real) { newTarget.tipoValor = 1 } else { newTarget.tipoValor = 2 }
         
         newTarget.save { result in
             switch result {
@@ -43,7 +44,7 @@ class TargetManager {
                 print("salvo o target com Sucesso \(targetResult)")
                 
                 if (valorInicial > 0.0) {
-                    DebitManager.createDebit(target: targetResult, valor: valorInicial)
+                    DebitManager.createDebit(target: targetResult, valor: valorInicial, tipo: tipoInicial)
                 }
                 
                 completion(true)

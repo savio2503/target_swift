@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -370,12 +369,6 @@
                             <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hA-Ao-3r7">
                                 <rect key="frame" x="190" y="225" width="41" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <menu key="menu" id="9Lg-fp-OKP">
-                                    <children>
-                                        <command title="Item 1" id="VL2-r5-5Qv"/>
-                                        <command title="Item 2" id="VmY-0z-iXY"/>
-                                    </children>
-                                </menu>
                                 <state key="normal" title="Button"/>
                             </button>
                         </subviews>
