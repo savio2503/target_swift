@@ -1,23 +1,14 @@
 //
 //  User.swift
-//  Target
+//  target
 //
-//  Created by Sávio Dutra on 03/10/22.
+//  Created by Sávio Dutra on 25/12/23.
 //
 
 import Foundation
-import ParseSwift
 
-struct User: ParseUser {
-    var authData: [String : [String : String]?]?
-    var originalData: Data?
-    var objectId: String?
-    var createdAt: Date?
-    var updatedAt: Date?
-    var ACL: ParseACL?
-    
-    var username: String?
-    var email: String?
-    var emailVerified: Bool?
-    var password: String?
+struct User: Identifiable {
+    let id: Int
+    var name: String
+    var score: Int
 }

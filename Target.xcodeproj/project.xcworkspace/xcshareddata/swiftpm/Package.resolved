@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "parse-swift",
+      "identity" : "flowstack",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/parse-community/Parse-Swift",
+      "location" : "https://github.com/johnsusek/FlowStack.git",
       "state" : {
-        "revision" : "40a7b42b20c22253d53b09dc49c37fbb7973fdfe",
-        "version" : "4.14.1"
+        "revision" : "0745511c8825569b9aad0e52f02b57d46f0f7d6e",
+        "version" : "0.2.3"
       }
     }
   ],
