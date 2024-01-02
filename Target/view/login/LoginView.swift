@@ -13,6 +13,8 @@ struct LoginView: View {
     @State var password: String = ""
     @State var logging = false
     @State var msgError: String = ""
+    @State var logged: Bool = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 10) {
@@ -40,6 +42,11 @@ struct LoginView: View {
                 
                 Task {
                     await login()
+                    
+                    if (logged) {
+                        KeysStorage.shared.recarregar = true
+                        dismiss()
+                    }
                 }
                 
             }, label: {
@@ -77,6 +84,8 @@ struct LoginView: View {
             
             KeysStorage.shared.token = response.token
             
+            logged = true
+            
         } catch {
             print("\(error)")
             msgError = error.localizedDescription
@@ -86,6 +95,6 @@ struct LoginView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     LoginView()
-}
+}*/

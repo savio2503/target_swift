@@ -20,6 +20,16 @@ class KeysStorage {
         }
     }
     
+    var _recarregar: Bool = false
+    var recarregar: Bool {
+        get {
+            return _recarregar
+        }
+        set (value) {
+            _recarregar = value
+        }
+    }
+    
     private let defaults = UserDefaults.standard
     
     static var shared: KeysStorage = {

@@ -18,7 +18,8 @@ class Api {
     }()
     
     private init() {
-        baseURL = "http://192.168.1.9:3333/"
+        //baseURL = "http://192.168.1.9:3333/"
+        baseURL = "http://100.96.1.2:3333/"
     }
     
     func login(userLogin: LoginRequest) async throws -> LoginResponse {
@@ -36,5 +37,23 @@ class Api {
         
         return try JSONDecoder().decode(LoginResponse.self, from: try mapResponse(response: (data, response)))
         
+    }
+    
+    func getAllTarget(state: Bool?) async throws -> [Target] {
+        
+        if (state == nil) {
+            request = URLRequest(url: URL(string: baseURL + "all")!)
+        } else if (state!) {
+            request = URLRequest(url: URL(string: baseURL + "allAtive")!)
+        } else if (!state!) {
+            request = URLRequest(url: URL(string: baseURL + "allAtive")!)
+        }
+        
+        request?.httpMethod = "GET"
+        request?.setValue("Bearer \(KeysStorage.shared.token!)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request!)
+        
+        return try JSONDecoder().decode([Target].self, from: try mapResponse(response: (data, response)))
     }
 }
