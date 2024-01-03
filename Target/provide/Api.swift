@@ -56,4 +56,16 @@ class Api {
         
         return try JSONDecoder().decode([Target].self, from: try mapResponse(response: (data, response)))
     }
+    
+    func getAllDeposity(targetId: Int) async throws -> [Deposit] {
+        
+        request = URLRequest(url: URL(string: baseURL + "deposit/\(targetId)")!)
+        
+        request?.httpMethod = "GET"
+        request?.setValue("Bearer \(KeysStorage.shared.token!)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request!)
+        
+        return try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
+    }
 }

@@ -17,7 +17,7 @@ struct ContentView: View {
     init() {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(red: 0.12, green: 0.55, blue: 0.95, alpha: 1.00)
+        navBarAppearance.backgroundColor = UIColor(Color("NavigationColor"))
         
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         
@@ -36,7 +36,12 @@ struct ContentView: View {
                   
                           LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                               ForEach(items, id: \.self) { item in
-                                  CardView(target: item)
+                                  NavigationLink {
+                                      DetailView(target: item)
+                                  } label: {
+                                      CardView(target: item)
+                                  }
+                                      
                               }
                           }
                           .padding()
@@ -192,9 +197,8 @@ struct CardView: View {
                     .frame(maxWidth: .infinity)
             }
             .padding()
-            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
-            .background(Color.blue)
+            .background(Color("CardColor"))
             .cornerRadius(10)
             .padding(.bottom, 2)
             

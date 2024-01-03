@@ -19,6 +19,7 @@
 		A2A8F76D2B4203BD00FE4006 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F76C2B4203BD00FE4006 /* Utils.swift */; };
 		A2A8F76F2B431EC800FE4006 /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F76E2B431EC800FE4006 /* Target.swift */; };
 		A2A8F7712B43A71E00FE4006 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F7702B43A71E00FE4006 /* DetailView.swift */; };
+		A2B0D4802B44DCB3002326BD /* Deposit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B0D47F2B44DCB3002326BD /* Deposit.swift */; };
 		A2DD79C62B3A39CB00DBAD0B /* KeysStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DD79C52B3A39CB00DBAD0B /* KeysStorage.swift */; };
 		A2DD79C92B3A3EAD00DBAD0B /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DD79C82B3A3EAD00DBAD0B /* NetworkError.swift */; };
 		A2DD79CB2B3A3F8C00DBAD0B /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DD79CA2B3A3F8C00DBAD0B /* LoginResponse.swift */; };
@@ -42,6 +43,7 @@
 		A2A8F76C2B4203BD00FE4006 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A2A8F76E2B431EC800FE4006 /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
 		A2A8F7702B43A71E00FE4006 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		A2B0D47F2B44DCB3002326BD /* Deposit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deposit.swift; sourceTree = "<group>"; };
 		A2DD79C52B3A39CB00DBAD0B /* KeysStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeysStorage.swift; sourceTree = "<group>"; };
 		A2DD79C82B3A3EAD00DBAD0B /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		A2DD79CA2B3A3F8C00DBAD0B /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				A2DD79CC2B3A3FB400DBAD0B /* LoginRequest.swift */,
 				A2DD79D12B3A62D900DBAD0B /* User.swift */,
 				A2A8F76E2B431EC800FE4006 /* Target.swift */,
+				A2B0D47F2B44DCB3002326BD /* Deposit.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2B0D4802B44DCB3002326BD /* Deposit.swift in Sources */,
 				A263067F2B2F602C00465B55 /* Api.swift in Sources */,
 				A2094EB72B3A324400A3F897 /* SignupView.swift in Sources */,
 				A2094EB52B3A322B00A3F897 /* LoggedView.swift in Sources */,

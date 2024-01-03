@@ -14,8 +14,8 @@
             filePath = "target/view/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "sumTotalList()"
             landmarkType = "7">
             <Locations>
@@ -62,10 +62,73 @@
             filePath = "target/view/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "sumTotalList()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F574535B-293B-42C8-9088-7650ECC61EFD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "target/util/Utils.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "dateFormat(text:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "F574535B-293B-42C8-9088-7650ECC61EFD - a9bfde06cc114f86"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "target.dateFormat(text: Swift.String) -&gt; Swift.String"
+                  moduleName = "target"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/savio/Develop/iOS/target/target/util/Utils.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "1176">
+               </Location>
+               <Location
+                  uuid = "F574535B-293B-42C8-9088-7650ECC61EFD - a9bfde06cc114e44"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "target.dateFormat(text: Swift.String) -&gt; Swift.String"
+                  moduleName = "target"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/savio/Develop/iOS/target/target/util/Utils.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "788">
+               </Location>
+               <Location
+                  uuid = "F574535B-293B-42C8-9088-7650ECC61EFD - a9bfde06cc114e44"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "target.dateFormat(text: Swift.String) -&gt; Swift.String"
+                  moduleName = "target"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/savio/Develop/iOS/target/target/util/Utils.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "796">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
