@@ -10,10 +10,13 @@ import SwiftUI
 struct DetailView: View {
 
     @State var descricao: String = ""
-    @State var valor: String = ""
+    @State var valor: Double = 0.0
     @State var msgError: String = ""
     private var target: Target
     @State var deposits: [Deposit] = []
+    private var sizeMaxImage: Double = 0.0
+    @State var priority: Int
+    @State var coin: Int
 
     init(target: Target) {
         let navBarAppearance = UINavigationBarAppearance()
@@ -29,28 +32,32 @@ struct DetailView: View {
         self.target = target
 
         _descricao = State(initialValue: self.target.descricao)
-        _valor = State(initialValue: String(format: "%.02f", self.target.valor))
+        //_valor = State(initialValue: NSDecimalNumber(value: self.target.valor) as Decimal)
+        _coin = State(initialValue: self.target.coin_id!)
+
+        sizeMaxImage =
+            UIScreen.screenWith < UIScreen.screenHeight
+            ? UIScreen.screenWith : UIScreen.screenHeight
+
+        sizeMaxImage = sizeMaxImage - 150
+
+        self.priority = target.posicao
     }
 
     var body: some View {
         NavigationStack {
             VStack {
                 ScrollView {
-                    
+
+                    //MARK: - IMAGE
                     Button(action: {
                         print("tocou")
                     }) {
-                        HStack {
-                            Text("Adicionar uma imagem")
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 10)
-                        }
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(30.0)
+                        ImageView(source: self.target.imagem, sizeMaxImage: self.sizeMaxImage)
                     }
                     .padding()
 
+                    //MARK: - DESCRIPTION
                     TextField(
                         "Descrição", text: $descricao,
                         onEditingChanged: { changed in
@@ -61,65 +68,35 @@ struct DetailView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(5.0)
                     .padding(.top, 20)
-                    .keyboardType(.emailAddress)
+                    .padding(.horizontal, 20)
 
+                    //MARK: - VALOR
                     HStack {
 
                         TextField(
-                            "Valor", text: $valor,
-                            onEditingChanged: { changed in
-                                msgError = ""
-                            }
+                            "Valor", value: $valor,
+                            format: .currency(code: coin == 1 ? "BRL" : "USD")
                         )
                         .padding()
                         .background(Color(.systemGray6))
                         .cornerRadius(5.0)
                         .padding(.top, 20)
-                        .keyboardType(.emailAddress)
+                        .padding(.horizontal, 20)
+                        .keyboardType(.numberPad)
 
                     }
-
-                    Text("Selecione o peso do objetivo")
-                        .padding()
-
-                    //pesos
 
                     HStack {
-
-                        Spacer()
-
-                        Button(action: {
-                            print("tocou")
-                        }) {
-                            HStack {
-                                Text("Salvar")
-                                    .foregroundStyle(.blue)
-                                    .padding(.horizontal, 10)
-                            }
+                        Text("Selecione o peso do objetivo")
                             .padding()
-                            .background(Color("CardColor"))
-                            .cornerRadius(30.0)
-                        }
-                        .padding()
 
-                        Spacer()
-
-                        Button(action: {
-                            print("tocou")
-                        }) {
-                            HStack {
-                                Text("Excluir")
-                                    .foregroundStyle(.red)
-                                    .padding(.horizontal, 10)
-                            }
+                        PriorityView(selectNumber: self.$priority)
                             .padding()
-                            .background(Color("CardColor"))
-                            .cornerRadius(30.0)
-                        }
-                        .padding()
 
-                        Spacer()
                     }
+                    .padding(.horizontal, 20)
+
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: valor, posicao: priority, imagem: ""))
 
                     Divider()
 
@@ -132,14 +109,21 @@ struct DetailView: View {
                         .padding(.vertical, 3)
 
                     ForEach(deposits, id: \.self) { deposit in
-                        
+
                         if deposit.valor != 0.0 {
-                            
+
                             HStack {
+                                Spacer()
+                                if deposit.valor < 0 {
+                                    Text("-")
+                                } else {
+                                    Text("+")
+                                }
                                 Spacer()
                                 Text("\(String(format: "R$ %.02f", deposit.valor))")
                                 Spacer()
                                 Text("\(dateFormat(text: deposit.created_at))")
+                                Spacer()
                             }
                             Divider()
                         }
@@ -160,8 +144,6 @@ struct DetailView: View {
 
                     self.deposits = response.map { $0 }
 
-                    print("historic: \(self.deposits)")
-
                 } catch {
                     print("erro deposits: \(error)")
                     msgError = error.localizedDescription
@@ -169,14 +151,18 @@ struct DetailView: View {
             }
         }
     }
-    
+
     func sumDeposit() -> String {
-        
-        let result = (target.valor * target.porcetagem) / 100
-        
-        
-        return "Total depositado em X foi: R$ \(result)"
+
+        let result = (target.valor * target.porcetagem!) / 100
+
+        //TODO: Pegar o tipo vai classe depois
+        var moeda = target.coin_id == 1 ? "Real" : "Dolar"
+        var tipo = target.coin_id == 1 ? "R$" : "U$"
+
+        return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))"
     }
+
 }
 
 /*#Preview {

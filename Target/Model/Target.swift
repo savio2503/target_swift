@@ -13,9 +13,9 @@ struct Target: Codable, Hashable {
     let descricao: String
     let valor: Double
     let posicao: Int
-    let ativo: Int
+    var ativo: Int? = 1
     var total_deposit: Double?
-    var porcetagem: Double
+    var porcetagem: Double?
     let imagem: String
-    let coin_id: Int?
+    var coin_id: Int? = 1
 }

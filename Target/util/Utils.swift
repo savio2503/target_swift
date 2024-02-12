@@ -62,3 +62,19 @@ extension String {
         return String(self[startIndex..<endIndex])
     }
 }
+
+struct CurrencyFormatter {
+    
+    var currencyFormatter: NumberFormatter
+    
+    init(coin: Int) {
+        
+        currencyFormatter = {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.locale = Locale(identifier: coin == 1 ? "pt_BR" : "US")
+            return formatter
+        }()
+        
+    }
+}

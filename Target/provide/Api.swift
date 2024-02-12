@@ -18,8 +18,9 @@ class Api {
     }()
     
     private init() {
-        //baseURL = "http://192.168.1.9:3333/"
-        baseURL = "http://100.96.1.2:3333/"
+        //baseURL = "http://192.168.1.11:3333/"
+        //baseURL = "http://100.96.1.2:3333/"
+        baseURL = "http://192.168.1.22:3333/"
     }
     
     func login(userLogin: LoginRequest) async throws -> LoginResponse {
@@ -67,5 +68,17 @@ class Api {
         let (data, response) = try await URLSession.shared.data(for: request!)
         
         return try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
+    }
+    
+    func removeTarget(targetId: Int) async throws {
+        
+        request = URLRequest(url: URL(string: baseURL + "target/\(targetId)")!)
+        
+        request?.httpMethod = "DELETE"
+        request?.setValue("Bearer \(KeysStorage.shared.token!)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request!)
+        
+        print("removido \(targetId), com sucesso")
     }
 }
