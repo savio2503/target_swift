@@ -22,6 +22,9 @@ struct AddView: View {
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
     @State private var error = ""
+    @State private var loading = false
+    @State private var sendSucesso = false
+    @Environment(\.dismiss) private var dismiss
     
     @ObservedObject private var currencyManager = CurrencyManager(
         amount: 0,
@@ -57,7 +60,7 @@ struct AddView: View {
                     .padding(.top, 16)
                     .alert("From Web", isPresented: $isShowingURLInput) {
                         TextField("Type or paste the web address", text: $urlTemp)
-                        Button("OK", action: submit)
+                        Button("OK", action: {imageURL = urlTemp})
                         Button("Cancel") {  }
                     }
                     .confirmationDialog("Adicionar Imagem", isPresented: $isShowingConfirmationDialog) {
@@ -74,6 +77,7 @@ struct AddView: View {
                         Text("Escolha a origem da imagem")
                     }
                 }
+                //MARK: - END IMAGEM
                 
                 
                 
@@ -81,7 +85,7 @@ struct AddView: View {
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(5.0)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 16) //MARK: - DESCRICAO
                 
                 HStack {
                     
@@ -109,8 +113,9 @@ struct AddView: View {
                         .onChange(of: currencyManager.string ) { value in
                             currencyManager.valueChanged(value: value)
                         }
-                }
+                }//MARK: - CAMPOS VALOR
                 .padding(.horizontal, 16)
+                
                 
                 
                 Text("Selecione o peso do objetivo")
@@ -118,6 +123,7 @@ struct AddView: View {
                 
                 PriorityView(selectNumber: self.$prioridade)
                     .padding()
+                //MARK: - END CAMPO PRIORIDADE
                 
                 Spacer()
                 
@@ -128,17 +134,29 @@ struct AddView: View {
                 
                 Button(action: {
                     
-                    if descricao.isEmpty || valor == 0.0 {
+                    if descricao.isEmpty || self.currencyManager.getDouble() == 0.0 {
                         error = "O campo de descrição ou o campo de valor estâo vazios"
+                    } else {
+                        loading = true
+                        Task {
+                            await addTarget()
+                            
+                            if (sendSucesso) {
+                                KeysStorage.shared.recarregar = true
+                                dismiss()
+                            }
+                        }
                     }
                     
                 }) {
-                    Text("Adicionar")
+                    
+                    Text(loading == false ? "Adicionar" : "Enviando...")
                         .foregroundStyle(.white)
                         .padding()
                         .background(Color.blue.opacity(0.85))
                         .cornerRadius(5.0)
-                }
+                    
+                }//MARK: - ENVIAR
                 .padding(.bottom, 8)
                 
                 
@@ -150,7 +168,18 @@ struct AddView: View {
             }
             .onChange(of: image) {
                 Task {
-                    avatarImage = Image(uiImage: image)
+                    if let resizedImage = image.resizeToFill() {
+                        
+                        avatarImage = Image(uiImage: resizedImage)
+                        
+                        //let heightPoint = resizedImage.size.height
+                        
+                        //let widthPoint = resizedImage.size.width
+                        
+                        print("local")
+                    }
+                    
+                    
                 }
             }
             .onChange(of: descricao) {
@@ -172,9 +201,37 @@ struct AddView: View {
         }//: NavigationStack
     }
     
-    func submit() {
-        imageURL = urlTemp
-        print("url eh: \(imageURL!)")
+    //MARK: - FUNCAO ENVIAR
+    func addTarget() async {
+        let _value = self.currencyManager.getDouble()
+        
+        var _imagem: String = " "
+        if self.imageURL != nil {
+            _imagem = self.imageURL!
+        } else if self.avatarImage != nil {
+            let _uiimage = self.image
+            let _imageData = _uiimage.pngData()
+            let _base64String = _imageData?.base64EncodedString()
+            
+            _imagem = _base64String ?? " "
+            
+            //print("-> \(_imagem)")
+        }
+        
+        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: _imagem, coin: self.typeCoin)
+        
+        //print("\(target)")
+        
+        do {
+            let response = try await Api.shared.addTarget(target: target)
+            
+            sendSucesso = true
+        } catch {
+            print("\(error.localizedDescription)")
+            self.error = error.localizedDescription
+        }
+        
+        loading = false
     }
 }
 

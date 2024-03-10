@@ -1,130 +1,45 @@
 import UIKit
 
-public enum NetworkError: Error, LocalizedError {
-    
-    case missingRequiredFields(String)
-    
-    case invalidParameters(operation: String, parameters: [Any])
-    
-    case badRequest
-    
-    case unauthorized
-    
-    case paymentRequired
-    
-    case forbidden
-    
-    case notFound
-    
-    case requestEntityTooLarge
-
-    case unprocessableEntity
-    
-    case http(httpResponse: HTTPURLResponse, data: Data)
-    
-    case invalidResponse(Data)
-    
-    case deleteOperationFailed(String)
-    
-    case network(URLError)
-    
-    case unknown(Error?)
-
-}
-
-func mapResponse(response: (data: Data, response: URLResponse)) throws -> Data {
-    guard let httpResponse = response.response as? HTTPURLResponse else {
-        return response.data
-    }
-    
-    switch httpResponse.statusCode {
-    case 200..<300:
-        return response.data
-    case 400:
-        throw NetworkError.badRequest
-    case 401:
-        throw NetworkError.unauthorized
-    case 402:
-        throw NetworkError.paymentRequired
-    case 403:
-        throw NetworkError.forbidden
-    case 404:
-        throw NetworkError.notFound
-    case 413:
-        throw NetworkError.requestEntityTooLarge
-    case 422:
-        throw NetworkError.unprocessableEntity
-    default:
-        throw NetworkError.http(httpResponse: httpResponse, data: response.data)
+extension URLResponse {
+    func headerField(forKey key: String) -> String? {
+        (self as? HTTPURLResponse)?.allHeaderFields[key] as? String
     }
 }
 
-struct LoginResponse: Codable, Hashable {
-    let type: String
-    let tokem: String
-    let expires_at: String
-}
+var request = URLRequest(url: URL(string: "http://192.168.0.192:3333/login")!)
 
-struct LoginRequest : Codable {
-    let email: String
-    let password: String
-}
+request.httpMethod = "POST"
+request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-//Singleton
-class Api {
-    
-    var request: URLRequest?
-    var baseURL: String
-    
-    static var shared: Api = {
-        let instance = Api()
-        return instance
-    }()
-    
-    private init() {
-        baseURL = "http://127.0.0.1:3333/"
+//let encoded = try JSONEncoder().encode("{\"password\":\"123456\",\"email\":\"user@mail.com\"}")
+
+let encoded = Data("{\"password\":\"123456\",\"email\":\"user@mail.com\"}".utf8)
+
+var (data, response) = try await URLSession.shared.upload(for: request, from: encoded)
+
+print(String(decoding: data, as: UTF8.self))
+//print("cookie: \(response.headerField(forKey: "Set-Cookie") ?? "nao pegou")")
+
+let cookie = response.headerField(forKey: "Set-Cookie") ?? ""
+let pattern = "SameSite=([^;]+),([^;]+)"
+var result = ""
+
+if let regex = try? NSRegularExpression(pattern: pattern) {
+    let matches = regex.matches(in: cookie, range: NSRange(cookie.startIndex..., in: cookie))
+    let matchStrings = matches.map { match in
+        String(cookie[Range(match.range(at: 2), in: cookie)!])
     }
-    
-    private func tratarRequest(metodo: String, body: Data?) {
-        
-        request!.httpMethod = metodo
-        request!.httpBody = body
-        request!.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    }
-    
-    /*func send(login: LoginRequest) async throws -> LoginResponse {
-        
-        let url = URL(string: "")
-        let request = URLRequest(url: url)
-        let (data, response) = try await URLSession.shared.data(for: request)
-        let fetchedData = try JSONDecoder().decode(LoginResponse.self, from: try mapResponse(response: (data,response)))
-        
-        return fetchedData
-    }*/
-    
-    func login(userLogin: LoginRequest) async throws -> LoginResponse {
-        
-        request = URLRequest(url: URL(string: baseURL + "login")!)
-        
-        request?.httpMethod = "POST"
-        request?.setValue("application/json", forHTTPHeaderField: "Content-type")
-        
-        let encoded = try JSONEncoder().encode(userLogin)
-        
-        let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
-        
-        return try JSONDecoder().decode(LoginResponse.self, from: try mapResponse(response: (data, response)))
-        
-    }
+    result = matchStrings.joined(separator: ";")
 }
+print("source: \(cookie)")
+print("\n")
+print("cookie: \(result)")
 
-extension Api: NSCopying {
-    func copy(with zone: NSZone? = nil) -> Any {
-        return self
-    }
-}
+request = URLRequest(url: URL(string: "http://192.168.0.192:3333/all")!)
 
+request.httpMethod = "GET"
+request.setValue(result, forHTTPHeaderField: "Cookie")
 
-var login = LoginRequest(email: "user@mail.com", password: "123456")
+(data, response) = try await URLSession.shared.data(for: request)
 
-var resposta = try await Api.shared.login(userLogin: login)
+print("get target -> \(String(decoding: data, as: UTF8.self).prefix(50))")

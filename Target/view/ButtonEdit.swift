@@ -40,7 +40,7 @@ struct ButtonEdit: View {
                         isLoading = true
                         print("isLoading = true")
                         do {
-                            try await Api.shared.removeTarget(targetId: target.id)
+                            try await Api.shared.removeTarget(targetId: target.id!)
                         }
                         print("isLoading = false")
                         isLoading = false

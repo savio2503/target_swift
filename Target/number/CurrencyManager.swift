@@ -35,6 +35,15 @@ class CurrencyManager: ObservableObject {
         formatter.locale = locale
         valueChanged(value: lastValue)
     }
+    
+    func getDouble() -> Double {
+        
+        var res: Double = 0.0
+        
+        res = ((lastValue.decimal ?? .zero) / pow(10, formatter.maximumFractionDigits)).doubleValue
+        
+        return res
+    }
 }
 
 extension NumberFormatter {
@@ -56,4 +65,10 @@ extension LosslessStringConvertible {
 extension StringProtocol where Self: RangeReplaceableCollection {
     var digits: Self { filter (\.isDigit) }
     var decimal: Decimal? { Decimal(string: digits.string) }
+}
+
+extension Decimal {
+    var doubleValue: Double {
+        return NSDecimalNumber(decimal: self).doubleValue
+    }
 }

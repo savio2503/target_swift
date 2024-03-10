@@ -11,32 +11,56 @@ struct ProgressView: View {
 
     @State private var showMoney = false
     @Binding var targets: [Target]
+    @Binding var total: Double
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: getGridRows(), spacing: 16) {
-                ForEach(targets, id: \.self) { target in
-                    VStack {
-                        ImageWebView(source: target.imagem)
-                            //.padding()
-                        
-                        Text(target.descricao)
-                            .lineLimit(1)
-                            .padding(.horizontal, 6)
-                        
-                        Text(String(format: "%.2f% %", target.porcetagem!))
+        VStack {
+            
+            Text("Total value in progress: \(total.toCurrency() ?? "0.00")")
+                .padding(.top, 8)
+            
+            if (targets.isEmpty) {
+                
+                Spacer()
+                
+                Text("You haven't target created")
+                
+                Spacer()
+                
+            } else {
+                
+                ScrollView {
+                    LazyVGrid(columns: getGridRows(), spacing: 16) {
+                        ForEach(targets, id: \.self) { target in
+                            VStack {
+                                ImageWebView(source: target.imagem)
+                                //.padding()
+                                
+                                Text(target.descricao)
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 6)
+                                
+                                Text(String(format: "%.2f% %", target.porcetagem!))
+                            }
+                            .background(Color.blue.opacity(0.1))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray, lineWidth: 1)
+                            )
+                            .onTapGesture {
+                                print("tocou em \(target.descricao)")
+                            }
+                        }
                     }
-                    .background(Color.blue.opacity(0.1))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 1)
-                    )
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
                 }
             }
-            .padding(16)
         }
         .sheet(isPresented: $showMoney) {
 
+        }.onAppear {
+            print("onAppear progress")
         }
         /*.overlay(
             ZStack {
@@ -59,21 +83,7 @@ struct ProgressView: View {
         )//: OVERLAY */
     }
     
-    private func getGridRows() -> [GridItem] {
-        let adaptiveGridItem = GridItem(.adaptive(minimum: 160))
-        return Array(repeating: adaptiveGridItem, count: getNumberOfColumns())
-    }
     
-    private func getNumberOfColumns() -> Int {
-        #if os(macOS)
-        let windowWidth = NSApplication.shared.windows.first?.frame.width ?? 300
-        #else
-        let windowWidth = UIScreen.main.bounds.width
-        #endif
-        let columns = Int(windowWidth / 170)
-        //print(columns)
-        return max(columns, 1)
-    }
 }
 
 /*#Preview {

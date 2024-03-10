@@ -27,11 +27,28 @@ extension UIScreen {
     static let screenSize = UIScreen.main.bounds.size
 }
 
+func getGridRows() -> [GridItem] {
+    let adaptiveGridItem = GridItem(.adaptive(minimum: 160))
+    return Array(repeating: adaptiveGridItem, count: getNumberOfColumns())
+}
+
+func getNumberOfColumns() -> Int {
+    
+#if os(macOS)
+    let windowWidth = NSApplication.shared.windows.first?.frame.width ?? 300
+#else
+    let windowWidth = UIScreen.main.bounds.width
+#endif
+    let columns = Int(windowWidth / 170)
+    //print(columns)
+    return max(columns, 1)
+}
+
 func dateFormat(text: String) -> String {
     
     let dateFormatter = DateFormatter()
     
-    var datas = text.replacing("T", with: " ").substring(to: 16)
+    let datas = text.replacing("T", with: " ").substring(to: 16)
     
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
     let data = dateFormatter.date(from: datas)!
@@ -39,6 +56,14 @@ func dateFormat(text: String) -> String {
     dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
     
     return dateFormatter.string(from: data)
+}
+
+extension Double {
+    func toCurrency() -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter.string(from: NSNumber(value: self))
+    }
 }
 
 extension String {
@@ -76,5 +101,33 @@ struct CurrencyFormatter {
             return formatter
         }()
         
+    }
+}
+
+extension UIImage {
+    
+    func resizeToFill() -> UIImage? {
+        
+        let newSize: CGSize
+        let maxSize: CGFloat = 300
+        let aspectRatio = size.width / size.height
+        
+        if size.width > size.height {
+            newSize = CGSize(width: maxSize, height: maxSize / aspectRatio)
+        } else {
+            newSize = CGSize(width: maxSize * aspectRatio, height: maxSize)
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: newSize))
+        
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+}
+
+extension URLResponse {
+    func headerField(forKey key: String) -> String? {
+        (self as? HTTPURLResponse)?.allHeaderFields[key] as? String
     }
 }

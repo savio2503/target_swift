@@ -82,7 +82,7 @@ struct LoginView: View {
             
             print("O login retornou positivo")
             
-            KeysStorage.shared.token = response.token
+            KeysStorage.shared.token = response
             
             logged = true
             

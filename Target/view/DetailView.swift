@@ -33,7 +33,7 @@ struct DetailView: View {
 
         _descricao = State(initialValue: self.target.descricao)
         //_valor = State(initialValue: NSDecimalNumber(value: self.target.valor) as Decimal)
-        _coin = State(initialValue: self.target.coin_id!)
+        _coin = State(initialValue: self.target.coin!)
 
         sizeMaxImage =
             UIScreen.screenWith < UIScreen.screenHeight
@@ -138,7 +138,7 @@ struct DetailView: View {
             Task {
                 do {
 
-                    let response = try await Api.shared.getAllDeposity(targetId: self.target.id)
+                    let response = try await Api.shared.getAllDeposity(targetId: self.target.id!)
 
                     self.deposits.removeAll()
 
@@ -157,8 +157,8 @@ struct DetailView: View {
         let result = (target.valor * target.porcetagem!) / 100
 
         //TODO: Pegar o tipo vai classe depois
-        var moeda = target.coin_id == 1 ? "Real" : "Dolar"
-        var tipo = target.coin_id == 1 ? "R$" : "U$"
+        var moeda = target.coin == 1 ? "Real" : "Dolar"
+        var tipo = target.coin == 1 ? "R$" : "U$"
 
         return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))"
     }
