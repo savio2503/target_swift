@@ -172,14 +172,7 @@ struct AddView: View {
                         
                         avatarImage = Image(uiImage: resizedImage)
                         
-                        //let heightPoint = resizedImage.size.height
-                        
-                        //let widthPoint = resizedImage.size.width
-                        
-                        print("local")
                     }
-                    
-                    
                 }
             }
             .onChange(of: descricao) {
@@ -235,6 +228,6 @@ struct AddView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     AddView()
-}
+}*/

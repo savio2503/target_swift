@@ -11,6 +11,7 @@ struct ButtonEdit: View {
     
     var target: Target
     @State var isLoading: Bool = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         
@@ -20,7 +21,13 @@ struct ButtonEdit: View {
                 Spacer()
                 
                 Button(action: {
-                    print("tocou")
+                    print("tocou salvar")
+                    
+                    isLoading = true
+                    Task {
+                        await editTarget()
+                        dismiss()
+                    }
                 }) {
                     HStack {
                         Text("Salvar")
@@ -62,6 +69,16 @@ struct ButtonEdit: View {
         } else {
             Text("Loading...")
         }
+    }
+    
+    func editTarget() async {
+        do {
+            let response = try await Api.shared.editTarget(target: target)
+        } catch {
+            print("\(error.localizedDescription)")
+        }
+        
+        isLoading = false
     }
 }
 

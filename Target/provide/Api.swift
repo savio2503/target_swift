@@ -96,24 +96,34 @@ class Api {
         request = URLRequest(url: URL(string: baseURL + "target")!)
         
         request?.httpMethod = "POST"
-        //request?.setValue("multipart/form-data; application/json", forHTTPHeaderField: "Content-type")
-        request?.setValue("application/json", forHTTPHeaderField: "Content-type")
+        let contentHeader = target.imagem.contains(" ") ? "application/json" : "multipart/form-data; application/json"
+        request?.setValue(contentHeader, forHTTPHeaderField: "Content-type")
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
         
         let encoded = try JSONEncoder().encode(target)
         
-        //pegando o tamanho do envio
-        /*let bcf = ByteCountFormatter()
-        bcf.allowedUnits = [.useMB]
-        bcf.countStyle = .file
-        let size = bcf.string(fromByteCount: Int64(encoded.count))
-        print("size \(size)")*/
-        
-        //print("request data: \(String(decoding: encoded, as: UTF8.self).substring(to: 100))")
-        
         let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
         
-        //print("response data: \(String(decoding: data, as: UTF8.self))")
+        let result: Target = try JSONDecoder().decode(Target.self, from: try mapResponse(response: (data, response)))
+        
+        KeysStorage.shared.recarregar = true
+        
+        return result
+    }
+    
+    func editTarget(target: Target) async throws -> Target {
+        
+        request = URLRequest(url: URL(string: baseURL + "target/\(target.id!)")!)
+        
+        request?.httpMethod = "PUT"
+        //let contentHeader = target.imagem.contains(" ") ? "application/json" : "multipart/form-data; application/json"
+        let contentHeader = "application/json"
+        request?.setValue(contentHeader, forHTTPHeaderField: "Content-type")
+        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        
+        let encoded = try JSONEncoder().encode(target)
+        
+        let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
         
         let result: Target = try JSONDecoder().decode(Target.self, from: try mapResponse(response: (data, response)))
         

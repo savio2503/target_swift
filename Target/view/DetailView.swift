@@ -17,6 +17,7 @@ struct DetailView: View {
     private var sizeMaxImage: Double = 0.0
     @State var priority: Int
     @State var coin: Int
+    @State var source: String
 
     init(target: Target) {
         let navBarAppearance = UINavigationBarAppearance()
@@ -44,6 +45,10 @@ struct DetailView: View {
         self.priority = target.posicao
         
         _valor = State(initialValue: self.target.valor)
+        
+        _source = State(initialValue: self.target.imagem)
+        
+        print("imagem: '\(self.target.imagem)'")
     }
 
     var body: some View {
@@ -55,9 +60,10 @@ struct DetailView: View {
                     Button(action: {
                         print("tocou")
                     }) {
-                        ImageView(source: self.target.imagem, sizeMaxImage: self.sizeMaxImage)
+                        ImageView(source: $source, sizeMaxImage: self.sizeMaxImage)
                     }
                     .padding()
+                    .padding(.top, 12)
 
                     //MARK: - DESCRIPTION
                     TextField(
@@ -98,7 +104,7 @@ struct DetailView: View {
                     }
                     .padding(.horizontal, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: valor, posicao: priority, imagem: ""))
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: valor, posicao: priority, imagem: source))
 
                     Divider()
 
