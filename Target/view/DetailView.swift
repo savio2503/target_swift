@@ -42,6 +42,8 @@ struct DetailView: View {
         sizeMaxImage = sizeMaxImage - 150
 
         self.priority = target.posicao
+        
+        _valor = State(initialValue: self.target.valor)
     }
 
     var body: some View {
@@ -86,7 +88,7 @@ struct DetailView: View {
 
                     }
 
-                    HStack {
+                    VStack {
                         Text("Selecione o peso do objetivo")
                             .padding()
 
@@ -107,28 +109,9 @@ struct DetailView: View {
 
                     Text("Historico")
                         .padding(.vertical, 3)
-
-                    ForEach(deposits, id: \.self) { deposit in
-
-                        if deposit.valor != 0.0 {
-
-                            HStack {
-                                Spacer()
-                                if deposit.valor < 0 {
-                                    Text("-")
-                                } else {
-                                    Text("+")
-                                }
-                                Spacer()
-                                Text("\(String(format: "R$ %.02f", deposit.valor))")
-                                Spacer()
-                                Text("\(dateFormat(text: deposit.created_at))")
-                                Spacer()
-                            }
-                            Divider()
-                        }
-                    }
-                    .padding(.horizontal)
+                                     
+                    DepositsView(deposits: $deposits)
+                        .padding(.horizontal)
                 }
             }
             .navigationTitle("Editar objetivo")

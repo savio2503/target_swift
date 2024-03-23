@@ -10,51 +10,60 @@ import SwiftUI
 struct CompleteView: View {
     
     @State private var showMoney = false
+    @State private var showDetail = false
+    @State private var targetClicked: Target?
     @Binding var targets: [Target]
     @Binding var total: Double
 
     var body: some View {
-        VStack {
-            
-            Text("Total value in complete: \(total.toCurrency() ?? "0.00")")
-                .padding(.top, 8)
-            
-            if (targets.isEmpty) {
+        NavigationStack {
+            VStack {
                 
-                Spacer()
+                Text("Total value in complete: \(total.toCurrency() ?? "0.00")")
+                    .padding(.top, 8)
                 
-                Text("You haven't target completed")
-                
-                Spacer()
-                
-            } else {
-                
-                ScrollView {
-                    LazyVGrid(columns: getGridRows(), spacing: 16) {
-                        ForEach(targets, id: \.self) { target in
-                            VStack {
-                                ImageWebView(source: target.imagem)
-                                //.padding()
-                                
-                                Text(target.descricao)
-                                    .lineLimit(1)
-                                    .padding(.horizontal, 6)
-                                
-                                Text(String(format: "%.2f% %", target.porcetagem!))
-                            }
-                            .background(Color.blue.opacity(0.1))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
-                            .onTapGesture {
-                                print("tocou em \(target.descricao)")
+                if (targets.isEmpty) {
+                    
+                    Spacer()
+                    
+                    Text("You haven't target completed")
+                    
+                    Spacer()
+                    
+                } else {
+                    
+                    ScrollView {
+                        LazyVGrid(columns: getGridRows(), spacing: 16) {
+                            ForEach(targets, id: \.self) { target in
+                                VStack {
+                                    ImageWebView(source: target.imagem)
+                                    //.padding()
+                                    
+                                    Text(target.descricao)
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 6)
+                                    
+                                    Text(String(format: "%.2f% %", target.porcetagem!))
+                                }
+                                .background(Color.blue.opacity(0.1))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                )
+                                .onTapGesture {
+                                    print("tocou em \(target.descricao)")
+                                    targetClicked = target
+                                    showDetail.toggle()
+                                }
                             }
                         }
+                        .padding(.horizontal, 16)
+                        .padding(.top, 8)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
                 }
+            }
+            .navigationDestination(isPresented: $showDetail) {
+                DetailView(target: targetClicked ?? Target(id: 1, descricao: "", valor: 0.0, posicao: 1, imagem: " "))
             }
         }
         .sheet(isPresented: $showMoney) {

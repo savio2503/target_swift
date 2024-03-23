@@ -83,6 +83,7 @@ struct ContentView: View {
                                 KeysStorage.shared.recarregar = false
                                 
                                 Task {
+                                    print("Content 1 getTarget()")
                                     items = await TargetController.getTargets()
                                 }
                             }
@@ -103,6 +104,7 @@ struct ContentView: View {
                 KeysStorage.shared.recarregar = false
                 
                 Task {
+                    print("Content 2 getTarget()")
                     items = await TargetController.getTargets()
                     loading = false
                     print("finish task onAppear")
@@ -113,37 +115,6 @@ struct ContentView: View {
             
         }
     }
-    
-    /*private func getTargets() async {
-        
-        loading = true
-        
-        if KeysStorage.shared.token != nil {
-            
-            do {
-                let response = try await Api.shared.getAllTarget()
-                
-                //print("Resposta do get target: \(response) ")
-                print("total target: \(response.count)")
-                
-                items.removeAll(keepingCapacity: false)
-                
-                items = response.map { $0 }
-                
-            } catch {
-                print("erro ao fazer o get target: \(error)")
-                msgError = error.localizedDescription
-                KeysStorage.shared.token = nil
-            }
-        } else {
-            
-            print("deslocado")
-            
-            items.removeAll(keepingCapacity: false)
-        }
-        
-        loading = false
-    }*/
 }
 
 /*#Preview {

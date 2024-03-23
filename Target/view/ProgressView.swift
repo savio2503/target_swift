@@ -9,60 +9,70 @@ import SwiftUI
 
 struct ProgressView: View {
 
-    @State private var showMoney = false
+    @State private var showDetail = false
+    @State private var targetClicked: Target?
     @Binding var targets: [Target]
     @Binding var total: Double
+    @Binding var showMoney: Bool
 
     var body: some View {
-        VStack {
-            
-            Text("Total value in progress: \(total.toCurrency() ?? "0.00")")
-                .padding(.top, 8)
-            
-            if (targets.isEmpty) {
+        NavigationStack {
+            VStack {
                 
-                Spacer()
+                Text("Total value in progress: \(total.toCurrency() ?? "0.00")")
+                    .padding(.top, 8)
                 
-                Text("You haven't target created")
-                
-                Spacer()
-                
-            } else {
-                
-                ScrollView {
-                    LazyVGrid(columns: getGridRows(), spacing: 16) {
-                        ForEach(targets, id: \.self) { target in
-                            VStack {
-                                ImageWebView(source: target.imagem)
-                                //.padding()
-                                
-                                Text(target.descricao)
-                                    .lineLimit(1)
-                                    .padding(.horizontal, 6)
-                                
-                                Text(String(format: "%.2f% %", target.porcetagem!))
-                            }
-                            .background(Color.blue.opacity(0.1))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
-                            .onTapGesture {
-                                print("tocou em \(target.descricao)")
+                if (targets.isEmpty) {
+                    
+                    Spacer()
+                    
+                    Text("You haven't target created")
+                    
+                    Spacer()
+                    
+                } else {
+                    
+                    ScrollView {
+                        LazyVGrid(columns: getGridRows(), spacing: 16) {
+                            ForEach(targets, id: \.self) { target in
+                                VStack {
+                                    ImageWebView(source: target.imagem)
+                                    //.padding()
+                                    
+                                    Text(target.descricao)
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 6)
+                                    
+                                    Text(String(format: "%.2f% %", target.porcetagem!))
+                                }
+                                .background(Color.blue.opacity(0.1))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                )
+                                .onTapGesture {
+                                    print("tocou em \(target.descricao)")
+                                    targetClicked = target
+                                    showDetail.toggle()
+                                    
+                                }
                             }
                         }
+                        .padding(.horizontal, 16)
+                        .padding(.top, 8)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
                 }
+            }
+            .navigationDestination(isPresented: $showDetail) {
+                DetailView(target: targetClicked ?? Target(id: 1, descricao: "", valor: 0.0, posicao: 1, imagem: " "))
             }
         }
         .sheet(isPresented: $showMoney) {
-
+            MoneyView()
         }.onAppear {
             print("onAppear progress")
         }
-        /*.overlay(
+        .overlay(
             ZStack {
                 Button(action: {
                     self.showMoney.toggle()
@@ -80,7 +90,7 @@ struct ProgressView: View {
             }  //: ZSTACK
             .padding(.bottom, 15)
             .padding(.trailing, 15), alignment: .bottomTrailing
-        )//: OVERLAY */
+        )//: OVERLAY 
     }
     
     

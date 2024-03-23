@@ -18,8 +18,8 @@ class Api {
     }()
     
     private init() {
-        baseURL = "http://192.168.0.132:3333/"
-        //baseURL = "http://192.168.0.192:3333/"
+        //baseURL = "http://192.168.1.151:3333/"
+        baseURL = "http://192.168.1.51:3333/"
     }
     
     func login(userLogin: LoginRequest) async throws -> String {
@@ -96,7 +96,8 @@ class Api {
         request = URLRequest(url: URL(string: baseURL + "target")!)
         
         request?.httpMethod = "POST"
-        request?.setValue("multipart/form-data; application/json", forHTTPHeaderField: "Content-type")
+        //request?.setValue("multipart/form-data; application/json", forHTTPHeaderField: "Content-type")
+        request?.setValue("application/json", forHTTPHeaderField: "Content-type")
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
         
         let encoded = try JSONEncoder().encode(target)
@@ -108,7 +109,7 @@ class Api {
         let size = bcf.string(fromByteCount: Int64(encoded.count))
         print("size \(size)")*/
         
-        print("request data: \(String(decoding: encoded, as: UTF8.self).substring(to: 100))")
+        //print("request data: \(String(decoding: encoded, as: UTF8.self).substring(to: 100))")
         
         let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
         
@@ -119,6 +120,20 @@ class Api {
         KeysStorage.shared.recarregar = true
         
         return result
+    }
+    
+    func deposit(amount: Double) async throws {
+        
+        request = URLRequest(url: URL(string: baseURL + "inside")!)
+        request?.httpMethod = "POST"
+        request?.setValue("application/json", forHTTPHeaderField: "Content-type")
+        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        
+        let encoded = Data("{\"valor\":\(amount)}".utf8)
+        
+        let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
+        
+        KeysStorage.shared.recarregar = true
     }
     
     func changeImage(idTarget: Int, image: String) async throws {

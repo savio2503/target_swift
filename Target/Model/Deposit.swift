@@ -9,9 +9,8 @@ import Foundation
 
 struct Deposit: Codable, Hashable, Identifiable {
     
-    let id: Int
-    let target_id: Int
+    let id: Int?
     let valor: Double
-    let created_at: String
+    let mes: String
     
 }

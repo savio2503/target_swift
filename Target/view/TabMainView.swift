@@ -11,6 +11,7 @@ struct TabMainView: View {
     
     @Binding var loading: Bool
     @Binding var items: [Target]
+    @State var sendMoney = false
     @State var progressTarget: [Target] = []
     @State var completeTarget: [Target] = []
     @State var totalProgress = 0.0
@@ -23,7 +24,7 @@ struct TabMainView: View {
             Text("Por favor, fazer login!")
         } else {
             TabView {
-                ProgressView(targets: $progressTarget, total: $totalProgress)
+                ProgressView(targets: $progressTarget, total: $totalProgress, showMoney: $sendMoney)
                     .tabItem {
                         Image(systemName: "figure.run")
                         Text("Em Progresso")
@@ -51,12 +52,25 @@ struct TabMainView: View {
                     KeysStorage.shared.recarregar = false
                     
                     Task {
+                        print("TabMainView getTarget()")
                         items = await TargetController.getTargets()
                         print("finish task onAppear")
                         fill()
                     }
                 } else {
                     fill()
+                }
+            }
+            .onChange(of: sendMoney) {
+                if (KeysStorage.shared.recarregar) {
+                    KeysStorage.shared.recarregar = false
+                    
+                    Task {
+                        print("start task change getTarget()")
+                        items = await TargetController.getTargets()
+                        print("finish task onChange")
+                        fill()
+                    }
                 }
             }
         }
