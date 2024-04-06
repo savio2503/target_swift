@@ -18,6 +18,7 @@ struct DetailView: View {
     @State var priority: Int
     @State var coin: Int
     @State var source: String
+    @State var removedBackground: Bool
 
     init(target: Target) {
         let navBarAppearance = UINavigationBarAppearance()
@@ -48,6 +49,8 @@ struct DetailView: View {
         
         _source = State(initialValue: self.target.imagem)
         
+        _removedBackground = State(initialValue: self.target.removebackground == 1)
+        
         //print("imagem: '\(self.target.imagem)'")
     }
 
@@ -60,7 +63,7 @@ struct DetailView: View {
                     Button(action: {
                         print("tocou")
                     }) {
-                        ImageView(source: $source, sizeMaxImage: self.sizeMaxImage)
+                        ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
                     }
                     .padding()
                     .padding(.top, 12)
@@ -104,7 +107,7 @@ struct DetailView: View {
                     }
                     .padding(.horizontal, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: valor, posicao: priority, imagem: source))
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: valor, posicao: priority, imagem: source, removebackground: removedBackground ? 1 : 0))
 
                     Divider()
 

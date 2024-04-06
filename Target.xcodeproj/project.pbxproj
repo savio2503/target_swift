@@ -13,6 +13,7 @@
 		A2094EB72B3A324400A3F897 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2094EB62B3A324400A3F897 /* SignupView.swift */; };
 		A20E90F82B517B9D002D294C /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E90F72B517B9D002D294C /* AddView.swift */; };
 		A20E90FA2B51832C002D294C /* MoneyVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E90F92B51832C002D294C /* MoneyVIew.swift */; };
+		A21C12DF2BC18CF400C41143 /* RemoveBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21C12DE2BC18CF400C41143 /* RemoveBackground.swift */; };
 		A229968F2B6E6AF0003BE88C /* ImageWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A229968E2B6E6AF0003BE88C /* ImageWebView.swift */; };
 		A2393CDD2B6C6C9100EADC7F /* TabMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2393CDC2B6C6C9100EADC7F /* TabMainView.swift */; };
 		A2480F692B498D5E00989641 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2480F682B498D5E00989641 /* ImageView.swift */; };
@@ -48,6 +49,7 @@
 		A2094EB62B3A324400A3F897 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		A20E90F72B517B9D002D294C /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 		A20E90F92B51832C002D294C /* MoneyVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyVIew.swift; sourceTree = "<group>"; };
+		A21C12DE2BC18CF400C41143 /* RemoveBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBackground.swift; sourceTree = "<group>"; };
 		A229968E2B6E6AF0003BE88C /* ImageWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebView.swift; sourceTree = "<group>"; };
 		A2393CDC2B6C6C9100EADC7F /* TabMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabMainView.swift; sourceTree = "<group>"; };
 		A2480F682B498D5E00989641 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				A263067E2B2F602C00465B55 /* Api.swift */,
+				A21C12DE2BC18CF400C41143 /* RemoveBackground.swift */,
 			);
 			path = provide;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				A263066F2B2F578A00465B55 /* ContentView.swift in Sources */,
 				A2A656882BACFE4F00C33CC5 /* DepositsView.swift in Sources */,
 				A28F13ED2B600500000F3425 /* TabTargetView.swift in Sources */,
+				A21C12DF2BC18CF400C41143 /* RemoveBackground.swift in Sources */,
 				A2DD79C62B3A39CB00DBAD0B /* KeysStorage.swift in Sources */,
 				A2DD79C92B3A3EAD00DBAD0B /* NetworkError.swift in Sources */,
 				A229968F2B6E6AF0003BE88C /* ImageWebView.swift in Sources */,

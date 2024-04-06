@@ -18,4 +18,5 @@ struct Target: Codable, Hashable, Identifiable {
     var porcetagem: Double?
     var imagem: String
     var coin: Int? = 1
+    var removebackground: Int
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ImageView: View {
     
     @Binding var source: String
+    @Binding var removedbackground: Bool
     var sizeMaxImage: Double
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingURLInput = false
@@ -17,25 +18,61 @@ struct ImageView: View {
     @State private var isShowPicker = false
     @State private var image = UIImage()
     @State private var avatarImage: Image?
+    @State private var btnBackground: String = "Remover background"
     
     var body: some View {
         VStack {
             if source.count > 5 && source.substring(to: 5).contains("http") {
-                AsyncImage(url: URL(string: source)) { image in
-                    image
-                        .image?.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
-                        .padding(.bottom, 2)
+                VStack {
+                    AsyncImage(url: URL(string: source)) { image in
+                        image
+                            .image?.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
+                            .padding(.bottom, 2)
+                    }
+                    if !removedbackground {
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                Task {
+                                    let res = await removerBackground()
+                                    if res {
+                                        removedbackground = true
+                                    }
+                                }
+                            }) {
+                                Text(btnBackground)
+                            }
+                        }
+                    }
                 }
             } else if !source.contains(" ") {
                 if let data = Data(base64Encoded: source), let uiImage = UIImage(data: data) {
                     
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
-                        .padding(.bottom, 2)
+                    VStack {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
+                            .padding(.bottom, 2)
+                        
+                        if !removedbackground {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    Task {
+                                        let res = await removerBackground()
+                                        if res {
+                                            removedbackground = true
+                                        }
+                                    }
+                                }) {
+                                    Text(btnBackground)
+                                }
+                            }
+                        }
+                    }
                     
                 } else {
                     
@@ -92,6 +129,27 @@ struct ImageView: View {
             print("onLongPress")
             isShowingConfirmationDialog.toggle()
         }
+    }
+    
+    private func removerBackground() async -> Bool {
+        
+        var response = false
+        btnBackground = "Caregando..."
+        
+        do {
+            let success = try await RemoveBackground.remove(source: source)
+            
+            if success != nil {
+                source = success!
+                response = true
+            }
+        } catch {
+            print("\(error.localizedDescription)")
+        }
+        
+        btnBackground = "Remover background"
+        
+        return response
     }
 }
 

@@ -18,6 +18,7 @@ struct AddView: View {
     @State private var loading = false
     @State private var sendSucesso = false
     @State var source: String = " "
+    @State var removedBackground: Bool = false
     @Environment(\.dismiss) private var dismiss
     
     @ObservedObject private var currencyManager = CurrencyManager(
@@ -32,7 +33,7 @@ struct AddView: View {
                 Button(action: {
                     print("tocou")
                 }) {
-                    ImageView(source: $source, sizeMaxImage: 300)
+                    ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: 300)
                 }
                 .padding()
                 .padding(.top, 12)
@@ -145,7 +146,7 @@ struct AddView: View {
     func addTarget() async {
         let _value = self.currencyManager.getDouble()
         
-        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: self.source, coin: self.typeCoin)
+        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: self.source, coin: self.typeCoin, removebackground: self.removedBackground ? 1 : 0)
         
         //print("\(target)")
         
