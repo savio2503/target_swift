@@ -48,7 +48,7 @@ struct DetailView: View {
         
         _source = State(initialValue: self.target.imagem)
         
-        print("imagem: '\(self.target.imagem)'")
+        //print("imagem: '\(self.target.imagem)'")
     }
 
     var body: some View {

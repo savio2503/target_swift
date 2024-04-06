@@ -18,8 +18,8 @@ class Api {
     }()
     
     private init() {
-        //baseURL = "http://192.168.1.151:3333/"
-        baseURL = "http://192.168.1.51:3333/"
+        //baseURL = "http://192.168.3.50:3333/"
+        baseURL = "http://192.168.3.19:3333/"
     }
     
     func login(userLogin: LoginRequest) async throws -> String {
@@ -115,8 +115,10 @@ class Api {
         
         request = URLRequest(url: URL(string: baseURL + "target/\(target.id!)")!)
         
+        let base64 = (target.imagem.contains("http") && target.imagem.contains(" ")) ? false : true
+        
         request?.httpMethod = "PUT"
-        //let contentHeader = target.imagem.contains(" ") ? "application/json" : "multipart/form-data; application/json"
+        //let contentHeader = base64 ? "multipart/form-data; application/json" : "application/json"
         let contentHeader = "application/json"
         request?.setValue(contentHeader, forHTTPHeaderField: "Content-type")
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")

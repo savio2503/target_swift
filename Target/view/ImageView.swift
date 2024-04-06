@@ -20,7 +20,7 @@ struct ImageView: View {
     
     var body: some View {
         VStack {
-            if source.contains("http") {
+            if source.count > 5 && source.substring(to: 5).contains("http") {
                 AsyncImage(url: URL(string: source)) { image in
                     image
                         .image?.resizable()
@@ -78,6 +78,12 @@ struct ImageView: View {
                 if let resizedImage = image.resizeToFill() {
                     
                     avatarImage = Image(uiImage: resizedImage)
+                    
+                    let _uiimage = self.image
+                    let _imageData = _uiimage.pngData()
+                    let _base64String = _imageData?.base64EncodedString()
+                    
+                    source = _base64String ?? " "
                     
                 }
             }

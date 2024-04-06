@@ -85,6 +85,7 @@ struct ContentView: View {
                                 Task {
                                     print("Content 1 getTarget()")
                                     items = await TargetController.getTargets()
+                                    loading = false
                                 }
                             }
                         }

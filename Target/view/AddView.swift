@@ -12,18 +12,12 @@ struct AddView: View {
     @State var descricao: String = ""
     @State var valor: Double = 0.0
     @State var prioridade: Int = 1
-    @State private var isShowingConfirmationDialog = false
-    @State private var isShowingURLInput = false
-    @State private var urlTemp: String = ""
-    @State private var imageURL: String?
-    @State private var image = UIImage()
-    @State private var avatarImage: Image?
-    @State private var isShowPicker = false
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
     @State private var error = ""
     @State private var loading = false
     @State private var sendSucesso = false
+    @State var source: String = " "
     @Environment(\.dismiss) private var dismiss
     
     @ObservedObject private var currencyManager = CurrencyManager(
@@ -35,48 +29,13 @@ struct AddView: View {
         NavigationStack {
             VStack(spacing: 16) {
                 
-                if imageURL != nil {
-                    ImageWebView(source: self.imageURL!, imageWidth: 250, imageHeight: 250)
-                        .padding(.top, 16)
+                Button(action: {
+                    print("tocou")
+                }) {
+                    ImageView(source: $source, sizeMaxImage: 300)
                 }
-                
-                if avatarImage != nil {
-                    avatarImage?
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 300)
-                }
-                
-                if avatarImage == nil && imageURL == nil {
-                    Button(action: {
-                        isShowingConfirmationDialog = true
-                    }) {
-                        Text("Adicionar uma imagem")
-                            .foregroundStyle(.white)
-                            .padding()
-                            .background(Color.blue.opacity(0.85))
-                            .cornerRadius(5.0)
-                    }//:BUTTON
-                    .padding(.top, 16)
-                    .alert("From Web", isPresented: $isShowingURLInput) {
-                        TextField("Type or paste the web address", text: $urlTemp)
-                        Button("OK", action: {imageURL = urlTemp})
-                        Button("Cancel") {  }
-                    }
-                    .confirmationDialog("Adicionar Imagem", isPresented: $isShowingConfirmationDialog) {
-                        Button("From Device") {
-                            print("From Device")
-                            isShowPicker = true
-                        }
-                        Button("From Web") {
-                            print("From Web")
-                            isShowingURLInput = true
-                        }
-                        
-                    } message: {
-                        Text("Escolha a origem da imagem")
-                    }
-                }
+                .padding()
+                .padding(.top, 12)
                 //MARK: - END IMAGEM
                 
                 
@@ -163,18 +122,6 @@ struct AddView: View {
             }//: VSTACK
             .navigationTitle("Add a new Target")
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $isShowPicker) {
-                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-            }
-            .onChange(of: image) {
-                Task {
-                    if let resizedImage = image.resizeToFill() {
-                        
-                        avatarImage = Image(uiImage: resizedImage)
-                        
-                    }
-                }
-            }
             .onChange(of: descricao) {
                 error = ""
             }
@@ -198,25 +145,12 @@ struct AddView: View {
     func addTarget() async {
         let _value = self.currencyManager.getDouble()
         
-        var _imagem: String = " "
-        if self.imageURL != nil {
-            _imagem = self.imageURL!
-        } else if self.avatarImage != nil {
-            let _uiimage = self.image
-            let _imageData = _uiimage.pngData()
-            let _base64String = _imageData?.base64EncodedString()
-            
-            _imagem = _base64String ?? " "
-            
-            //print("-> \(_imagem)")
-        }
-        
-        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: _imagem, coin: self.typeCoin)
+        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: self.source, coin: self.typeCoin)
         
         //print("\(target)")
         
         do {
-            let response = try await Api.shared.addTarget(target: target)
+            let _ = try await Api.shared.addTarget(target: target)
             
             sendSucesso = true
         } catch {
