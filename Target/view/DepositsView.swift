@@ -24,7 +24,6 @@ struct DepositsView: View {
                     Spacer()
                     Text("\(String(format: "R$ %.02f", deposit.valor))")
                     Spacer()
-                    //Text("\(dateFormat(text: deposit.mes))")
                     Text("\(deposit.mes)")
                     Spacer()
                 }

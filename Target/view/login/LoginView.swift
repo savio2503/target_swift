@@ -15,6 +15,7 @@ struct LoginView: View {
     @State var msgError: String = ""
     @State var logged: Bool = false
     @Environment(\.dismiss) private var dismiss
+    @Binding var tipoLogin: Int
     
     var body: some View {
         VStack(spacing: 10) {
@@ -64,6 +65,13 @@ struct LoginView: View {
             Button(action: {}, label: {
                 Text("Forgot Password?")
             })
+            
+            Button(action: {
+                self.tipoLogin = 3
+            }, label: {
+                Text("Don't have an account? Click here to register.")
+            })
+            .padding(.top, 32)
             
             Text(msgError)
                 .foregroundStyle(.red)

@@ -19,7 +19,7 @@ class Api {
     
     private init() {
         //baseURL = "http://192.168.3.50:3333/"
-        baseURL = "http://192.168.3.19:3333/"
+        baseURL = "http://192.168.3.20:3333/"
     }
     
     func login(userLogin: LoginRequest) async throws -> String {
@@ -54,6 +54,39 @@ class Api {
         
         return session
         
+    }
+    
+    func signin(userLogin: LoginRequest) async throws -> String {
+        
+        print("Sigin in (\(userLogin)")
+        
+        request = URLRequest(url: URL(string: baseURL + "signin")!)
+        
+        request?.httpMethod = "POST"
+        request?.setValue("application/json", forHTTPHeaderField: "Content-type")
+        
+        let encoded = try JSONEncoder().encode(userLogin)
+        
+        let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
+        
+        let result = String(decoding: data, as: UTF8.self)
+        var session = ""
+        
+        if (result.contains("logado com sucesso")) {
+            
+            let cookie = response.headerField(forKey: "Set-Cookie") ?? ""
+            let pattern = "SameSite=([^;]+),([^;]+)"
+            
+            if let regex = try? NSRegularExpression(pattern: pattern) {
+                let matches = regex.matches(in: cookie, range: NSRange(cookie.startIndex..., in: cookie))
+                let matchStrings = matches.map { match in
+                    String(cookie[Range(match.range(at: 2), in: cookie)!])
+                }
+                session = matchStrings.joined(separator: ";")
+            }
+        }
+        
+        return session
     }
     
     func getAllTarget() async throws -> [Target] {

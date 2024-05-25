@@ -78,7 +78,7 @@ struct ProgressView: View {
                     self.showMoney.toggle()
                 }) {
                     if KeysStorage.shared.token != nil {
-                        Image(systemName: "dollarsign.arrow.circlepath")
+                        Image("exchange")
                             .resizable()
                             .scaledToFit()
                             .background(Circle().fill(.white))

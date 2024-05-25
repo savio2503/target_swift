@@ -149,14 +149,20 @@ struct DetailView: View {
         let result = (target.valor * target.porcetagem!) / 100
 
         //TODO: Pegar o tipo vai classe depois
-        var moeda = target.coin == 1 ? "Real" : "Dolar"
-        var tipo = target.coin == 1 ? "R$" : "U$"
+        let moeda = target.coin == 1 ? "Real" : "Dolar"
+        let tipo = target.coin == 1 ? "R$" : "U$"
 
-        return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))"
+        var complement = ""
+        
+        if deposits.count > 1 && result > 0{
+            complement = "\n\(estimative(deposits: deposits, objetivo: valor))"
+        }
+        
+        return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))\(complement)"
     }
 
 }
 
 /*#Preview {
-    DetailView(target: Target(id: 1, descricao: "teste", valor: 10.5, posicao: 1, ativo: 1, porcetagem: 1.25, imagem: " ", coin_id: 1))
+    DetailView(target: Target(id: 1, descricao: "teste", valor: 10.5, posicao: 1, ativo: 1, total: 100, porcetagem: 1.25, imagem: " ", coin: 1, removebackground: 0))
 }*/

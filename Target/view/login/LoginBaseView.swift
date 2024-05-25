@@ -42,7 +42,7 @@ struct LoginBaseView: View {
         NavigationStack {
             VStack {
                 if (tipoLogin == 1) {
-                    LoginView()
+                    LoginView(tipoLogin: $tipoLogin)
                 } else if (tipoLogin == 2) {
                     LoggedView()
                 } else if (tipoLogin == 3) {

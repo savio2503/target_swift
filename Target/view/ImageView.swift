@@ -134,7 +134,7 @@ struct ImageView: View {
     private func removerBackground() async -> Bool {
         
         var response = false
-        btnBackground = "Caregando..."
+        btnBackground = "Removendo..."
         
         do {
             let success = try await RemoveBackground.remove(source: source)
