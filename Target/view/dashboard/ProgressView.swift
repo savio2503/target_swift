@@ -1,5 +1,5 @@
 //
-//  CompleteView.swift
+//  ProgressView.swift
 //  target
 //
 //  Created by Sávio Dutra on 23/01/24.
@@ -7,26 +7,26 @@
 
 import SwiftUI
 
-struct CompleteView: View {
-    
-    @State private var showMoney = false
+struct ProgressView: View {
+
     @State private var showDetail = false
     @State private var targetClicked: Target?
     @Binding var targets: [Target]
     @Binding var total: Double
+    @Binding var showMoney: Bool
 
     var body: some View {
         NavigationStack {
             VStack {
                 
-                Text("Total value in complete: \(total.toCurrency() ?? "0.00")")
+                Text("Total value in progress: \(total.toCurrency() ?? "0.00")")
                     .padding(.top, 8)
                 
                 if (targets.isEmpty) {
                     
                     Spacer()
                     
-                    Text("You haven't target completed")
+                    Text("You haven't target created")
                     
                     Spacer()
                     
@@ -43,7 +43,7 @@ struct CompleteView: View {
                                         .lineLimit(1)
                                         .padding(.horizontal, 6)
                                     
-                                    Text(String(format: "%.2f% %", target.porcetagem!))
+                                    Text(String(format: "%.2f% %", target.porcetagem ?? 0.0))
                                 }
                                 .background(Color.blue.opacity(0.1))
                                 .overlay(
@@ -54,6 +54,7 @@ struct CompleteView: View {
                                     print("tocou em \(target.descricao)")
                                     targetClicked = target
                                     showDetail.toggle()
+                                    
                                 }
                             }
                         }
@@ -67,20 +68,20 @@ struct CompleteView: View {
             }
         }
         .sheet(isPresented: $showMoney) {
-
+            MoneyView()
         }.onAppear {
             print("onAppear progress")
         }
-        /*.overlay(
+        .overlay(
             ZStack {
                 Button(action: {
                     self.showMoney.toggle()
                 }) {
-                    if KeysStorage.shared.token != nil {
-                        Image(systemName: "dollarsign.arrow.circlepath")
+                    if KeysStorage.shared.token != nil && !self.targets.isEmpty {
+                        Image("exchange")
                             .resizable()
                             .scaledToFit()
-                            .background(Circle().fill(.white))
+                            .background(Circle().fill(.clear))
                             .frame(width: 48, height: 48, alignment: .center)
                     }
                 }  //: BUTTON
@@ -89,10 +90,13 @@ struct CompleteView: View {
             }  //: ZSTACK
             .padding(.bottom, 15)
             .padding(.trailing, 15), alignment: .bottomTrailing
-        )//: OVERLAY */
+        )//: OVERLAY 
     }
+    
+    
 }
 
 /*#Preview {
-    CompleteView()
+    //let targets = [Target(id: 1, descricao: "teste", valor: 20.5, posicao: 1, imagem: " ")]
+    ProgressView()//(targets: targets)
 }*/

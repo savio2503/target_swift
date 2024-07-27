@@ -10,45 +10,53 @@ import PhotosUI
 
 struct AddView: View {
     @State var descricao: String = ""
-    @State var valor: Double = 0.0
+    @State var valor = 0
     @State var prioridade: Int = 1
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
+    private var sizeMaxImage: Double = 0.0
     @State private var error = ""
     @State private var loading = false
     @State private var sendSucesso = false
     @State var source: String = " "
     @State var removedBackground: Bool = false
     @Environment(\.dismiss) private var dismiss
+    @State var numberFormatter: NumberFormatter
     
-    @ObservedObject private var currencyManager = CurrencyManager(
-        amount: 0,
-        locale: .init(identifier: "pt_BR")
-    )
+    init() {
+        self.numberFormatter = NumberFormatter()
+        self.numberFormatter.numberStyle = .currency
+        self.numberFormatter.maximumFractionDigits = 2
+        self.numberFormatter.locale = Locale(identifier: "pt_BR")
+        
+        sizeMaxImage =
+            UIScreen.screenWith < UIScreen.screenHeight
+            ? UIScreen.screenWith : UIScreen.screenHeight
+
+        sizeMaxImage = sizeMaxImage - 150
+        
+        print("size: \(sizeMaxImage)")
+    }
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
-                
                 Button(action: {
                     print("tocou")
                 }) {
-                    ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: 300)
+                    ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
                 }
                 .padding()
                 .padding(.top, 12)
-                //MARK: - END IMAGEM
-                
-                
+                // MARK: - END IMAGEM
                 
                 TextField("Descricao", text: $descricao)
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(5.0)
-                    .padding(.horizontal, 16) //MARK: - DESCRICAO
+                    .padding(.horizontal, 16) // MARK: - DESCRICAO
                 
                 HStack {
-                    
                     Menu(textMenu) {
                         Button("Real, R$") {
                             textMenu = "R$"
@@ -64,26 +72,21 @@ struct AddView: View {
                     .background(.blue.opacity(0.8))
                     .cornerRadius(8.0)
                     
-                    //TextField("Valor", value: $valor, format: .currency(code: typeCoin == 1 ? "BRL" : "USD"))
-                    TextField(currencyManager.string, text: $currencyManager.string)
+                    CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                         .padding()
                         .background(Color(.systemGray6))
                         .cornerRadius(5.0)
                         .keyboardType(.numberPad)
-                        .onChange(of: currencyManager.string ) { value in
-                            currencyManager.valueChanged(value: value)
-                        }
-                }//MARK: - CAMPOS VALOR
+                        .frame(height: 50)
+                } // MARK: - CAMPOS VALOR
                 .padding(.horizontal, 16)
-                
-                
                 
                 Text("Selecione o peso do objetivo")
                     .padding()
                 
                 PriorityView(selectNumber: self.$prioridade)
                     .padding()
-                //MARK: - END CAMPO PRIORIDADE
+                // MARK: - END CAMPO PRIORIDADE
                 
                 Spacer()
                 
@@ -93,76 +96,53 @@ struct AddView: View {
                 }
                 
                 Button(action: {
-                    
-                    if descricao.isEmpty || self.currencyManager.getDouble() == 0.0 {
+                    if descricao.isEmpty || valor == 0 {
                         error = "O campo de descrição ou o campo de valor estâo vazios"
                     } else {
                         loading = true
                         Task {
                             await addTarget()
-                            
-                            if (sendSucesso) {
+                            if sendSucesso {
                                 KeysStorage.shared.recarregar = true
                                 dismiss()
                             }
                         }
                     }
-                    
                 }) {
-                    
                     Text(loading == false ? "Adicionar" : "Enviando...")
                         .foregroundStyle(.white)
                         .padding()
                         .background(Color.blue.opacity(0.85))
                         .cornerRadius(5.0)
-                    
-                }//MARK: - ENVIAR
+                } // MARK: - ENVIAR
                 .padding(.bottom, 8)
-                
-                
-            }//: VSTACK
+            } //: VSTACK
             .navigationTitle("Add a new Target")
             .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: descricao) {
+            .onChange(of: typeCoin) { _, _ in
+                self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")
+            }
+            .onChange(of: descricao) { _, _ in
                 error = ""
             }
-            .onChange(of: valor) {
+            .onChange(of: valor) { _, _ in
                 error = ""
             }
-            .onChange(of: typeCoin) {
-                switch typeCoin {
-                case 1:
-                    self.currencyManager.localeChange(locale: .init(identifier: "pt_BR"))
-                case 2:
-                    self.currencyManager.localeChange(locale: .init(identifier: "en_US"))
-                default:
-                    print("default")
-                }
-            }
-        }//: NavigationStack
+        } //: NavigationStack
     }
     
-    //MARK: - FUNCAO ENVIAR
+    // MARK: - FUNCAO ENVIAR
     func addTarget() async {
-        let _value = self.currencyManager.getDouble()
-        
+        let _value = Double(self.valor) / 100.0
         let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: self.source, coin: self.typeCoin, removebackground: self.removedBackground ? 1 : 0)
-        
-        //print("\(target)")
         
         do {
             let _ = try await Api.shared.addTarget(target: target)
-            
             sendSucesso = true
         } catch {
-            print("\(error.localizedDescription)")
+            print(error.localizedDescription)
             self.error = error.localizedDescription
         }
-        
         loading = false
     }
 }
-
-/*#Preview {
-    AddView()
-}*/

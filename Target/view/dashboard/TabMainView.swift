@@ -22,7 +22,7 @@ struct TabMainView: View {
             Text("Carregando...")
         } else if !loading && KeysStorage.shared.token == nil {
             Text("Por favor, fazer login!")
-        } else {
+        } else if KeysStorage.shared.token != nil{
             TabView {
                 ProgressView(targets: $progressTarget, total: $totalProgress, showMoney: $sendMoney)
                     .tabItem {
@@ -47,7 +47,7 @@ struct TabMainView: View {
                 
                 print("onAppear TabMain")
                 
-                if KeysStorage.shared.recarregar {
+                if KeysStorage.shared.token != nil && KeysStorage.shared.recarregar {
                     
                     KeysStorage.shared.recarregar = false
                     

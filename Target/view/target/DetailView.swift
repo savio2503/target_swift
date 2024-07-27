@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailView: View {
 
     @State var descricao: String = ""
-    @State var valor: Double = 0.0
+    @State var valor = 0
     @State var msgError: String = ""
     private var target: Target
     @State var deposits: [Deposit] = []
@@ -19,6 +19,10 @@ struct DetailView: View {
     @State var coin: Int
     @State var source: String
     @State var removedBackground: Bool
+    @State private var textMenu = "R$"
+    @State private var typeCoin = 1
+    
+    @State var numberFormatter: NumberFormatter
 
     init(target: Target) {
         let navBarAppearance = UINavigationBarAppearance()
@@ -29,7 +33,7 @@ struct DetailView: View {
 
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
 
-        KeysStorage.shared.recarregar = true
+        //KeysStorage.shared.recarregar = false
 
         self.target = target
 
@@ -42,16 +46,32 @@ struct DetailView: View {
             ? UIScreen.screenWith : UIScreen.screenHeight
 
         sizeMaxImage = sizeMaxImage - 150
+        
+        print("size: \(sizeMaxImage)")
 
         self.priority = target.posicao
         
-        _valor = State(initialValue: self.target.valor)
+        _valor = State(initialValue: Int(self.target.valor * 100))
         
         _source = State(initialValue: self.target.imagem)
         
         _removedBackground = State(initialValue: self.target.removebackground == 1)
         
         //print("imagem: '\(self.target.imagem)'")
+        
+        self.numberFormatter = NumberFormatter()
+        self.numberFormatter.numberStyle = .currency
+        self.numberFormatter.maximumFractionDigits = 2
+        
+        if (coin == 1) {
+            self.numberFormatter.locale = Locale(identifier: "pt_BR")
+            _textMenu = State(initialValue: "R$")
+            _typeCoin = State(initialValue: 1)
+        } else {
+            self.numberFormatter.locale = Locale(identifier:  "en_US")
+            _textMenu = State(initialValue: "U$")
+            _typeCoin = State(initialValue: 2)
+        }
     }
 
     var body: some View {
@@ -83,19 +103,31 @@ struct DetailView: View {
 
                     //MARK: - VALOR
                     HStack {
-
-                        TextField(
-                            "Valor", value: $valor,
-                            format: .currency(code: coin == 1 ? "BRL" : "USD")
-                        )
+                        
+                        Menu(textMenu) {
+                            Button("Real, R$") {
+                                textMenu = "R$"
+                                typeCoin = 1
+                            }
+                            Button("Dolar, U$") {
+                                textMenu = "U$"
+                                typeCoin = 2
+                            }
+                        }
                         .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(5.0)
-                        .padding(.top, 20)
-                        .padding(.horizontal, 20)
-                        .keyboardType(.numberPad)
+                        .foregroundColor(.white)
+                        .background(.blue.opacity(0.8))
+                        .cornerRadius(8.0)
+                        
+                        CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(5.0)
+                            .keyboardType(.numberPad)
+                            .frame(height: 50)
 
                     }
+                    .padding(.horizontal, 16)
 
                     VStack {
                         Text("Selecione o peso do objetivo")
@@ -107,7 +139,7 @@ struct DetailView: View {
                     }
                     .padding(.horizontal, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: valor, posicao: priority, imagem: source, removebackground: removedBackground ? 1 : 0))
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(valor / 100), posicao: priority, imagem: source, removebackground: removedBackground ? 1 : 0))
 
                     Divider()
 
@@ -125,6 +157,9 @@ struct DetailView: View {
             }
             .navigationTitle("Editar objetivo")
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .onChange(of: typeCoin) {
+            self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")
         }
         .onAppear {
             Task {
@@ -146,7 +181,7 @@ struct DetailView: View {
 
     func sumDeposit() -> String {
 
-        let result = (target.valor * target.porcetagem!) / 100
+        let result = (target.valor * (target.porcetagem ?? 0.0)) / 100
 
         //TODO: Pegar o tipo vai classe depois
         let moeda = target.coin == 1 ? "Real" : "Dolar"
@@ -155,7 +190,7 @@ struct DetailView: View {
         var complement = ""
         
         if deposits.count > 1 && result > 0{
-            complement = "\n\(estimative(deposits: deposits, objetivo: valor))"
+            complement = "\n\(estimative(deposits: deposits, objetivo: Double(valor / 100)))"
         }
         
         return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))\(complement)"
@@ -166,3 +201,4 @@ struct DetailView: View {
 /*#Preview {
     DetailView(target: Target(id: 1, descricao: "teste", valor: 10.5, posicao: 1, ativo: 1, total: 100, porcetagem: 1.25, imagem: " ", coin: 1, removebackground: 0))
 }*/
+

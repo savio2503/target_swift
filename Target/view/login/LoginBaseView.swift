@@ -28,14 +28,6 @@ struct LoginBaseView: View {
         navBarAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
         
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
-        
-        /*if (KeysStorage.shared.token ?? "").isEmpty {
-            tipoLogin = 1
-        } else {
-            tipoLogin = 2
-        }
-        
-        print("token: \(KeysStorage.shared.token ?? "null"), tipo: \(tipoLogin)")*/
     }
     
     var body: some View {
@@ -60,7 +52,7 @@ struct LoginBaseView: View {
                 tipoLogin = 2
             }
             
-            print("token: \(KeysStorage.shared.token ?? "null"), tipo: \(tipoLogin)")
+            //print("token: \(KeysStorage.shared.token ?? "null"), tipo: \(tipoLogin)")
         }
     }
 }

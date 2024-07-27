@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ImageView: View {
-    
     @Binding var source: String
     @Binding var removedbackground: Bool
     var sizeMaxImage: Double
@@ -22,14 +21,23 @@ struct ImageView: View {
     
     var body: some View {
         VStack {
-            if source.count > 5 && source.substring(to: 5).contains("http") {
+            if source.count > 5 && source.prefix(5).contains("http") {
                 VStack {
-                    AsyncImage(url: URL(string: source)) { image in
-                        image
-                            .image?.resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
-                            .padding(.bottom, 2)
+                    AsyncImage(url: URL(string: source)) { phase in
+                        switch phase {
+                        case .empty:
+                            Image(systemName: "xmark.circle")
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
+                                .padding(.bottom, 2)
+                        case .failure:
+                            Image(systemName: "xmark.circle")
+                        @unknown default:
+                            Image(systemName: "questionmark.circle")
+                        }
                     }
                     if !removedbackground {
                         HStack {
@@ -49,14 +57,12 @@ struct ImageView: View {
                 }
             } else if !source.contains(" ") {
                 if let data = Data(base64Encoded: source), let uiImage = UIImage(data: data) {
-                    
                     VStack {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
                             .padding(.bottom, 2)
-                        
                         if !removedbackground {
                             HStack {
                                 Spacer()
@@ -73,9 +79,6 @@ struct ImageView: View {
                             }
                         }
                     }
-                    
-                } else {
-                    
                 }
             } else {
                 Button(action: {
@@ -91,68 +94,52 @@ struct ImageView: View {
         }
         .alert("From Web", isPresented: $isShowingURLInput) {
             TextField("Type or paste the web address", text: $urlTemp)
-            Button("OK", action: {source = urlTemp})
-            Button("Cancel") {  }
+            Button("OK", action: { source = urlTemp })
+            Button("Cancel") { }
         }
         .confirmationDialog("Adicionar Imagem", isPresented: $isShowingConfirmationDialog) {
             Button("From Device") {
-                print("From Device")
                 isShowPicker = true
             }
             Button("From Web") {
-                print("From Web")
                 isShowingURLInput = true
             }
-            
         } message: {
             Text("Escolha a origem da imagem")
         }
         .sheet(isPresented: $isShowPicker) {
             ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
         }
-        .onChange(of: image) {
+        .onChange(of: image) { _, newImage in
             Task {
-                if let resizedImage = image.resizeToFill() {
-                    
+                if let resizedImage = newImage.resizeToFill() {
                     avatarImage = Image(uiImage: resizedImage)
-                    
-                    let _uiimage = self.image
-                    let _imageData = _uiimage.pngData()
-                    let _base64String = _imageData?.base64EncodedString()
-                    
-                    source = _base64String ?? " "
-                    
+                    if let imageData = resizedImage.pngData() {
+                        source = imageData.base64EncodedString()
+                    }
                 }
             }
         }
-        .onLongPressGesture() {
-            print("onLongPress")
+        .onLongPressGesture {
             isShowingConfirmationDialog.toggle()
         }
     }
     
     private func removerBackground() async -> Bool {
-        
         var response = false
         btnBackground = "Removendo..."
         
         do {
             let success = try await RemoveBackground.remove(source: source)
-            
-            if success != nil {
-                source = success!
+            if let success = success {
+                source = success
                 response = true
             }
         } catch {
-            print("\(error.localizedDescription)")
+            print(error.localizedDescription)
         }
         
         btnBackground = "Remover background"
-        
         return response
     }
 }
-
-/*#Preview {
-    ImageView(source: " ", sizeMaxImage: 300)
-}*/

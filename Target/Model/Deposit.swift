@@ -9,7 +9,7 @@ import Foundation
 
 struct Deposit: Codable, Hashable, Identifiable {
     
-    let id: Int?
+    var id: Int?
     let valor: Double
     let mes: String
     

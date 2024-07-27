@@ -16,16 +16,9 @@ struct ContentView: View {
     @State var items: [Target] = []
     @State var msgError: String = ""
     @State var loading: Bool = true
+    @Environment(\.colorScheme) var colorScheme
     
     init() {
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(Color("NavigationColor"))
-        
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
-        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
-        
         KeysStorage.shared.recarregar = true
     }
     
@@ -76,9 +69,9 @@ struct ContentView: View {
                         .onDisappear {
                             print("Login()")
                             
-                            loading = true
-                            
                             if KeysStorage.shared.recarregar {
+                                
+                                loading = true
                                 
                                 KeysStorage.shared.recarregar = false
                                 
@@ -96,11 +89,11 @@ struct ContentView: View {
             
         }  //: NAVIGATIONSTACK
         .onAppear {
-            
-            loading = true
+            updateNavigationBarAppearance()
             print("onAppear contentView")
             
             if KeysStorage.shared.recarregar {
+                loading = true
                 
                 KeysStorage.shared.recarregar = false
                 
@@ -115,6 +108,23 @@ struct ContentView: View {
             print("finish onAppear contentview")
             
         }
+        .onChange(of: colorScheme) { _,__ in
+            updateNavigationBarAppearance()
+        }
+    }
+    
+    func updateNavigationBarAppearance() {
+        
+            
+            print("cor \(colorScheme == .dark ? "dark" : "white")")
+            
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.backgroundColor = UIColor(Color("NavigationColor"))
+            
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            
+            UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
     }
 }
 

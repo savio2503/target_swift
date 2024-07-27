@@ -36,7 +36,8 @@ func estimative(deposits: [Deposit], objetivo: Double) -> String {
     let quantidadeMeses = diferencaMeses(dataInicial: dataInicial, dataFinal: dataFinal)
     
     //calcular a quantidae de meses necessarios para atingir o objetivo
-    let quantidadeMesesObjetivo = Int((objetivo * Double(quantidadeMeses)) / valorTotal) + 1
+    //let quantidadeMesesObjetivo = Int((objetivo * Double(quantidadeMeses)) / valorTotal) + 1
+    let quantidadeMesesObjetivo = Int((objetivo-valorTotal) / (valorTotal / Double(quantidadeMeses))) + 1
     
     //calcular a data em que o objetivo sera atingido
     //let dataObjetivo = incrementarMeses(data: Date(), meses: quantidadeMesesObjetivo)

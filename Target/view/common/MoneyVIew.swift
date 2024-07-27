@@ -9,9 +9,17 @@ import SwiftUI
 
 struct MoneyView: View {
     
-    @State var valor: Double = 0.0
+    @State var valor = 0
     @State var send = false
     @Environment(\.dismiss) private var dismiss
+    @State var numberFormatter: NumberFormatter
+    
+    init() {
+        self.numberFormatter = NumberFormatter()
+        self.numberFormatter.numberStyle = .currency
+        self.numberFormatter.maximumFractionDigits = 2
+        self.numberFormatter.locale = Locale(identifier: "pt_BR")
+    }
     
     var body: some View {
         NavigationStack {
@@ -19,15 +27,12 @@ struct MoneyView: View {
                 Text("Quanto voce irá depositar ou remover?")
                     .padding(.top, 150)
                 
-                TextField(
-                    "Valor", value: $valor, format:  .currency(code: "BRL")
-                )
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.top, 20)
-                .padding(.horizontal, 20)
-                .keyboardType(.numberPad)
+                CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(5.0)
+                    .keyboardType(.numberPad)
+                    .frame(height: 50)
                 
                 Spacer()
                 
@@ -40,6 +45,7 @@ struct MoneyView: View {
                             print("tocou em deposit")
                             
                             send = true
+                            KeysStorage.shared.recarregar = true
                             
                             Task {
                                 await sendMoney()
@@ -64,6 +70,7 @@ struct MoneyView: View {
                             
                             send = true
                             valor = -1*valor
+                            KeysStorage.shared.recarregar = true
                             
                             Task {
                                 await sendMoney()
@@ -97,7 +104,7 @@ struct MoneyView: View {
     
     func sendMoney() async {
         
-        let _value = self.valor
+        let _value = Double (self.valor) / 100.0
         
         do {
             try await Api.shared.deposit(amount: _value)
@@ -110,6 +117,7 @@ struct MoneyView: View {
     }
 }
 
+/*
 #Preview {
     MoneyView()
-}
+}*/

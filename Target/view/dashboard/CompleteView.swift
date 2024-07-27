@@ -1,5 +1,5 @@
 //
-//  ProgressView.swift
+//  CompleteView.swift
 //  target
 //
 //  Created by Sávio Dutra on 23/01/24.
@@ -7,26 +7,26 @@
 
 import SwiftUI
 
-struct ProgressView: View {
-
+struct CompleteView: View {
+    
+    @State private var showMoney = false
     @State private var showDetail = false
     @State private var targetClicked: Target?
     @Binding var targets: [Target]
     @Binding var total: Double
-    @Binding var showMoney: Bool
 
     var body: some View {
         NavigationStack {
             VStack {
                 
-                Text("Total value in progress: \(total.toCurrency() ?? "0.00")")
+                Text("Total value in complete: \(total.toCurrency() ?? "0.00")")
                     .padding(.top, 8)
                 
                 if (targets.isEmpty) {
                     
                     Spacer()
                     
-                    Text("You haven't target created")
+                    Text("You haven't target completed")
                     
                     Spacer()
                     
@@ -54,7 +54,6 @@ struct ProgressView: View {
                                     print("tocou em \(target.descricao)")
                                     targetClicked = target
                                     showDetail.toggle()
-                                    
                                 }
                             }
                         }
@@ -68,17 +67,17 @@ struct ProgressView: View {
             }
         }
         .sheet(isPresented: $showMoney) {
-            MoneyView()
+
         }.onAppear {
-            print("onAppear progress")
+            print("onAppear complete")
         }
-        .overlay(
+        /*.overlay(
             ZStack {
                 Button(action: {
                     self.showMoney.toggle()
                 }) {
                     if KeysStorage.shared.token != nil {
-                        Image("exchange")
+                        Image(systemName: "dollarsign.arrow.circlepath")
                             .resizable()
                             .scaledToFit()
                             .background(Circle().fill(.white))
@@ -90,13 +89,10 @@ struct ProgressView: View {
             }  //: ZSTACK
             .padding(.bottom, 15)
             .padding(.trailing, 15), alignment: .bottomTrailing
-        )//: OVERLAY 
+        )//: OVERLAY */
     }
-    
-    
 }
 
 /*#Preview {
-    //let targets = [Target(id: 1, descricao: "teste", valor: 20.5, posicao: 1, imagem: " ")]
-    ProgressView()//(targets: targets)
+    CompleteView()
 }*/

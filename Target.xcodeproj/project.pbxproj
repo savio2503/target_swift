@@ -25,14 +25,14 @@
 		A26306742B2F578C00465B55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A26306732B2F578C00465B55 /* Preview Assets.xcassets */; };
 		A263067F2B2F602C00465B55 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = A263067E2B2F602C00465B55 /* Api.swift */; };
 		A288572D2B797B6B00DDC77C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A288572C2B797B6B00DDC77C /* ImagePicker.swift */; };
-		A28857302B79978D00DDC77C /* CurrencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A288572F2B79978D00DDC77C /* CurrencyManager.swift */; };
 		A28F13E92B5FDFB7000F3425 /* CompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28F13E82B5FDFB7000F3425 /* CompleteView.swift */; };
 		A28F13EB2B5FDFDA000F3425 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28F13EA2B5FDFDA000F3425 /* ProgressView.swift */; };
-		A28F13ED2B600500000F3425 /* TabTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28F13EC2B600500000F3425 /* TabTargetView.swift */; };
 		A2A656882BACFE4F00C33CC5 /* DepositsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A656872BACFE4F00C33CC5 /* DepositsView.swift */; };
 		A2A8F76D2B4203BD00FE4006 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F76C2B4203BD00FE4006 /* Utils.swift */; };
 		A2A8F76F2B431EC800FE4006 /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F76E2B431EC800FE4006 /* Target.swift */; };
 		A2A8F7712B43A71E00FE4006 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F7702B43A71E00FE4006 /* DetailView.swift */; };
+		A2ACA4412C38E47200410E9E /* CurrencyUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ACA4402C38E47200410E9E /* CurrencyUITextField.swift */; };
+		A2ACA4432C38E49100410E9E /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ACA4422C38E49100410E9E /* CurrencyTextField.swift */; };
 		A2ADB9502B549A5E00EEAB16 /* ButtonEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */; };
 		A2B0D4802B44DCB3002326BD /* Deposit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B0D47F2B44DCB3002326BD /* Deposit.swift */; };
 		A2B7FEC12B9E07A40027699B /* TargetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B7FEC02B9E07A40027699B /* TargetController.swift */; };
@@ -64,15 +64,15 @@
 		A263067C2B2F581A00465B55 /* requests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = requests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A263067E2B2F602C00465B55 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		A288572C2B797B6B00DDC77C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		A288572F2B79978D00DDC77C /* CurrencyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyManager.swift; sourceTree = "<group>"; };
 		A28F13E82B5FDFB7000F3425 /* CompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteView.swift; sourceTree = "<group>"; };
 		A28F13EA2B5FDFDA000F3425 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
-		A28F13EC2B600500000F3425 /* TabTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTargetView.swift; sourceTree = "<group>"; };
 		A2A656872BACFE4F00C33CC5 /* DepositsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositsView.swift; sourceTree = "<group>"; };
 		A2A8F76A2B41FDEA00FE4006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A2A8F76C2B4203BD00FE4006 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A2A8F76E2B431EC800FE4006 /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
 		A2A8F7702B43A71E00FE4006 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		A2ACA4402C38E47200410E9E /* CurrencyUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyUITextField.swift; sourceTree = "<group>"; };
+		A2ACA4422C38E49100410E9E /* CurrencyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
 		A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonEdit.swift; sourceTree = "<group>"; };
 		A2B0D47F2B44DCB3002326BD /* Deposit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deposit.swift; sourceTree = "<group>"; };
 		A2B7FEC02B9E07A40027699B /* TargetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetController.swift; sourceTree = "<group>"; };
@@ -150,20 +150,11 @@
 		A263067A2B2F57DB00465B55 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				A2FA68152C55740D00D2E8D1 /* common */,
+				A2FA68142C55737100D2E8D1 /* dashboard */,
+				A2FA68132C5572EB00D2E8D1 /* target */,
 				A2094EAF2B3A2EB200A3F897 /* login */,
 				A263066E2B2F578A00465B55 /* ContentView.swift */,
-				A2A8F7702B43A71E00FE4006 /* DetailView.swift */,
-				A2480F682B498D5E00989641 /* ImageView.swift */,
-				A2480F6A2B49953800989641 /* PriorityView.swift */,
-				A20E90F72B517B9D002D294C /* AddView.swift */,
-				A20E90F92B51832C002D294C /* MoneyVIew.swift */,
-				A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */,
-				A28F13E82B5FDFB7000F3425 /* CompleteView.swift */,
-				A28F13EA2B5FDFDA000F3425 /* ProgressView.swift */,
-				A28F13EC2B600500000F3425 /* TabTargetView.swift */,
-				A2393CDC2B6C6C9100EADC7F /* TabMainView.swift */,
-				A229968E2B6E6AF0003BE88C /* ImageWebView.swift */,
-				A2A656872BACFE4F00C33CC5 /* DepositsView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -189,7 +180,8 @@
 		A288572E2B79975A00DDC77C /* number */ = {
 			isa = PBXGroup;
 			children = (
-				A288572F2B79978D00DDC77C /* CurrencyManager.swift */,
+				A2ACA4402C38E47200410E9E /* CurrencyUITextField.swift */,
+				A2ACA4422C38E49100410E9E /* CurrencyTextField.swift */,
 			);
 			path = number;
 			sourceTree = "<group>";
@@ -223,6 +215,38 @@
 				A2B0D47F2B44DCB3002326BD /* Deposit.swift */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		A2FA68132C5572EB00D2E8D1 /* target */ = {
+			isa = PBXGroup;
+			children = (
+				A2A8F7702B43A71E00FE4006 /* DetailView.swift */,
+				A20E90F72B517B9D002D294C /* AddView.swift */,
+			);
+			path = target;
+			sourceTree = "<group>";
+		};
+		A2FA68142C55737100D2E8D1 /* dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A28F13E82B5FDFB7000F3425 /* CompleteView.swift */,
+				A28F13EA2B5FDFDA000F3425 /* ProgressView.swift */,
+				A2393CDC2B6C6C9100EADC7F /* TabMainView.swift */,
+			);
+			path = dashboard;
+			sourceTree = "<group>";
+		};
+		A2FA68152C55740D00D2E8D1 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				A2480F682B498D5E00989641 /* ImageView.swift */,
+				A2480F6A2B49953800989641 /* PriorityView.swift */,
+				A20E90F92B51832C002D294C /* MoneyVIew.swift */,
+				A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */,
+				A229968E2B6E6AF0003BE88C /* ImageWebView.swift */,
+				A2A656872BACFE4F00C33CC5 /* DepositsView.swift */,
+			);
+			path = common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,11 +325,11 @@
 			files = (
 				A2B0D4802B44DCB3002326BD /* Deposit.swift in Sources */,
 				A263067F2B2F602C00465B55 /* Api.swift in Sources */,
-				A28857302B79978D00DDC77C /* CurrencyManager.swift in Sources */,
 				A2480F6B2B49953800989641 /* PriorityView.swift in Sources */,
 				A288572D2B797B6B00DDC77C /* ImagePicker.swift in Sources */,
 				A2094EB72B3A324400A3F897 /* SignupView.swift in Sources */,
 				A2480F692B498D5E00989641 /* ImageView.swift in Sources */,
+				A2ACA4412C38E47200410E9E /* CurrencyUITextField.swift in Sources */,
 				A20E90FA2B51832C002D294C /* MoneyVIew.swift in Sources */,
 				A2094EB52B3A322B00A3F897 /* LoggedView.swift in Sources */,
 				A2094EB12B3A2F7800A3F897 /* LoginBaseView.swift in Sources */,
@@ -319,13 +343,13 @@
 				A28F13E92B5FDFB7000F3425 /* CompleteView.swift in Sources */,
 				A263066F2B2F578A00465B55 /* ContentView.swift in Sources */,
 				A2A656882BACFE4F00C33CC5 /* DepositsView.swift in Sources */,
-				A28F13ED2B600500000F3425 /* TabTargetView.swift in Sources */,
 				A21C12DF2BC18CF400C41143 /* RemoveBackground.swift in Sources */,
 				A2DD79C62B3A39CB00DBAD0B /* KeysStorage.swift in Sources */,
 				A24DFC912BF9391200B97541 /* Tools.swift in Sources */,
 				A2DD79C92B3A3EAD00DBAD0B /* NetworkError.swift in Sources */,
 				A229968F2B6E6AF0003BE88C /* ImageWebView.swift in Sources */,
 				A2DD79D22B3A62D900DBAD0B /* User.swift in Sources */,
+				A2ACA4432C38E49100410E9E /* CurrencyTextField.swift in Sources */,
 				A2094EB32B3A31F800A3F897 /* LoginView.swift in Sources */,
 				A263066D2B2F578A00465B55 /* targetApp.swift in Sources */,
 				A2A8F7712B43A71E00FE4006 /* DetailView.swift in Sources */,

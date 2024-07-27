@@ -10,32 +10,96 @@ import SwiftUI
 struct LoggedView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @State var email: String = ""
+    @State var historics: [Deposit] = []
     
     var body: some View {
-        Spacer()
-        Text("Tela de Logged")
-        Spacer()
-        Button(action: {
+        VStack {
+            Spacer()
+            Text(email)
+                .padding(.bottom, 30)
+                .padding(.top, 20)
+            Text("Historic")
+                .padding(.bottom, 10)
+            Divider()
+                .padding(.horizontal, 20)
             
-            KeysStorage.shared.token = nil
-            KeysStorage.shared.recarregar = true
+            ScrollView {
+                ForEach(historics) { historic in
+                    //Text(historic.mes)
+                    HStack {
+                        Spacer()
+                        Text("\(historic.valor < 0.0 ? "-" : "") \(String(format: "R$ %.02f", historic.valor))")
+                        Spacer()
+                        Text("\(historic.mes)")
+                        Spacer()
+                    }
+                        .padding(.horizontal, 20)
+                    
+                    Divider()
+                        .padding(.horizontal, 20)
+                }
+            }
             
-            dismiss()
-            
-        }) {
-            //baseButton(text: "deslocar", color: Color.blue)
-            HStack {
-                Spacer()
-                Text("Deslogar")
-                    .foregroundStyle(.white)
-                Spacer()
+            Spacer()
+            Button(action: {
+                
+                KeysStorage.shared.token = nil
+                KeysStorage.shared.recarregar = true
+                
+                dismiss()
+                
+            }) {
+                //baseButton(text: "deslocar", color: Color.blue)
+                HStack {
+                    Spacer()
+                    Text("Deslogar")
+                        .foregroundStyle(.white)
+                    Spacer()
+                }
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(5.0)
             }
             .padding()
-            .background(Color.blue)
-            .cornerRadius(5.0)
+            Spacer()
+        }.onAppear() {
+            Task {
+                await getInfoUser()
+            }
+            Task {
+                await historicUser()
+            }
         }
-        .padding()
-        Spacer()
+    }
+    
+    private func getInfoUser() async {
+        do {
+            let _mail = try await Api.shared.infoUser()
+            
+            self.email = _mail
+        } catch {
+            print("erro no getInfoUser()")
+        }
+    }
+    
+    private func historicUser() async {
+        
+        do {
+            let result: [Deposit] = try await Api.shared.getHistoricUser()
+            
+            self.historics.removeAll()
+            
+            self.historics = result.map { $0 }
+            
+            for index in self.historics.indices {
+                self.historics[index].id = index + 1
+            }
+            
+            //print("res: \(self.historics)")
+        } catch {
+            print("erro no historicUser() \(error)")
+        }
     }
 }
 
