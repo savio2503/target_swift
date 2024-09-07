@@ -18,7 +18,7 @@
                BlueprintIdentifier = "A26306682B2F578A00465B55"
                BuildableName = "target.app"
                BlueprintName = "target"
-               ReferencedContainer = "container:target.xcodeproj">
+               ReferencedContainer = "container:Target.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,7 +47,7 @@
             BlueprintIdentifier = "A26306682B2F578A00465B55"
             BuildableName = "target.app"
             BlueprintName = "target"
-            ReferencedContainer = "container:target.xcodeproj">
+            ReferencedContainer = "container:Target.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "A26306682B2F578A00465B55"
             BuildableName = "target.app"
             BlueprintName = "target"
-            ReferencedContainer = "container:target.xcodeproj">
+            ReferencedContainer = "container:Target.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

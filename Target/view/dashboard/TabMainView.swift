@@ -83,7 +83,7 @@ struct TabMainView: View {
         totalProgress = 0.0
         
         items.forEach({ item in
-            if (item.ativo! == 1) {
+            if (item.comprado ?? 0 == 0) {
                 progressTarget.append(item)
                 totalProgress += item.total ?? 0.0
             } else {

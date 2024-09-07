@@ -19,4 +19,5 @@ struct Target: Codable, Hashable, Identifiable {
     var imagem: String
     var coin: Int? = 1
     var removebackground: Int
+    var comprado: Int? = 0
 }

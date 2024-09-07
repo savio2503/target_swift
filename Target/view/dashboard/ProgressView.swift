@@ -14,6 +14,8 @@ struct ProgressView: View {
     @Binding var targets: [Target]
     @Binding var total: Double
     @Binding var showMoney: Bool
+    
+    private let sizeBlock = 170.0
 
     var body: some View {
         NavigationStack {
@@ -36,20 +38,37 @@ struct ProgressView: View {
                         LazyVGrid(columns: getGridRows(), spacing: 16) {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
-                                    ImageWebView(source: target.imagem)
-                                    //.padding()
-                                    
-                                    Text(target.descricao)
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 6)
-                                    
-                                    Text(String(format: "%.2f% %", target.porcetagem ?? 0.0))
+                                    if target.porcetagem ?? 0.0 < 100 {
+                                        ImageWebView(source: target.imagem)
+                                        
+                                        Text(target.descricao)
+                                            .lineLimit(1)
+                                            .padding(.horizontal, 6)
+                                        
+                                        Text(String(format: "%.2f% %", target.porcetagem ?? 0.0))
+                                    } else {
+                                        ImageWebView(source: target.imagem, imageHeight: 100)
+                                        
+                                        Text(target.descricao)
+                                            .lineLimit(1)
+                                            .padding(.horizontal, 6)
+                                            .padding(.top, 2)
+                                        
+                                        Text("Buy")
+                                            .padding(.vertical, 1)
+                                            .padding(.horizontal, 30)
+                                            .background(.green)
+                                            .clipShape(Capsule())
+                                        
+                                        Spacer().frame(height: 10)
+                                    }
                                 }
                                 .background(Color.blue.opacity(0.1))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.gray, lineWidth: 1)
                                 )
+                                .frame(minWidth: sizeBlock, maxWidth: sizeBlock, minHeight: sizeBlock, maxHeight: sizeBlock)
                                 .onTapGesture {
                                     print("tocou em \(target.descricao)")
                                     targetClicked = target
