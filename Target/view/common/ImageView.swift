@@ -94,7 +94,10 @@ struct ImageView: View {
         }
         .alert("From Web", isPresented: $isShowingURLInput) {
             TextField("Type or paste the web address", text: $urlTemp)
-            Button("OK", action: { source = urlTemp })
+            Button("OK", action: {
+                source = urlTemp
+                removedbackground = false
+            })
             Button("Cancel") { }
         }
         .confirmationDialog("Adicionar Imagem", isPresented: $isShowingConfirmationDialog) {
@@ -118,6 +121,7 @@ struct ImageView: View {
                         source = imageData.base64EncodedString()
                     }
                 }
+                removedbackground = false
             }
         }
         .onLongPressGesture {

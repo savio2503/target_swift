@@ -134,7 +134,7 @@ struct AddView: View {
     // MARK: - FUNCAO ENVIAR
     func addTarget() async {
         let _value = Double(self.valor) / 100.0
-        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: self.source, coin: self.typeCoin, removebackground: self.removedBackground ? 1 : 0)
+        let target = Target(id: nil, descricao: self.descricao, valor: _value, posicao: self.prioridade, imagem: self.source, coin: self.typeCoin, removebackground: self.removedBackground ? 1 : 0, comprado: 0)
         
         do {
             let _ = try await Api.shared.addTarget(target: target)

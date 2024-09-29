@@ -6,6 +6,38 @@
 //
 
 import Foundation
+import UIKit
+import SwiftUI
+
+func saveImageUrl(idTarget: Int, url: String) {
+
+    if !url.isEmpty && url.contains("http") {
+        DispatchQueue.global(qos: .background).async {
+        
+            let _url = url
+            let _id = idTarget
+            print("Download image: \(_url)")
+
+            let imageBase64 = RemoveBackground.convertImageToBase64(urlString: _url)
+
+            if imageBase64 != nil {
+                print("enviando")
+              
+                Task {
+                    do {
+                        try await Api.shared.changeImage(idTarget: _id, image: imageBase64!)
+                      
+                        TargetController.updateImage(idTarget: _id, imagem: imageBase64!)
+                    } catch {
+                        print("erro ao enviar update de imagem: \(error)")
+                    }
+                  
+                    print("retornou")
+                }
+            }
+        }
+    }
+}
 
 func diferencaMeses(dataInicial: Date, dataFinal: Date) -> Int {
     

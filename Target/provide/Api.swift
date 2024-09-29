@@ -11,6 +11,7 @@ class Api {
     
     var request: URLRequest?
     var baseURL: String
+    var lastErro: String = ""
     
     static var shared: Api = {
         let instance = Api()
@@ -23,6 +24,10 @@ class Api {
         baseURL = "http://192.168.3.20:3333/"
     }
     
+    func getLastErro() -> String {
+        return lastErro
+    }
+    
     func login(userLogin: LoginRequest) async throws -> String {
         
         //print("login(\(userLogin))")
@@ -31,6 +36,8 @@ class Api {
         
         request?.httpMethod = "POST"
         request?.setValue("application/json", forHTTPHeaderField: "Content-type")
+        
+        request?.timeoutInterval = 10000
         
         let encoded = try JSONEncoder().encode(userLogin)
         
@@ -51,6 +58,10 @@ class Api {
                 }
                 session = matchStrings.joined(separator: ";")
             }
+        } else {
+            let msgErro = try JSONDecoder().decode(ErrorResponse.self, from: data)
+            
+            lastErro = msgErro.errors[0].message
         }
         
         return session
@@ -113,8 +124,6 @@ class Api {
         return try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
     }
     
-    
-    
     func removeTarget(targetId: Int) async throws {
         
         request = URLRequest(url: URL(string: baseURL + "target/\(targetId)")!)
@@ -140,6 +149,9 @@ class Api {
         let encoded = try JSONEncoder().encode(target)
         
         let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
+        
+        let debug = String(decoding: data, as: UTF8.self)
+        print("add res: \(debug)")
         
         let result: Target = try JSONDecoder().decode(Target.self, from: try mapResponse(response: (data, response)))
         
@@ -185,6 +197,29 @@ class Api {
     
     func changeImage(idTarget: Int, image: String) async throws {
         
+        request = URLRequest(url: URL(string: baseURL + "image")!)
+        
+        request?.httpMethod = "PUT"
+        let contentHeader = "application/json"
+        request?.setValue(contentHeader, forHTTPHeaderField: "Content-type")
+        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        
+        // Criando o JSON como dicionário
+        let body: [String: Any] = [
+            "targetId": idTarget,
+            "imagem": image
+        ]
+        
+        // Convertendo o dicionário para JSON Data
+        let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
+        
+        // Enviando a requisição usando URLSession
+        let (data, response) = try await URLSession.shared.upload(for: request!, from: jsonData)
+        
+        // Convertendo a resposta para string (opcional)
+        let result = String(decoding: data, as: UTF8.self)
+        
+        //print("retorno imagem: \(result)")
     }
     
     func infoUser() async throws -> String {

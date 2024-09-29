@@ -78,7 +78,18 @@ struct LoginView: View {
             
             Spacer()
             
-        }.padding()
+        }
+        .padding()
+        .onChange(of: username) {
+            if !msgError.isEmpty {
+                msgError = ""
+            }
+        }
+        .onChange(of: password) {
+            if !msgError.isEmpty {
+                msgError = ""
+            }
+        }
     }
     
     private func login() async {
@@ -88,11 +99,16 @@ struct LoginView: View {
         do {
             let response = try await Api.shared.login(userLogin: LoginRequest(email: username, password: password))
             
-            print("O login retornou positivo")
-            
-            KeysStorage.shared.token = response
-            
-            logged = true
+            if (response != "") {
+                print("O login retornou positivo")
+                
+                KeysStorage.shared.token = response
+                
+                logged = true
+            } else {
+                msgError = Api.shared.getLastErro()
+                print("\(msgError)")
+            }
             
         } catch {
             print("\(error)")

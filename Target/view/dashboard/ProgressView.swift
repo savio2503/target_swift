@@ -38,7 +38,7 @@ struct ProgressView: View {
                         LazyVGrid(columns: getGridRows(), spacing: 16) {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
-                                    if target.porcetagem ?? 0.0 < 100 {
+                                    if target.porcetagem ?? 0.0 < 99.99 {
                                         ImageWebView(source: target.imagem)
                                         
                                         Text(target.descricao)

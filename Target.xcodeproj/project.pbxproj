@@ -36,6 +36,7 @@
 		A2ADB9502B549A5E00EEAB16 /* ButtonEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */; };
 		A2B0D4802B44DCB3002326BD /* Deposit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B0D47F2B44DCB3002326BD /* Deposit.swift */; };
 		A2B7FEC12B9E07A40027699B /* TargetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B7FEC02B9E07A40027699B /* TargetController.swift */; };
+		A2B928022CA5E485002AB655 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B928012CA5E47D002AB655 /* ErrorResponse.swift */; };
 		A2DD79C62B3A39CB00DBAD0B /* KeysStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DD79C52B3A39CB00DBAD0B /* KeysStorage.swift */; };
 		A2DD79C92B3A3EAD00DBAD0B /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DD79C82B3A3EAD00DBAD0B /* NetworkError.swift */; };
 		A2DD79CB2B3A3F8C00DBAD0B /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DD79CA2B3A3F8C00DBAD0B /* LoginResponse.swift */; };
@@ -76,6 +77,7 @@
 		A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonEdit.swift; sourceTree = "<group>"; };
 		A2B0D47F2B44DCB3002326BD /* Deposit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deposit.swift; sourceTree = "<group>"; };
 		A2B7FEC02B9E07A40027699B /* TargetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetController.swift; sourceTree = "<group>"; };
+		A2B928012CA5E47D002AB655 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		A2DD79C52B3A39CB00DBAD0B /* KeysStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeysStorage.swift; sourceTree = "<group>"; };
 		A2DD79C82B3A3EAD00DBAD0B /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		A2DD79CA2B3A3F8C00DBAD0B /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 		A2DD79C72B3A3E8F00DBAD0B /* model */ = {
 			isa = PBXGroup;
 			children = (
+				A2B928012CA5E47D002AB655 /* ErrorResponse.swift */,
 				A2DD79C82B3A3EAD00DBAD0B /* NetworkError.swift */,
 				A2DD79CA2B3A3F8C00DBAD0B /* LoginResponse.swift */,
 				A2DD79CC2B3A3FB400DBAD0B /* LoginRequest.swift */,
@@ -286,7 +289,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A26306642B2F578A00465B55 /* Build configuration list for PBXProject "target" */;
+			buildConfigurationList = A26306642B2F578A00465B55 /* Build configuration list for PBXProject "Target" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -353,6 +356,7 @@
 				A2094EB32B3A31F800A3F897 /* LoginView.swift in Sources */,
 				A263066D2B2F578A00465B55 /* targetApp.swift in Sources */,
 				A2A8F7712B43A71E00FE4006 /* DetailView.swift in Sources */,
+				A2B928022CA5E485002AB655 /* ErrorResponse.swift in Sources */,
 				A28F13EB2B5FDFDA000F3425 /* ProgressView.swift in Sources */,
 				A2DD79CD2B3A3FB400DBAD0B /* LoginRequest.swift in Sources */,
 			);
@@ -545,7 +549,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A26306642B2F578A00465B55 /* Build configuration list for PBXProject "target" */ = {
+		A26306642B2F578A00465B55 /* Build configuration list for PBXProject "Target" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A26306752B2F578C00465B55 /* Debug */,

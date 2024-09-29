@@ -48,6 +48,8 @@ struct ButtonEdit: View {
                         print("isLoading = true")
                         do {
                             try await Api.shared.removeTarget(targetId: target.id!)
+                            KeysStorage.shared.recarregar = true
+                            dismiss()
                         }
                         print("isLoading = false")
                         isLoading = false

@@ -13,6 +13,15 @@ class TargetController {
     
     private static var targets: [Target] = []
     
+    static func updateImage(idTarget: Int, imagem: String) {
+        if let index = targets.firstIndex(where: { $0.id == idTarget}) {
+            targets[index].imagem = imagem
+            print("Imagem atualizada para o id \(idTarget)")
+        } else {
+            print("Target com o id \(idTarget) não encontrado.")
+        }
+    }
+    
     static func getTargets() async -> [Target] {
         
         loading = true
@@ -28,6 +37,14 @@ class TargetController {
                 targets.removeAll(keepingCapacity: false)
                 
                 targets = response.map { $0 }
+                
+                for target in targets {
+                    
+                    //print("\(target.descricao): \(target.porcetagem)")
+                    if target.imagem.contains("http") {
+                        saveImageUrl(idTarget: target.id!, url: target.imagem)
+                    }
+                }
                 
             } catch {
                 print("erro ao fazer o get target: \(error)")
