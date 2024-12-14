@@ -22,8 +22,13 @@ struct DetailView: View {
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
     
-    @State var numberFormatter: NumberFormatter
-
+    @State var urlTarget: String?
+    @State private var urlTemp: String = ""
+    @State var validUrl: Bool = false
+    @State private var isShowingURLInput = false
+    
+    var numberFormatter: NumberFormatter
+    
     init(target: Target) {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
@@ -47,20 +52,22 @@ struct DetailView: View {
 
         sizeMaxImage = sizeMaxImage - 150
         
-        print("size: \(sizeMaxImage)")
+        //print("size: \(sizeMaxImage)")
 
         self.priority = target.posicao
         
         _valor = State(initialValue: Int(self.target.valor * 100))
         
-        _source = State(initialValue: self.target.imagem)
+        _source = State(initialValue: self.target.imagem ?? " ")
         
         _removedBackground = State(initialValue: self.target.removebackground == 1)
+        
+        _urlTarget = State(initialValue: self.target.url)
         
         //print("imagem: '\(self.target.imagem)'")
         
         self.numberFormatter = NumberFormatter()
-        self.numberFormatter.numberStyle = .currency
+        self.numberFormatter.numberStyle = NumberFormatter.Style.currency
         self.numberFormatter.maximumFractionDigits = 2
         
         if (coin == 1) {
@@ -128,18 +135,59 @@ struct DetailView: View {
 
                     }
                     .padding(.horizontal, 16)
-
+                    
+                    //MARK: - URL
+                    Text("Pagina web do objetivo")
+                        .padding(.top, 16)
+                    HStack(spacing: 20) {
+                        if urlTarget == nil {
+                            
+                            Button("Salvar") {
+                                print("Salvar a url do objetivo")
+                                isShowingURLInput.toggle()
+                            }
+                            .padding(.horizontal, 20)
+                            .foregroundColor(.white)
+                            .background(.blue.opacity(0.8))
+                            .cornerRadius(8.0)
+                            
+                        } else {
+                            
+                            Button("Editar") {
+                                print("Editar a url do objetivo")
+                                isShowingURLInput.toggle()
+                            }
+                            .padding(.horizontal, 20)
+                            .foregroundColor(.white)
+                            .background(.blue.opacity(0.8))
+                            .cornerRadius(8.0)
+                            
+                            Button("Ir") {
+                                if (validUrl) {
+                                    print("IR")
+                                    callNavigation()
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            .foregroundColor(.white)
+                            .background(validUrl ? .blue.opacity(0.8) : .gray.opacity(0.8))
+                            .cornerRadius(8.0)
+                        }
+                    }
+                    .padding(.top, 4)
+                    
+                    //MARK: - PESO
                     VStack {
                         Text("Selecione o peso do objetivo")
-                            .padding()
 
                         PriorityView(selectNumber: self.$priority)
-                            .padding()
+                            .padding(.top, 4)
 
                     }
                     .padding(.horizontal, 20)
+                    .padding(.top, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(valor / 100), posicao: priority, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado))
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(Double(valor) / 100), posicao: priority, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado), imagemOrigem: self.target.imagem ?? " ")
 
                     Divider()
 
@@ -161,7 +209,21 @@ struct DetailView: View {
         .onChange(of: typeCoin) {
             self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")
         }
+        .onChange(of: urlTarget) {
+            validateUrl()
+        }
+        .alert("Url Target", isPresented: $isShowingURLInput) {
+            let urlStart = self.urlTarget == nil ? "": self.urlTarget!
+            TextField("Type or paste the web address", text: $urlTemp)
+            Button("OK") {
+                self.urlTarget = self.urlTemp == "" ? nil : self.urlTemp
+            }
+            Button("Cancel") {
+                self.urlTarget = urlStart
+            }
+        }
         .onAppear {
+            validateUrl()
             Task {
                 do {
 
@@ -194,6 +256,26 @@ struct DetailView: View {
         }
         
         return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))\(complement)"
+    }
+    
+    //MARK: - FUNCAO URL
+    func validateUrl() {
+        
+        if (urlTarget == nil) {
+            validUrl = false
+            return
+        }
+        
+        guard let url = URL(string: urlTarget!), UIApplication.shared.canOpenURL(url) else {
+            validUrl = false
+            return
+        }
+        
+        validUrl = true
+    }
+    
+    func callNavigation() {
+        UIApplication.shared.open(URL(string: urlTarget!)!)
     }
 
 }

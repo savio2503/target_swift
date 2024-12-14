@@ -10,6 +10,7 @@ import SwiftUI
 struct ButtonEdit: View {
     
     var target: Target
+    var imagemOrigem: String
     @State var isLoading: Bool = false
     @Environment(\.dismiss) private var dismiss
     
@@ -21,7 +22,7 @@ struct ButtonEdit: View {
                 Spacer()
                 
                 Button(action: {
-                    print("tocou salvar")
+                    //print("tocou salvar")
                     
                     isLoading = true
                     Task {
@@ -75,7 +76,13 @@ struct ButtonEdit: View {
     
     func editTarget() async {
         do {
-            let response = try await Api.shared.editTarget(target: target)
+            if (target.imagem! != imagemOrigem) {
+                _ = try await Api.shared.editTarget(target: target)
+            } else {
+                var targetAux = Target(from: target)
+                targetAux.imagem = nil
+                _ = try await Api.shared.editTarget(target: targetAux)
+            }
         } catch {
             print("\(error.localizedDescription)")
         }

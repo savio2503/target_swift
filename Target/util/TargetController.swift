@@ -38,11 +38,41 @@ class TargetController {
                 
                 targets = response.map { $0 }
                 
+                let formatter = DateFormatter()
+                formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                formatter.dateFormat = "dd/MM/yyyy HH:mm"
+                
+                var bufferImage: String? = ""
+                
                 for target in targets {
                     
+                    //pegar o id e o update_at
+                    let detailImage = await Api.shared.getDetailImage(idTarget: target.id!)
+                    let dateImage = detailImage.updatedAt != nil ? formatter.date(from: detailImage.updatedAt!) : Date()
+                    
+                    //compare com a data salva, se tiver
+                    let dateLocal = getLastUpdate(id: target.id!)
+                    
+                    print("local: \(dateLocal), banco: \(dateImage)")
+                    
+                    if (dateLocal != nil && dateLocal! >= dateImage!) {
+                        bufferImage = loadImage(id: target.id!)
+                        print("usando a imagem local para o id \(target.id!)")
+                    } else {
+                        
+                        let downImage = try await Api.shared.getImage(idTarget: target.id!)
+                        
+                        saveImage(image: downImage.imagem ?? " ", id: target.id!)
+                        
+                        bufferImage = downImage.imagem
+                        print("usando a imagem banco para o id \(target.id!)")
+                    }                    
+                    
                     //print("\(target.descricao): \(target.porcetagem)")
-                    if target.imagem.contains("http") {
-                        saveImageUrl(idTarget: target.id!, url: target.imagem)
+                    if bufferImage != nil && bufferImage!.contains("http") {
+                        await saveImageUrl(idTarget: target.id!, url: bufferImage!)
+                    } else {
+                        updateImage(idTarget: target.id!, imagem: bufferImage!)
                     }
                 }
                 

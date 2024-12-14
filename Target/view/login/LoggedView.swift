@@ -44,6 +44,8 @@ struct LoggedView: View {
             Spacer()
             Button(action: {
                 
+                removeAllSaves()
+                
                 KeysStorage.shared.token = nil
                 KeysStorage.shared.recarregar = true
                 

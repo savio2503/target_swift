@@ -36,7 +36,7 @@ struct CompleteView: View {
                         LazyVGrid(columns: getGridRows(), spacing: 16) {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
-                                    ImageWebView(source: target.imagem)
+                                    ImageWebView(source: target.imagem ?? " ")
                                     //.padding()
                                     
                                     Text(target.descricao)
@@ -71,25 +71,6 @@ struct CompleteView: View {
         }.onAppear {
             print("onAppear complete")
         }
-        /*.overlay(
-            ZStack {
-                Button(action: {
-                    self.showMoney.toggle()
-                }) {
-                    if KeysStorage.shared.token != nil {
-                        Image(systemName: "dollarsign.arrow.circlepath")
-                            .resizable()
-                            .scaledToFit()
-                            .background(Circle().fill(.white))
-                            .frame(width: 48, height: 48, alignment: .center)
-                    }
-                }  //: BUTTON
-                .accentColor(.blue)
-
-            }  //: ZSTACK
-            .padding(.bottom, 15)
-            .padding(.trailing, 15), alignment: .bottomTrailing
-        )//: OVERLAY */
     }
 }
 

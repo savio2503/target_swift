@@ -9,33 +9,25 @@ import Foundation
 import UIKit
 import SwiftUI
 
-func saveImageUrl(idTarget: Int, url: String) {
-
-    if !url.isEmpty && url.contains("http") {
-        DispatchQueue.global(qos: .background).async {
+func saveImageUrl(idTarget: Int, url: String) async {
+    
+    print("Download Image: \(url)")
+    
+    let imageBase64 = RemoveBackground.convertImageToBase64(urlString: url)
+    
+    if imageBase64 != nil {
         
-            let _url = url
-            let _id = idTarget
-            print("Download image: \(_url)")
-
-            let imageBase64 = RemoveBackground.convertImageToBase64(urlString: _url)
-
-            if imageBase64 != nil {
-                print("enviando")
-              
-                Task {
-                    do {
-                        try await Api.shared.changeImage(idTarget: _id, image: imageBase64!)
-                      
-                        TargetController.updateImage(idTarget: _id, imagem: imageBase64!)
-                    } catch {
-                        print("erro ao enviar update de imagem: \(error)")
-                    }
-                  
-                    print("retornou")
-                }
-            }
+        do {
+            try await Api.shared.changeImage(idTarget: idTarget, image: imageBase64!)
+            
+            TargetController.updateImage(idTarget: idTarget, imagem: imageBase64!)
+            
+            saveImage(image: imageBase64!, id: idTarget)
+        } catch {
+            print("Erro ao enviar update de imagem: \(error)")
         }
+        
+        print("retornou")
     }
 }
 

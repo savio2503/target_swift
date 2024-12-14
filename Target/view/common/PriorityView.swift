@@ -50,7 +50,7 @@ struct PriorityView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     @State var number: Int = 10
     return PriorityView(selectNumber: $number)
-}
+}*/

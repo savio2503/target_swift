@@ -35,87 +35,92 @@ struct AddView: View {
 
         sizeMaxImage = sizeMaxImage - 150
         
-        print("size: \(sizeMaxImage)")
+        //print("size: \(sizeMaxImage)")
     }
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                Button(action: {
-                    print("tocou")
-                }) {
-                    ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
-                }
-                .padding()
-                .padding(.top, 12)
-                // MARK: - END IMAGEM
-                
-                TextField("Descricao", text: $descricao)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(5.0)
-                    .padding(.horizontal, 16) // MARK: - DESCRICAO
-                
-                HStack {
-                    Menu(textMenu) {
-                        Button("Real, R$") {
-                            textMenu = "R$"
-                            typeCoin = 1
-                        }
-                        Button("Dolar, U$") {
-                            textMenu = "U$"
-                            typeCoin = 2
-                        }
+            VStack {
+                ScrollView {
+                    Button(action: {
+                        print("tocou")
+                    }) {
+                        ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
                     }
                     .padding()
-                    .foregroundColor(.white)
-                    .background(.blue.opacity(0.8))
-                    .cornerRadius(8.0)
+                    .padding(.top, 12)
+                    // MARK: - END IMAGEM
                     
-                    CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
+                    TextField("Descricao", text: $descricao)
                         .padding()
                         .background(Color(.systemGray6))
                         .cornerRadius(5.0)
-                        .keyboardType(.numberPad)
-                        .frame(height: 50)
-                } // MARK: - CAMPOS VALOR
-                .padding(.horizontal, 16)
-                
-                Text("Selecione o peso do objetivo")
-                    .padding()
-                
-                PriorityView(selectNumber: self.$prioridade)
-                    .padding()
-                // MARK: - END CAMPO PRIORIDADE
-                
-                Spacer()
-                
-                if !error.isEmpty {
-                    Text(error)
-                        .foregroundStyle(.red)
-                }
-                
-                Button(action: {
-                    if descricao.isEmpty || valor == 0 {
-                        error = "O campo de descrição ou o campo de valor estâo vazios"
-                    } else {
-                        loading = true
-                        Task {
-                            await addTarget()
-                            if sendSucesso {
-                                KeysStorage.shared.recarregar = true
-                                dismiss()
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)// MARK: - DESCRICAO
+                    
+                    HStack {
+                        Menu(textMenu) {
+                            Button("Real, R$") {
+                                textMenu = "R$"
+                                typeCoin = 1
+                            }
+                            Button("Dolar, U$") {
+                                textMenu = "U$"
+                                typeCoin = 2
                             }
                         }
-                    }
-                }) {
-                    Text(loading == false ? "Adicionar" : "Enviando...")
-                        .foregroundStyle(.white)
                         .padding()
-                        .background(Color.blue.opacity(0.85))
-                        .cornerRadius(5.0)
-                } // MARK: - ENVIAR
-                .padding(.bottom, 8)
+                        .foregroundColor(.white)
+                        .background(.blue.opacity(0.8))
+                        .cornerRadius(8.0)
+                        
+                        CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(5.0)
+                            .keyboardType(.numberPad)
+                            .frame(height: 50)
+                    } // MARK: - CAMPOS VALOR
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    
+                    Text("Selecione o peso do objetivo")
+                        .padding(.top, 32)
+                    
+                    PriorityView(selectNumber: self.$prioridade)
+                        .padding()
+                    // MARK: - END CAMPO PRIORIDADE
+                    
+                    //Spacer()
+                    
+                    if !error.isEmpty {
+                        Text(error)
+                            .foregroundStyle(.red)
+                            .padding(.top, 16)
+                    }
+                    
+                    Button(action: {
+                        if descricao.isEmpty || valor == 0 {
+                            error = "O campo de descrição ou o campo de valor estâo vazios"
+                        } else {
+                            loading = true
+                            Task {
+                                await addTarget()
+                                if sendSucesso {
+                                    KeysStorage.shared.recarregar = true
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }) {
+                        Text(loading == false ? "Adicionar" : "Enviando...")
+                            .foregroundStyle(.white)
+                            .padding()
+                            .background(Color.blue.opacity(0.85))
+                            .cornerRadius(5.0)
+                    } // MARK: - ENVIAR
+                    .padding(.top, 32)
+                }
             } //: VSTACK
             .navigationTitle("Add a new Target")
             .navigationBarTitleDisplayMode(.inline)

@@ -20,6 +20,7 @@ struct ContentView: View {
     
     init() {
         KeysStorage.shared.recarregar = true
+        
     }
     
     //MARK: - BODY
@@ -90,7 +91,7 @@ struct ContentView: View {
         }  //: NAVIGATIONSTACK
         .onAppear {
             updateNavigationBarAppearance()
-            print("onAppear contentView")
+            //print("onAppear contentView")
             
             if KeysStorage.shared.recarregar {
                 loading = true
@@ -98,14 +99,14 @@ struct ContentView: View {
                 KeysStorage.shared.recarregar = false
                 
                 Task {
-                    print("Content 2 getTarget()")
+                    //print("Content 2 getTarget()")
                     items = await TargetController.getTargets()
                     loading = false
-                    print("finish task onAppear")
+                    //print("finish task onAppear")
                 }
             }
             
-            print("finish onAppear contentview")
+            //print("finish onAppear contentview")
             
         }
         .onChange(of: colorScheme) { _,__ in
@@ -116,7 +117,7 @@ struct ContentView: View {
     func updateNavigationBarAppearance() {
         
             
-            print("cor \(colorScheme == .dark ? "dark" : "white")")
+            //print("cor \(colorScheme == .dark ? "dark" : "white")")
             
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()

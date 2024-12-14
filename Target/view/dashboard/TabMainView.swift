@@ -45,16 +45,16 @@ struct TabMainView: View {
             }
             .onAppear {
                 
-                print("onAppear TabMain")
+                //print("onAppear TabMain")
                 
                 if KeysStorage.shared.token != nil && KeysStorage.shared.recarregar {
                     
                     KeysStorage.shared.recarregar = false
                     
                     Task {
-                        print("TabMainView getTarget()")
+                        //print("TabMainView getTarget()")
                         items = await TargetController.getTargets()
-                        print("finish task onAppear")
+                        //print("finish task onAppear")
                         fill()
                     }
                 } else {
@@ -66,9 +66,9 @@ struct TabMainView: View {
                     KeysStorage.shared.recarregar = false
                     
                     Task {
-                        print("start task change getTarget()")
-                        items = await TargetController.getTargets()
-                        print("finish task onChange")
+                        //print("start task change getTarget()")
+                         items = await TargetController.getTargets()
+                        //print("finish task onChange")
                         fill()
                     }
                 }

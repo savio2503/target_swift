@@ -24,6 +24,8 @@
 		A26306712B2F578C00465B55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A26306702B2F578C00465B55 /* Assets.xcassets */; };
 		A26306742B2F578C00465B55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A26306732B2F578C00465B55 /* Preview Assets.xcassets */; };
 		A263067F2B2F602C00465B55 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = A263067E2B2F602C00465B55 /* Api.swift */; };
+		A27C04462D05F27400B47736 /* ImagemTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27C04452D05F27400B47736 /* ImagemTools.swift */; };
+		A27C04482D061D3700B47736 /* ImageTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27C04472D061D3700B47736 /* ImageTarget.swift */; };
 		A288572D2B797B6B00DDC77C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A288572C2B797B6B00DDC77C /* ImagePicker.swift */; };
 		A28F13E92B5FDFB7000F3425 /* CompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28F13E82B5FDFB7000F3425 /* CompleteView.swift */; };
 		A28F13EB2B5FDFDA000F3425 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28F13EA2B5FDFDA000F3425 /* ProgressView.swift */; };
@@ -64,6 +66,8 @@
 		A26306732B2F578C00465B55 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A263067C2B2F581A00465B55 /* requests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = requests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A263067E2B2F602C00465B55 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		A27C04452D05F27400B47736 /* ImagemTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImagemTools.swift; path = Target/imagem/ImagemTools.swift; sourceTree = SOURCE_ROOT; };
+		A27C04472D061D3700B47736 /* ImageTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTarget.swift; sourceTree = "<group>"; };
 		A288572C2B797B6B00DDC77C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		A28F13E82B5FDFB7000F3425 /* CompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteView.swift; sourceTree = "<group>"; };
 		A28F13EA2B5FDFDA000F3425 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 		A263066B2B2F578A00465B55 /* target */ = {
 			isa = PBXGroup;
 			children = (
+				A27C04432D05F22800B47736 /* imagem */,
 				A288572E2B79975A00DDC77C /* number */,
 				A2A8F76B2B42039E00FE4006 /* util */,
 				A2A8F76A2B41FDEA00FE4006 /* Info.plist */,
@@ -179,6 +184,14 @@
 			path = provide;
 			sourceTree = "<group>";
 		};
+		A27C04432D05F22800B47736 /* imagem */ = {
+			isa = PBXGroup;
+			children = (
+				A27C04452D05F27400B47736 /* ImagemTools.swift */,
+			);
+			path = imagem;
+			sourceTree = "<group>";
+		};
 		A288572E2B79975A00DDC77C /* number */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +229,7 @@
 				A2DD79D12B3A62D900DBAD0B /* User.swift */,
 				A2A8F76E2B431EC800FE4006 /* Target.swift */,
 				A2B0D47F2B44DCB3002326BD /* Deposit.swift */,
+				A27C04472D061D3700B47736 /* ImageTarget.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -352,6 +366,7 @@
 				A2DD79C92B3A3EAD00DBAD0B /* NetworkError.swift in Sources */,
 				A229968F2B6E6AF0003BE88C /* ImageWebView.swift in Sources */,
 				A2DD79D22B3A62D900DBAD0B /* User.swift in Sources */,
+				A27C04482D061D3700B47736 /* ImageTarget.swift in Sources */,
 				A2ACA4432C38E49100410E9E /* CurrencyTextField.swift in Sources */,
 				A2094EB32B3A31F800A3F897 /* LoginView.swift in Sources */,
 				A263066D2B2F578A00465B55 /* targetApp.swift in Sources */,
@@ -359,6 +374,7 @@
 				A2B928022CA5E485002AB655 /* ErrorResponse.swift in Sources */,
 				A28F13EB2B5FDFDA000F3425 /* ProgressView.swift in Sources */,
 				A2DD79CD2B3A3FB400DBAD0B /* LoginRequest.swift in Sources */,
+				A27C04462D05F27400B47736 /* ImagemTools.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +504,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"target/Preview Content\"";
@@ -496,11 +511,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = target/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = target;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -509,6 +526,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio2503.target;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -519,7 +540,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"target/Preview Content\"";
@@ -527,11 +547,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = target/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = target;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -540,6 +562,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio2503.target;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

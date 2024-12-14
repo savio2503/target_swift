@@ -39,7 +39,7 @@ struct ProgressView: View {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
                                     if target.porcetagem ?? 0.0 < 99.99 {
-                                        ImageWebView(source: target.imagem)
+                                        ImageWebView(source: target.imagem ?? " ")
                                         
                                         Text(target.descricao)
                                             .lineLimit(1)
@@ -47,7 +47,7 @@ struct ProgressView: View {
                                         
                                         Text(String(format: "%.2f% %", target.porcetagem ?? 0.0))
                                     } else {
-                                        ImageWebView(source: target.imagem, imageHeight: 100)
+                                        ImageWebView(source: target.imagem ?? " ", imageHeight: 100)
                                         
                                         Text(target.descricao)
                                             .lineLimit(1)
@@ -89,7 +89,7 @@ struct ProgressView: View {
         .sheet(isPresented: $showMoney) {
             MoneyView()
         }.onAppear {
-            print("onAppear progress")
+            //print("onAppear progress")
         }
         .overlay(
             ZStack {
@@ -104,7 +104,7 @@ struct ProgressView: View {
                             .frame(width: 48, height: 48, alignment: .center)
                     }
                 }  //: BUTTON
-                .accentColor(.blue)
+                .tint(.blue)
 
             }  //: ZSTACK
             .padding(.bottom, 15)
