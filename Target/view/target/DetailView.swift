@@ -64,7 +64,7 @@ struct DetailView: View {
         
         _urlTarget = State(initialValue: self.target.url)
         
-        //print("imagem: '\(self.target.imagem)'")
+        //print("des: \(_descricao), url: \(_urlTarget)")
         
         self.numberFormatter = NumberFormatter()
         self.numberFormatter.numberStyle = NumberFormatter.Style.currency
@@ -140,21 +140,11 @@ struct DetailView: View {
                     Text("Pagina web do objetivo")
                         .padding(.top, 16)
                     HStack(spacing: 20) {
-                        if urlTarget == nil {
-                            
-                            Button("Salvar") {
-                                print("Salvar a url do objetivo")
-                                isShowingURLInput.toggle()
-                            }
-                            .padding(.horizontal, 20)
-                            .foregroundColor(.white)
-                            .background(.blue.opacity(0.8))
-                            .cornerRadius(8.0)
-                            
-                        } else {
+                        if urlTarget != nil && !urlTarget!.isEmpty {
                             
                             Button("Editar") {
                                 print("Editar a url do objetivo")
+                                urlTemp = urlTarget!
                                 isShowingURLInput.toggle()
                             }
                             .padding(.horizontal, 20)
@@ -172,6 +162,17 @@ struct DetailView: View {
                             .foregroundColor(.white)
                             .background(validUrl ? .blue.opacity(0.8) : .gray.opacity(0.8))
                             .cornerRadius(8.0)
+                        } else {
+                            
+                            Button("Salvar") {
+                                print("Salvar a url do objetivo")
+                                isShowingURLInput.toggle()
+                            }
+                            .padding(.horizontal, 20)
+                            .foregroundColor(.white)
+                            .background(.blue.opacity(0.8))
+                            .cornerRadius(8.0)
+                            
                         }
                     }
                     .padding(.top, 4)
@@ -187,7 +188,7 @@ struct DetailView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(Double(valor) / 100), posicao: priority, porcetagem: target.porcetagem, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado), imagemOrigem: self.target.imagem ?? " ")
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(Double(valor) / 100), posicao: priority, porcetagem: target.porcetagem, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado, url: urlTarget), imagemOrigem: self.target.imagem ?? " ")
                         .padding(.top, 20)
 
                     Divider()
@@ -215,14 +216,11 @@ struct DetailView: View {
             validateUrl()
         }
         .alert("Url Target", isPresented: $isShowingURLInput) {
-            let urlStart = self.urlTarget == nil ? "": self.urlTarget!
             TextField("Type or paste the web address", text: $urlTemp)
             Button("OK") {
                 self.urlTarget = self.urlTemp == "" ? nil : self.urlTemp
             }
-            Button("Cancel") {
-                self.urlTarget = urlStart
-            }
+            Button("Cancel") {}
         }
         .onAppear {
             validateUrl()

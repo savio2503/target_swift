@@ -102,13 +102,17 @@ struct ButtonEdit: View {
     
     func editTarget() async {
         do {
-            if (target.imagem! != imagemOrigem) {
-                _ = try await Api.shared.editTarget(target: target)
-            } else {
-                var targetAux = Target(from: target)
-                targetAux.imagem = nil
-                _ = try await Api.shared.editTarget(target: targetAux)
+            var targetAux = Target(from: target)
+            
+            if targetAux.url != nil && targetAux.url!.isEmpty {
+                targetAux.url = nil
             }
+            if (target.imagem! == imagemOrigem) {
+                targetAux.imagem = nil
+            }
+            
+            _ = try await Api.shared.editTarget(target: targetAux)
+            
         } catch {
             print("\(error.localizedDescription)")
         }
