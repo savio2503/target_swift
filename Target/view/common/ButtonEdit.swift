@@ -39,9 +39,36 @@ struct ButtonEdit: View {
                     .background(Color("CardColor"))
                     .cornerRadius(30.0)
                 }
-                .padding()
                 
                 Spacer()
+                
+                if (target.comprado == 0 && target.porcetagem! >= 99.9) {
+                    
+                    Button(action: {
+                        Task {
+                            isLoading = true
+                            print("isLoading = true")
+                            do {
+                                try await Api.shared.comprar(idTarget: target.id!)
+                                KeysStorage.shared.recarregar = true
+                                dismiss()
+                            }
+                            print("isLoading = false")
+                            isLoading = false
+                        }
+                    }) {
+                        HStack {
+                            Text("Comprar")
+                                .foregroundStyle(.green)
+                                .padding(.horizontal, 10)
+                        }
+                        .padding()
+                        .background(Color("CardColor"))
+                        .cornerRadius(30.0)
+                    }
+                    
+                    Spacer()
+                }
                 
                 Button(action: {
                     Task {
@@ -65,7 +92,6 @@ struct ButtonEdit: View {
                     .background(Color("CardColor"))
                     .cornerRadius(30.0)
                 }
-                .padding()
                 
                 Spacer()
             }
@@ -92,5 +118,5 @@ struct ButtonEdit: View {
 }
 
 /*#Preview {
-    ButtonEdit(targetId: 1)
+    ButtonEdit(target: Target(id: 1, descricao: "", valor: 0.0, posicao: 1, porcetagem: 99.9, imagem: " ", coin: 1, removebackground: 0, comprado: 0), imagemOrigem: " ")
 }*/

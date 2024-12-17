@@ -67,7 +67,7 @@ struct TabMainView: View {
                     
                     Task {
                         //print("start task change getTarget()")
-                         items = await TargetController.getTargets()
+                        items = await TargetController.getTargets()
                         //print("finish task onChange")
                         fill()
                     }

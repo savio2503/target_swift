@@ -59,6 +59,7 @@ struct ProgressView: View {
                                             .padding(.horizontal, 30)
                                             .background(.green)
                                             .clipShape(Capsule())
+                                            .foregroundColor(.white)
                                         
                                         Spacer().frame(height: 10)
                                     }

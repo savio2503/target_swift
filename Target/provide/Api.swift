@@ -19,8 +19,8 @@ class Api {
     }()
     
     private init() {
-        //baseURL = "http://192.168.3.44:3333/"
-        baseURL = "http://192.168.3.20:3333/"
+        baseURL = "http://192.168.3.44:3333/"
+        //baseURL = "http://192.168.3.20:3333/"
     }
     
     func getLastErro() -> String {
@@ -285,5 +285,14 @@ class Api {
         let (data, response) = try await URLSession.shared.data(for: request!)
         
         return  try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
+    }
+    
+    func comprar(idTarget: Int) async throws {
+        request = URLRequest(url: URL(string: baseURL + "comprar/\(idTarget)/1")!)
+        
+        request?.httpMethod = "PUT"
+        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        
+        let (_, __) = try await URLSession.shared.data(for: request!)
     }
 }

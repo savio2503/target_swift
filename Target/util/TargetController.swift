@@ -16,10 +16,10 @@ class TargetController {
     static func updateImage(idTarget: Int, imagem: String) {
         if let index = targets.firstIndex(where: { $0.id == idTarget}) {
             targets[index].imagem = imagem
-            print("Imagem atualizada para o id \(idTarget)")
-        } else {
+            //print("Imagem atualizada para o id \(idTarget)")
+        }/* else {
             print("Target com o id \(idTarget) não encontrado.")
-        }
+        }*/
     }
     
     static func getTargets() async -> [Target] {
@@ -32,7 +32,7 @@ class TargetController {
                 let response = try await Api.shared.getAllTarget()
                 
                 //print("Resposta do get target: \(response) ")
-                print("total target: \(response.count)")
+                //print("total target: \(response.count)")
                 
                 targets.removeAll(keepingCapacity: false)
                 
@@ -53,11 +53,11 @@ class TargetController {
                     //compare com a data salva, se tiver
                     let dateLocal = getLastUpdate(id: target.id!)
                     
-                    print("local: \(dateLocal), banco: \(dateImage)")
+                    //print("local: \(dateLocal), banco: \(dateImage)")
                     
                     if (dateLocal != nil && dateLocal! >= dateImage!) {
                         bufferImage = loadImage(id: target.id!)
-                        print("usando a imagem local para o id \(target.id!)")
+                        //print("usando a imagem local para o id \(target.id!)")
                     } else {
                         
                         let downImage = try await Api.shared.getImage(idTarget: target.id!)
@@ -65,8 +65,8 @@ class TargetController {
                         saveImage(image: downImage.imagem ?? " ", id: target.id!)
                         
                         bufferImage = downImage.imagem
-                        print("usando a imagem banco para o id \(target.id!)")
-                    }                    
+                        //print("usando a imagem banco para o id \(target.id!)")
+                    }
                     
                     //print("\(target.descricao): \(target.porcetagem)")
                     if bufferImage != nil && bufferImage!.contains("http") {
@@ -77,13 +77,13 @@ class TargetController {
                 }
                 
             } catch {
-                print("erro ao fazer o get target: \(error)")
+                //print("erro ao fazer o get target: \(error)")
                 //msgError = error.localizedDescription
                 KeysStorage.shared.token = nil
             }
         } else {
             
-            print("deslocado")
+            //print("deslocado")
             
             targets.removeAll(keepingCapacity: false)
         }

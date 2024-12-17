@@ -187,9 +187,11 @@ struct DetailView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(Double(valor) / 100), posicao: priority, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado), imagemOrigem: self.target.imagem ?? " ")
+                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(Double(valor) / 100), posicao: priority, porcetagem: target.porcetagem, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado), imagemOrigem: self.target.imagem ?? " ")
+                        .padding(.top, 20)
 
                     Divider()
+                        .padding(.top, 20)
 
                     Text(sumDeposit())
                         .padding(.vertical, 3)
