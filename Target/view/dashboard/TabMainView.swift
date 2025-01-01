@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComponentsCommunication
 
 struct TabMainView: View {
     
@@ -45,7 +46,7 @@ struct TabMainView: View {
             }
             .onAppear {
                 
-                //print("onAppear TabMain")
+                print("onAppear TabMain")
                 
                 if KeysStorage.shared.token != nil && KeysStorage.shared.recarregar {
                     
@@ -71,6 +72,17 @@ struct TabMainView: View {
                         //print("finish task onChange")
                         fill()
                     }
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                print("onResume TabMain")
+                
+                KeysStorage.shared.recarregar = false
+                
+                Task {
+                    items = await TargetController.getTargets()
+                    print("finish onResume TabMain")
+                    fill()
                 }
             }
         }

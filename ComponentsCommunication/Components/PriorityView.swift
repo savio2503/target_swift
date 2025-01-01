@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-struct PriorityView: View {
+public struct PriorityView: View {
     @Binding var selectNumber: Int
     var itemIds: [Int] = Array(1...10)
     @Environment(\.colorScheme) var colorScheme
     
-    var body: some View {
+    public init(selectNumber: Binding<Int>) {
+        self._selectNumber = selectNumber
+    }
+    
+    public var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {

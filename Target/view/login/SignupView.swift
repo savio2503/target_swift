@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComponentsCommunication
 
 struct SignupView: View {
     
@@ -99,7 +100,7 @@ struct SignupView: View {
     
     private func signin() async {
          
-        sending = true
+        /*sending = true
         
         do {
             let response = try await Api.shared.signin(userLogin: LoginRequest(email: email, password: password))
@@ -112,7 +113,7 @@ struct SignupView: View {
             //msgError = error.localizedDescription
         }
         
-        sending = false
+        sending = false*/
     }
 }
 

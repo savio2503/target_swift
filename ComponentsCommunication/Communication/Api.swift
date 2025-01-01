@@ -7,27 +7,27 @@
 
 import UIKit
 
-class Api {
+public class Api {
     
     var request: URLRequest?
     var baseURL: String
     var lastErro: String = ""
     
-    static var shared: Api = {
+    public static var shared: Api = {
         let instance = Api()
         return instance
     }()
     
     private init() {
-        baseURL = "http://192.168.3.44:3333/"
-        //baseURL = "http://192.168.3.20:3333/"
+        //baseURL = "http://192.168.3.44:3333/"
+        baseURL = "http://192.168.3.20:3333/"
     }
     
-    func getLastErro() -> String {
+    public func getLastErro() -> String {
         return lastErro
     }
     
-    func login(userLogin: LoginRequest) async throws -> String {
+    public func login(userLogin: LoginRequest) async throws -> String {
         
         //print("login(\(userLogin))")
         
@@ -67,7 +67,7 @@ class Api {
         
     }
     
-    func signin(userLogin: LoginRequest) async throws -> String {
+    public func signin(userLogin: LoginRequest) async throws -> String {
         
         //print("Sigin in (\(userLogin)")
         
@@ -100,7 +100,7 @@ class Api {
         return session
     }
     
-    func getAllTarget() async throws -> [Target] {
+    public func getAllTarget() async throws -> [Target] {
         
         request = URLRequest(url: URL(string: baseURL + "all")!)
         request?.httpMethod = "GET"
@@ -111,7 +111,7 @@ class Api {
         return try JSONDecoder().decode([Target].self, from: try mapResponse(response: (data, response)))
     }
     
-    func getAllDeposity(targetId: Int) async throws -> [Deposit] {
+    public func getAllDeposity(targetId: Int) async throws -> [Deposit] {
         
         request = URLRequest(url: URL(string: baseURL + "deposit/\(targetId)")!)
         
@@ -123,7 +123,7 @@ class Api {
         return try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
     }
     
-    func removeTarget(targetId: Int) async throws {
+    public func removeTarget(targetId: Int) async throws {
         
         request = URLRequest(url: URL(string: baseURL + "target/\(targetId)")!)
         
@@ -135,7 +135,7 @@ class Api {
         //print("removido \(targetId), com sucesso")
     }
     
-    func addTarget(target: Target) async throws -> Target {
+    public func addTarget(target: Target) async throws -> Target {
         
         request = URLRequest(url: URL(string: baseURL + "target")!)
         
@@ -159,7 +159,7 @@ class Api {
         return result
     }
     
-    func editTarget(target: Target) async throws -> Target {
+    public func editTarget(target: Target) async throws -> Target {
         
         request = URLRequest(url: URL(string: baseURL + "target/\(target.id!)")!)
         
@@ -180,7 +180,7 @@ class Api {
         return result
     }
     
-    func deposit(amount: Double) async throws {
+    public func deposit(amount: Double) async throws {
         
         request = URLRequest(url: URL(string: baseURL + "inside")!)
         request?.httpMethod = "POST"
@@ -194,7 +194,7 @@ class Api {
         KeysStorage.shared.recarregar = true
     }
     
-    func getDetailImage(idTarget: Int) async -> ImageTarget {
+    public func getDetailImage(idTarget: Int) async -> ImageTarget {
         
         do {
             request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/details")!)
@@ -211,7 +211,7 @@ class Api {
         return ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
     }
     
-    func getImage(idTarget: Int) async throws -> ImageTarget {
+    public func getImage(idTarget: Int) async throws -> ImageTarget {
         
         do {
             request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/image")!)
@@ -228,7 +228,7 @@ class Api {
         return ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
     }
     
-    func changeImage(idTarget: Int, image: String) async throws {
+    public func changeImage(idTarget: Int, image: String) async throws {
         
         request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)")!)
         
@@ -254,7 +254,7 @@ class Api {
         //print("retorno imagem: \(result)")
     }
     
-    func infoUser() async throws -> String {
+    public func infoUser() async throws -> String {
         
         request = URLRequest(url: URL(string: baseURL + "auth/me")!)
         request?.httpMethod = "GET"
@@ -276,7 +276,7 @@ class Api {
         return result
     }
     
-    func getHistoricUser() async throws -> [Deposit] {
+    public func getHistoricUser() async throws -> [Deposit] {
         
         request = URLRequest(url: URL(string: baseURL + "historic")!)
         request?.httpMethod = "GET"
@@ -287,7 +287,7 @@ class Api {
         return  try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
     }
     
-    func comprar(idTarget: Int) async throws {
+    public func comprar(idTarget: Int) async throws {
         request = URLRequest(url: URL(string: baseURL + "comprar/\(idTarget)/1")!)
         
         request?.httpMethod = "PUT"

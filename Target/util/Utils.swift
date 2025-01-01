@@ -126,8 +126,9 @@ extension UIImage {
     }
 }
 
-extension URLResponse {
-    func headerField(forKey key: String) -> String? {
-        (self as? HTTPURLResponse)?.allHeaderFields[key] as? String
-    }
+
+// Função auxiliar para formatar a porcentagem
+func formattedPorcentagem(_ value: Double?) -> String {
+    guard let value = value else { return "0.00%" }
+    return String(format: "%.2f%%", value)
 }

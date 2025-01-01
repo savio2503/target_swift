@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComponentsCommunication
 
 struct LoggedView: View {
     

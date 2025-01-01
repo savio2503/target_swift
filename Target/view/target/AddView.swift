@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import ComponentsCommunication
 
 struct AddView: View {
     @State var descricao: String = ""

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import ComponentsCommunication
 
 func saveImageUrl(idTarget: Int, url: String) async {
     

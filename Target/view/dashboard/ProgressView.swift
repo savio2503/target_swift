@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComponentsCommunication
 
 struct ProgressView: View {
 
@@ -38,14 +39,15 @@ struct ProgressView: View {
                         LazyVGrid(columns: getGridRows(), spacing: 16) {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
-                                    if target.porcetagem ?? 0.0 < 99.99 {
+                                    if target.porcentagem ?? 0.0 < 99.99 {
                                         ImageWebView(source: target.imagem ?? " ")
                                         
                                         Text(target.descricao)
                                             .lineLimit(1)
                                             .padding(.horizontal, 6)
                                         
-                                        Text(String(format: "%.2f% %", target.porcetagem ?? 0.0))
+                                        Text(formattedPorcentagem(target.porcentagem))
+                                            .foregroundColor(.gray)
                                     } else {
                                         ImageWebView(source: target.imagem ?? " ", imageHeight: 100)
                                         

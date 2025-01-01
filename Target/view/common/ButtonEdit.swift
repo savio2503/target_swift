@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComponentsCommunication
 
 struct ButtonEdit: View {
     
@@ -42,7 +43,7 @@ struct ButtonEdit: View {
                 
                 Spacer()
                 
-                if (target.comprado == 0 && target.porcetagem! >= 99.9) {
+                if (target.comprado == 0 && target.porcentagem! >= 99.9) {
                     
                     Button(action: {
                         Task {

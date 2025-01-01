@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComponentsCommunication
 
 struct CompleteView: View {
     
@@ -22,7 +23,7 @@ struct CompleteView: View {
                 Text("Total value in complete: \(total.toCurrency() ?? "0.00")")
                     .padding(.top, 8)
                 
-                if (targets.isEmpty) {
+                if targets.isEmpty {
                     
                     Spacer()
                     
@@ -37,21 +38,23 @@ struct CompleteView: View {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
                                     ImageWebView(source: target.imagem ?? " ")
-                                    //.padding()
+                                    //     .padding()
                                     
                                     Text(target.descricao)
                                         .lineLimit(1)
                                         .padding(.horizontal, 6)
                                     
-                                    Text(String(format: "%.2f% %", target.porcetagem!))
+                                    Text(formattedPorcentagem(target.porcentagem))
+                                        .foregroundColor(.gray)
                                 }
                                 .background(Color.blue.opacity(0.1))
+                                .cornerRadius(10)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.gray, lineWidth: 1)
                                 )
                                 .onTapGesture {
-                                    print("tocou em \(target.descricao)")
+                                    print("Tocou em \(target.descricao)")
                                     targetClicked = target
                                     showDetail.toggle()
                                 }
@@ -67,8 +70,9 @@ struct CompleteView: View {
             }
         }
         .sheet(isPresented: $showMoney) {
-
-        }.onAppear {
+            // Conteúdo da sheet
+        }
+        .onAppear {
             print("onAppear complete")
         }
     }

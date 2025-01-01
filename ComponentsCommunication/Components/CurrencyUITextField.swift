@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class CurrencyUITextField: UITextField {
+public class CurrencyUITextField: UITextField {
     
     @Binding private var value: Int
     private let formatter: NumberFormatter
@@ -25,7 +25,7 @@ class CurrencyUITextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func willMove(toSuperview newSuperview: UIView?) {
+    public override func willMove(toSuperview newSuperview: UIView?) {
         addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         addTarget(self, action: #selector(resetSelection), for: .allTouchEvents)
         keyboardType = .numberPad
@@ -33,7 +33,7 @@ class CurrencyUITextField: UITextField {
         sendActions(for: .editingChanged)
     }
     
-    override func deleteBackward() {
+    public override func deleteBackward() {
         text = textValue.digits.dropLast().string
         sendActions(for: .editingChanged)
     }

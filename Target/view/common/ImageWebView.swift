@@ -80,6 +80,6 @@ struct ImageWebView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     ImageWebView(source: "https://e7.pngegg.com/pngimages/1013/132/png-clipart-linux-distribution-tux-free-software-linux-kernel-linux-logo-bird.png")
-}
+}*/
