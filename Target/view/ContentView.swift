@@ -113,20 +113,21 @@ struct ContentView: View {
         .onChange(of: colorScheme) { _,__ in
             updateNavigationBarAppearance()
         }
+        .tint(.white)
     }
     
     func updateNavigationBarAppearance() {
         
-            
-            //print("cor \(colorScheme == .dark ? "dark" : "white")")
-            
-            let navBarAppearance = UINavigationBarAppearance()
-            navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.backgroundColor = UIColor(Color("NavigationColor"))
-            
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-            
-            UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+        
+        //print("cor \(colorScheme == .dark ? "dark" : "white")")
+        
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = UIColor(Color("NavigationColor"))
+        
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
     }
 }
 

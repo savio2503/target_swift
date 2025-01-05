@@ -189,7 +189,17 @@ struct DetailView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
 
-                    ButtonEdit(target: Target(id: target.id, descricao: descricao, valor: Double(Double(valor) / 100), posicao: priority, porcentagem: target.porcentagem, imagem: source, coin: typeCoin, removebackground: removedBackground ? 1 : 0, comprado: target.comprado, url: urlTarget), imagemOrigem: self.target.imagem ?? " ")
+                    ButtonEdit(target: Target(id: target.id,
+                                              descricao: descricao,
+                                              valor: Double(Double(valor) / 100),
+                                              posicao: priority,
+                                              porcentagem: target.porcentagem,
+                                              imagem: source,
+                                              coin: typeCoin,
+                                              removebackground: removedBackground ? 1 : 0,
+                                              comprado: target.comprado,
+                                              url: urlTarget),
+                               imagemOrigem: self.target.imagem ?? " ")
                         .padding(.top, 20)
 
                     Divider()
