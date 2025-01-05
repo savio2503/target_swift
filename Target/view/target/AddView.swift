@@ -23,6 +23,7 @@ struct AddView: View {
     @State var removedBackground: Bool = false
     @Environment(\.dismiss) private var dismiss
     @State var numberFormatter: NumberFormatter
+    @State var urlTarget: String? = nil
     
     init() {
         self.numberFormatter = NumberFormatter()
@@ -35,8 +36,6 @@ struct AddView: View {
             ? UIScreen.screenWith : UIScreen.screenHeight
 
         sizeMaxImage = sizeMaxImage - 150
-        
-        //print("size: \(sizeMaxImage)")
     }
     
     var body: some View {
@@ -84,6 +83,12 @@ struct AddView: View {
                     } // MARK: - CAMPOS VALOR
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
+                    
+                    //MARK: - URL
+                    Text("Pagina web do objetivo")
+                        .padding(.top, 16)
+                    UrlView(urlSource: $urlTarget)
+                        .padding(.top, 4)
                     
                     Text("Selecione o peso do objetivo")
                         .padding(.top, 32)
@@ -147,7 +152,8 @@ struct AddView: View {
                             imagem: self.source,
                             coin: self.typeCoin,
                             removebackground: self.removedBackground ? 1 : 0,
-                            comprado: 0)
+                            comprado: 0,
+                            url: urlTarget)
         
         do {
             let _ = try await Api.shared.addTarget(target: target)

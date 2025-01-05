@@ -22,11 +22,7 @@ struct DetailView: View {
     @State var removedBackground: Bool
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
-    
     @State var urlTarget: String?
-    @State private var urlTemp: String = ""
-    @State var validUrl: Bool = false
-    @State private var isShowingURLInput = false
     
     var numberFormatter: NumberFormatter
     
@@ -39,12 +35,9 @@ struct DetailView: View {
 
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
 
-        //KeysStorage.shared.recarregar = false
-
         self.target = target
 
         _descricao = State(initialValue: self.target.descricao)
-        //_valor = State(initialValue: NSDecimalNumber(value: self.target.valor) as Decimal)
         _coin = State(initialValue: self.target.coin!)
 
         sizeMaxImage =
@@ -53,8 +46,6 @@ struct DetailView: View {
 
         sizeMaxImage = sizeMaxImage - 150
         
-        //print("size: \(sizeMaxImage)")
-
         self.priority = target.posicao
         
         _valor = State(initialValue: Int(self.target.valor * 100))
@@ -64,8 +55,6 @@ struct DetailView: View {
         _removedBackground = State(initialValue: self.target.removebackground == 1)
         
         _urlTarget = State(initialValue: self.target.url)
-        
-        //print("des: \(_descricao), url: \(_urlTarget)")
         
         self.numberFormatter = NumberFormatter()
         self.numberFormatter.numberStyle = NumberFormatter.Style.currency
@@ -140,43 +129,8 @@ struct DetailView: View {
                     //MARK: - URL
                     Text("Pagina web do objetivo")
                         .padding(.top, 16)
-                    HStack(spacing: 20) {
-                        if urlTarget != nil && !urlTarget!.isEmpty {
-                            
-                            Button("Editar") {
-                                print("Editar a url do objetivo")
-                                urlTemp = urlTarget!
-                                isShowingURLInput.toggle()
-                            }
-                            .padding(.horizontal, 20)
-                            .foregroundColor(.white)
-                            .background(.blue.opacity(0.8))
-                            .cornerRadius(8.0)
-                            
-                            Button("Ir") {
-                                if (validUrl) {
-                                    print("IR")
-                                    callNavigation()
-                                }
-                            }
-                            .padding(.horizontal, 20)
-                            .foregroundColor(.white)
-                            .background(validUrl ? .blue.opacity(0.8) : .gray.opacity(0.8))
-                            .cornerRadius(8.0)
-                        } else {
-                            
-                            Button("Salvar") {
-                                print("Salvar a url do objetivo")
-                                isShowingURLInput.toggle()
-                            }
-                            .padding(.horizontal, 20)
-                            .foregroundColor(.white)
-                            .background(.blue.opacity(0.8))
-                            .cornerRadius(8.0)
-                            
-                        }
-                    }
-                    .padding(.top, 4)
+                    UrlView(urlSource: $urlTarget)
+                        .padding(.top, 4)
                     
                     //MARK: - PESO
                     VStack {
@@ -223,18 +177,7 @@ struct DetailView: View {
         .onChange(of: typeCoin) {
             self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")
         }
-        .onChange(of: urlTarget) {
-            validateUrl()
-        }
-        .alert("Url Target", isPresented: $isShowingURLInput) {
-            TextField("Type or paste the web address", text: $urlTemp)
-            Button("OK") {
-                self.urlTarget = self.urlTemp == "" ? nil : self.urlTemp
-            }
-            Button("Cancel") {}
-        }
         .onAppear {
-            validateUrl()
             Task {
                 do {
 
@@ -267,26 +210,6 @@ struct DetailView: View {
         }
         
         return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))\(complement)"
-    }
-    
-    //MARK: - FUNCAO URL
-    func validateUrl() {
-        
-        if (urlTarget == nil) {
-            validUrl = false
-            return
-        }
-        
-        guard let url = URL(string: urlTarget!), UIApplication.shared.canOpenURL(url) else {
-            validUrl = false
-            return
-        }
-        
-        validUrl = true
-    }
-    
-    func callNavigation() {
-        UIApplication.shared.open(URL(string: urlTarget!)!)
     }
 
 }

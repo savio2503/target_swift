@@ -12,6 +12,7 @@
 		287BDFA42D1B47B70082161E /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 287BDFA32D1B47B70082161E /* SwiftSoup */; };
 		287BDFB32D1B67EA0082161E /* URLShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 287BDFA92D1B67EA0082161E /* URLShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		287BDFEC2D1B8BFE0082161E /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 287BDFEB2D1B8BFE0082161E /* SwiftSoup */; };
+		28953CDB2D2B210A00EDE104 /* UrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28953CDA2D2B210300EDE104 /* UrlView.swift */; };
 		A2094EB12B3A2F7800A3F897 /* LoginBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2094EB02B3A2F7800A3F897 /* LoginBaseView.swift */; };
 		A2094EB32B3A31F800A3F897 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2094EB22B3A31F800A3F897 /* LoginView.swift */; };
 		A2094EB52B3A322B00A3F897 /* LoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2094EB42B3A322B00A3F897 /* LoggedView.swift */; };
@@ -84,6 +85,7 @@
 		2857B32F2D1C8B4C0060C9E0 /* ComponentsCommunication.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ComponentsCommunication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		287BDFA12D1B47620082161E /* Testes.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Testes.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		287BDFA92D1B67EA0082161E /* URLShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = URLShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		28953CDA2D2B210300EDE104 /* UrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlView.swift; sourceTree = "<group>"; };
 		2896D49A2D1F825F00104AC9 /* target.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = target.entitlements; sourceTree = "<group>"; };
 		A2094EB02B3A2F7800A3F897 /* LoginBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBaseView.swift; sourceTree = "<group>"; };
 		A2094EB22B3A31F800A3F897 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 		A2FA68152C55740D00D2E8D1 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				28953CDA2D2B210300EDE104 /* UrlView.swift */,
 				A2480F682B498D5E00989641 /* ImageView.swift */,
 				A20E90F92B51832C002D294C /* MoneyVIew.swift */,
 				A2ADB94F2B549A5E00EEAB16 /* ButtonEdit.swift */,
@@ -483,6 +486,7 @@
 				A2094EB32B3A31F800A3F897 /* LoginView.swift in Sources */,
 				A263066D2B2F578A00465B55 /* targetApp.swift in Sources */,
 				A2A8F7712B43A71E00FE4006 /* DetailView.swift in Sources */,
+				28953CDB2D2B210A00EDE104 /* UrlView.swift in Sources */,
 				A28F13EB2B5FDFDA000F3425 /* ProgressView.swift in Sources */,
 				A27C04462D05F27400B47736 /* ImagemTools.swift in Sources */,
 			);
