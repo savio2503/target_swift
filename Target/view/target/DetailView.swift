@@ -173,6 +173,9 @@ struct DetailView: View {
             }
             .navigationTitle("Editar objetivo")
             .navigationBarTitleDisplayMode(.inline)
+            .onTapGesture {
+                hideKeyboard()
+            }
         }
         .onChange(of: typeCoin) {
             self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")

@@ -91,6 +91,9 @@ struct LoginView: View {
                 msgError = ""
             }
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
     
     private func login() async {

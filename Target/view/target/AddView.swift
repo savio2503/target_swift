@@ -139,6 +139,9 @@ struct AddView: View {
             .onChange(of: valor) { _, _ in
                 error = ""
             }
+            .onTapGesture {
+                hideKeyboard()
+            }
         } //: NavigationStack
     }
     

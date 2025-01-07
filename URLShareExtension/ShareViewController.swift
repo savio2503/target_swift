@@ -168,6 +168,9 @@ public struct ShareView: View {
             Spacer(minLength: 0)
         }
         .padding(15)
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 
     // Função para cancelar e fechar a extensão
