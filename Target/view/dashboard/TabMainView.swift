@@ -17,6 +17,7 @@ struct TabMainView: View {
     @State var completeTarget: [Target] = []
     @State var totalProgress = 0.0
     @State var totalComplete = 0.0
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if loading {
@@ -74,6 +75,10 @@ struct TabMainView: View {
                     }
                 }
             }
+            .onChange(of: items) {
+                print("change itens ")
+                fillSearch()
+            }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                 print("onResume TabMain")
                 
@@ -86,6 +91,19 @@ struct TabMainView: View {
                 }
             }
         }
+    }
+    
+    private func fillSearch() {
+        progressTarget.removeAll(keepingCapacity: false)
+        completeTarget.removeAll(keepingCapacity: false)
+        
+        items.forEach({ item in
+            if (item.comprado ?? 0 == 0) {
+                progressTarget.append(item)
+            } else {
+                completeTarget.append(item)
+            }
+        })
     }
     
     private func fill() {

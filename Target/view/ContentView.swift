@@ -14,22 +14,30 @@ struct ContentView: View {
     @State private var showLogin = false
     @State private var showAdd = false
     @State private var showErroAdd = false
-    @State var items: [Target] = []
+    @State var items: [Target] = []
+    @State var filteredItems: [Target] = []
     @State var msgError: String = ""
     @State var loading: Bool = true
+    @State private var isSearching: Bool = false
+    @State private var searchText: String = ""
     @Environment(\.colorScheme) var colorScheme
+    private var sizeWith: Double
+    @State private var textFieldWidth: CGFloat = 0
     
     init() {
         KeysStorage.shared.recarregar = true
         
+        sizeWith = UIScreen.screenWith
+        
+        print("sizeWith: \(sizeWith)")
     }
     
     //MARK: - BODY
     var body: some View {
         NavigationStack {
             
-            TabMainView(loading: $loading, items: $items)
-                .navigationTitle("Objetivos")
+            TabMainView(loading: $loading, items: filteredItems.isEmpty ? $items : $filteredItems)
+                .navigationTitle(isSearching ? "" : "Objetivos")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
@@ -56,15 +64,44 @@ struct ContentView: View {
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            print("user tapped!")
-                            showLogin = true
-                        }) {
-                            Image(systemName: "person.circle.fill")
-                                .foregroundColor(.white)
+                        if isSearching {
+                            TextField("Buscar...", text: $searchText)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
+                                .frame(maxWidth: sizeWith - 125)
+                        } else {
+                            Button(action: {
+                                withAnimation {
+                                    isSearching.toggle()
+                                }
+                            }) {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
-                    
+                    ToolbarItem(placement: .topBarTrailing) {
+                        if isSearching {
+                            Button(action: {
+                                withAnimation {
+                                    isSearching.toggle()
+                                    searchText = ""
+                                    filteredItems = []
+                                }
+                            }) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.white)
+                            }
+                        } else {
+                            Button(action: {
+                                print("user tapped!")
+                                showLogin = true
+                            }) {
+                                Image(systemName: "person.circle.fill")
+                                    .foregroundColor(.white)
+                            }
+                        }
+                    }
                 }  //: TOOLBAR
                 .navigationDestination(isPresented: $showLogin) {
                     LoginBaseView()
@@ -72,13 +109,10 @@ struct ContentView: View {
                             print("Login()")
                             
                             if KeysStorage.shared.recarregar {
-                                
                                 loading = true
-                                
                                 KeysStorage.shared.recarregar = false
                                 
                                 Task {
-                                    print("Content 1 getTarget()")
                                     items = await TargetController.getTargets()
                                     loading = false
                                 }
@@ -92,34 +126,48 @@ struct ContentView: View {
         }  //: NAVIGATIONSTACK
         .onAppear {
             updateNavigationBarAppearance()
-            //print("onAppear contentView")
             
             if KeysStorage.shared.recarregar {
                 loading = true
-                
                 KeysStorage.shared.recarregar = false
                 
                 Task {
-                    //print("Content 2 getTarget()")
                     items = await TargetController.getTargets()
+                    //****
+                    //filteredItems.removeAll(keepingCapacity: false)
+                    //filteredItems = items
                     loading = false
-                    //print("finish task onAppear")
                 }
             }
-            
-            //print("finish onAppear contentview")
             
         }
         .onChange(of: colorScheme) { _,__ in
             updateNavigationBarAppearance()
         }
+        .onChange(of: searchText) { _ in
+            filterItems()
+        }
         .tint(.white)
     }
     
+    func filterItems() {
+        if searchText.isEmpty {
+            filteredItems = []
+            print("searchText is empty")
+        } else {
+            filteredItems = items.filter { target in
+                target.descricao.localizedCaseInsensitiveContains(searchText)
+            }
+            
+            print("---")
+            for filter in filteredItems {
+                print("-> \(filter.descricao)")
+            }
+            print("---")
+        }
+    }
+    
     func updateNavigationBarAppearance() {
-        
-        
-        //print("cor \(colorScheme == .dark ? "dark" : "white")")
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
@@ -130,7 +178,3 @@ struct ContentView: View {
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
     }
 }
-
-/*#Preview {
- ContentView()
- }*/

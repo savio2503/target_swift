@@ -15,6 +15,7 @@ struct SignupView: View {
     @State private var sending: Bool = false
     @State private var logged: Bool = false
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -33,6 +34,7 @@ struct SignupView: View {
                             .padding(.bottom, 30)
                         
                         SocalLoginButton(image: Image("apple"), text: Text("Sign in with Apple"))
+                        
                         SocalLoginButton(image: Image("google"), text: Text("Sign in with Google"))
                         
                         Text("or get a link emailed to you")
@@ -121,6 +123,7 @@ struct SocalLoginButton: View {
     
     var image: Image
     var text: Text
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack {
@@ -134,12 +137,12 @@ struct SocalLoginButton: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(Color.white)
+        .background(colorScheme == .dark ? Color.gray : Color.white)
         .cornerRadius(50)
         .shadow(color: Color.black.opacity(0.2), radius: 30, x: 2, y: 2)
     }
 }
 
-/*#Preview {
+#Preview {
  SignupView()
-}*/
+}

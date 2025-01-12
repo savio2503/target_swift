@@ -169,7 +169,7 @@ public struct ShareView: View {
         }
         .padding(15)
         .onTapGesture {
-            hideKeyboard()
+            self.hideKeyboard()
         }
     }
 
