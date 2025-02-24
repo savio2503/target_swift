@@ -18,6 +18,7 @@ struct ImageView: View {
     @State private var image = UIImage()
     @State private var avatarImage: Image?
     @State private var btnBackground: String = "Remover background"
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -45,12 +46,14 @@ struct ImageView: View {
                             Button(action: {
                                 Task {
                                     let res = await removerBackground()
-                                    if res {
+                                    if res != nil {
+                                        source = res!
                                         removedbackground = true
                                     }
                                 }
                             }) {
                                 Text(btnBackground)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
                             }
                         }
                     }
@@ -69,12 +72,14 @@ struct ImageView: View {
                                 Button(action: {
                                     Task {
                                         let res = await removerBackground()
-                                        if res {
+                                        if res != nil {
+                                            source = res!
                                             removedbackground = true
                                         }
                                     }
                                 }) {
                                     Text(btnBackground)
+                                        .foregroundColor(colorScheme == .dark ? .white : .black)
                                 }
                             }
                         }
@@ -129,15 +134,14 @@ struct ImageView: View {
         }
     }
     
-    private func removerBackground() async -> Bool {
-        var response = false
+    private func removerBackground() async -> String? {
+        var response: String? = nil
         btnBackground = "Removendo..."
         
         do {
-            let success = try await RemoveBackground.remove(source: source)
-            if let success = success {
-                source = success
-                response = true
+            let imgbackground = try await RemoveBackground.remove(source: source)
+            if imgbackground != nil {
+                response = imgbackground
             }
         } catch {
             print(error.localizedDescription)

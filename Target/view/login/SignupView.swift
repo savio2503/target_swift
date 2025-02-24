@@ -7,6 +7,9 @@
 
 import SwiftUI
 import ComponentsCommunication
+import GoogleSignIn
+import GoogleSignInSwift
+import Firebase
 
 struct SignupView: View {
     
@@ -19,85 +22,85 @@ struct SignupView: View {
     
     var body: some View {
         VStack {
-            ZStack {
-                Color("BgColor").edgesIgnoringSafeArea(.all)
+            
+            Spacer()
+            
+            VStack {
                 
-                VStack {
-                    
-                    Spacer()
-                    
-                    VStack {
-                        
-                        Text("Sign in")
-                            .font(.largeTitle)
-                            .bold()
-                            .padding(.bottom, 30)
-                        
-                        SocalLoginButton(image: Image("apple"), text: Text("Sign in with Apple"))
-                        
-                        SocalLoginButton(image: Image("google"), text: Text("Sign in with Google"))
-                        
-                        Text("or get a link emailed to you")
-                            .foregroundColor(.gray)
-                            .padding(.top, 20)
-                        
-                        TextField(text: $email) {
-                            Text("Enter your email address")
-                        }
-                            .font(.title3)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.white)
-                            .cornerRadius(50)
-                            .shadow(color: Color.black.opacity(0.2), radius: 30, x: 2, y: 2)
-                            .keyboardType(.emailAddress)
-                        
-                        SecureField("Enter your password", text: $password)
-                            .font(.title3)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.white)
-                            .cornerRadius(50)
-                            .shadow(color: Color.black.opacity(0.2), radius: 30, x: 2, y: 2)
-                        
-                        Button(action: {
-                            Task {
-                                await signin()
-                                
-                                if (logged) {
-                                    KeysStorage.shared.recarregar = true
-                                    dismiss()
-                                }
-                            }
-                        }) {
-                            Text(sending ? "Creating" : "Sigin in")
-                                .font(.title2)
-                                .padding()
-                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                                .background(Color.blue)
-                                .cornerRadius(50)
-                                .shadow(color: Color.black.opacity(0.2), radius: 30, x:2, y: 2)
-                                .foregroundColor(.white)
-                        }
-                        
-                        
-                        //Primary
-                        
-                    }
-                    
-                    Spacer()
-                    
-                    Divider()
-                    
-                    Spacer()
-                    
-                    Text("You are Completely safe.")
-                    Text("Read our Terms & Conditions")
-                        .foregroundColor(Color("PrimaryColor"))
+                Text("Sign in")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.bottom, 30)
+                
+                SocalLoginButton(image: Image("apple"), text: Text("Sign in with Apple"))
+                //SocalLoginButton(image: Image("google"), text: Text("Sign in with Google"))
+                GoogleSignInButton(style: .wide, action: handleSignIn)
+                
+                Text("or get a link emailed to you")
+                    .foregroundColor(.gray)
+                    .padding(.top, 20)
+                
+                TextField(text: $email) {
+                    Text("Enter your email address")
                 }
+                    .font(.title3)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color("BgColor"))
+                    .cornerRadius(50)
+                    .shadow(color: Color.black.opacity(0.2), radius: 30, x: 2, y: 2)
+                    .keyboardType(.emailAddress)
+                
+                SecureField("Enter your password", text: $password)
+                    .font(.title3)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.white)
+                    .cornerRadius(50)
+                    .shadow(color: Color.black.opacity(0.2), radius: 30, x: 2, y: 2)
+                
+                Button(action: {
+                    Task {
+                        await signin()
+                        
+                        if (logged) {
+                            KeysStorage.shared.recarregar = true
+                            dismiss()
+                        }
+                    }
+                }) {
+                    Text(sending ? "Creating" : "Sigin in")
+                        .font(.title2)
+                        .padding()
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        .background(Color.blue)
+                        .cornerRadius(50)
+                        .shadow(color: Color.black.opacity(0.2), radius: 30, x:2, y: 2)
+                        .foregroundColor(.white)
+                }
+                
+                
+                //Primary
+                
             }
-            .padding()
+            
+            Spacer()
+            
+            Divider()
+            
+            Spacer()
+            
+            Text("You are Completely safe.")
+            Text("Read our Terms & Conditions")
+                .foregroundColor(Color("PrimaryColor"))
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
+        .frame(maxWidth: 600)
+    }
+    
+    func handleSignIn() {
+        
     }
     
     private func signin() async {
@@ -143,6 +146,6 @@ struct SocalLoginButton: View {
     }
 }
 
-#Preview {
+/*#Preview {
  SignupView()
-}
+}*/

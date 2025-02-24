@@ -23,8 +23,6 @@ struct ButtonEdit: View {
                 Spacer()
                 
                 Button(action: {
-                    //print("tocou salvar")
-                    
                     isLoading = true
                     Task {
                         await editTarget()

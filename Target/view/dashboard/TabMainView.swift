@@ -47,16 +47,12 @@ struct TabMainView: View {
             }
             .onAppear {
                 
-                print("onAppear TabMain")
-                
                 if KeysStorage.shared.token != nil && KeysStorage.shared.recarregar {
                     
                     KeysStorage.shared.recarregar = false
                     
                     Task {
-                        //print("TabMainView getTarget()")
                         items = await TargetController.getTargets()
-                        //print("finish task onAppear")
                         fill()
                     }
                 } else {
@@ -68,15 +64,12 @@ struct TabMainView: View {
                     KeysStorage.shared.recarregar = false
                     
                     Task {
-                        //print("start task change getTarget()")
                         items = await TargetController.getTargets()
-                        //print("finish task onChange")
                         fill()
                     }
                 }
             }
             .onChange(of: items) {
-                print("change itens ")
                 fillSearch()
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in

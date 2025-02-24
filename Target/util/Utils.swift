@@ -40,7 +40,6 @@ func getNumberOfColumns() -> Int {
     let windowWidth = UIScreen.main.bounds.width
 #endif
     let columns = Int(windowWidth / 170)
-    //print(columns)
     return max(columns, 1)
 }
 

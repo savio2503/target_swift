@@ -19,7 +19,6 @@ func processURL(_ url: String, completion: @escaping (String) -> Void) {
         // Trata URLs encurtadas
         resolveRedirect(for: url) { resolvedURL in
             if let resolvedURL = resolvedURL {
-                //print("URL resolvida: \(resolvedURL)")
                 completion(resolvedURL)
             } else {
                 print("Não foi possível resolver o URL, continuando com o original.")
@@ -62,7 +61,6 @@ func resolveRedirect(for url: String, completion: @escaping (String?) -> Void) {
         
         if (200...399).contains(httpResponse.statusCode) {
             // Não há redirecionamento, URL já final
-            //print("URL final: \(httpResponse.url?.absoluteString ?? url)")
             completion(httpResponse.url?.absoluteString ?? url)
         } else {
             print("Status HTTP inesperado: \(httpResponse.statusCode)")

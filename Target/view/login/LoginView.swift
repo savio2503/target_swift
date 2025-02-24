@@ -26,6 +26,7 @@ struct LoginView: View {
             })
                 .padding()
                 .background(Color(.systemGray6))
+                .tint(.black)
                 .cornerRadius(5.0)
                 .padding(.top, 20)
                 .keyboardType(.emailAddress)
@@ -33,6 +34,7 @@ struct LoginView: View {
             SecureField("Password", text: $password)
                 .padding()
                 .background(Color(.systemGray6))
+                .tint(.black)
                 .cornerRadius(5.0)
             
             Button(action: {
@@ -81,6 +83,7 @@ struct LoginView: View {
             
         }
         .padding()
+        .frame(maxWidth: 600)
         .onChange(of: username) {
             if !msgError.isEmpty {
                 msgError = ""

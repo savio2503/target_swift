@@ -42,9 +42,7 @@ struct AddView: View {
         NavigationStack {
             VStack {
                 ScrollView {
-                    Button(action: {
-                        print("tocou")
-                    }) {
+                    Button(action: {}) {
                         ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
                     }
                     .padding()
@@ -54,6 +52,7 @@ struct AddView: View {
                     TextField("Descricao", text: $descricao)
                         .padding()
                         .background(Color(.systemGray6))
+                        .tint(.black)
                         .cornerRadius(5.0)
                         .padding(.horizontal, 16)
                         .padding(.top, 16)// MARK: - DESCRICAO
@@ -77,6 +76,7 @@ struct AddView: View {
                         CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                             .padding()
                             .background(Color(.systemGray6))
+                            .tint(.black)
                             .cornerRadius(5.0)
                             .keyboardType(.numberPad)
                             .frame(height: 50)
@@ -130,6 +130,7 @@ struct AddView: View {
             } //: VSTACK
             .navigationTitle("Add a new Target")
             .navigationBarTitleDisplayMode(.inline)
+            .frame(maxWidth: 650)
             .onChange(of: typeCoin) { _, _ in
                 self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")
             }

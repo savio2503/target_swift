@@ -97,79 +97,82 @@ public struct ShareView: View {
     @State private var sendSucesso: Bool = false
 
     public var body: some View {
-        VStack(spacing: 15) {
-            Text("Adicionar Objetivo")
-                .font(.title3.bold())
-                .frame(maxWidth: .infinity)
-                .overlay(alignment: .leading) {
-                    Button("Cancel", action: dismiss).tint(.red)  // Botão de cancelamento
-                }
-
-            if sharedContent.finished {
-                // Exibição da imagem, se a requisição foi finalizada
-                ImageWeb(imageurl: sharedContent.image, sizeMaxImage: sizeMaxImage)
-
-                // Campo de texto para a descrição
-                TextField("Descricao", text: $sharedContent.descricao)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(5)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                
-                // Componente de entrada para o valor
-                InputCoin(value: $sharedContent.valor)
-                
-                Text("Selecione o peso do objetivo")
-                    .padding(.top, 15)
-                
-                // Componente de prioridade
-                PriorityView(selectNumber: $prioridade)
-                    .padding(.horizontal)
-                
-                if !error.isEmpty {
-                    Text(error)
-                        .foregroundStyle(.red)
-                        .padding(.top, 16)
-                }
-                
-                Button(action: {
-                    if sharedContent.descricao.isEmpty || sharedContent.valor == 0 {
-                        error = "O campo de descrição ou o campo de valor estâo vazios"
-                    } else {
-                        print("share, chamou adicionar")
-                        Task {
-                            sendSucesso = false
-                            await addTarget()
-                            if sendSucesso {
-                                print("share, finalizou adicionar 1")
-                                KeysStorage.shared.recarregar = true
-                                dismiss()
-                            }
-                            print("share, finalizou adicionar 2")
-                        }
+        GeometryReader { geometry in
+            VStack(spacing: 15) {
+                Text("Adicionar Objetivo")
+                    .font(.title3.bold())
+                    .frame(maxWidth: .infinity)
+                    .overlay(alignment: .leading) {
+                        Button("Cancel", action: dismiss).tint(.red)  // Botão de cancelamento
                     }
-                }) {
-                    Text(loading == false ? "Adicionar" : "Enviando...")
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(Color.blue.opacity(0.85))
-                        .cornerRadius(5.0)
-                } // MARK: - ENVIAR
-                .padding(.top, 32)
-                
-            } else {
-                // Caso ainda não tenha carregado, exibe a mensagem "Carregando..."
-                Spacer(minLength: 0)
-                Text("Carregando...")
-            }
 
-            // Espaço extra no final
-            Spacer(minLength: 0)
-        }
-        .padding(15)
-        .onTapGesture {
-            self.hideKeyboard()
+                if sharedContent.finished {
+                    // Exibição da imagem, se a requisição foi finalizada
+                    ImageWeb(imageurl: sharedContent.image, sizeMaxImage: sizeMaxImage)
+
+                    // Campo de texto para a descrição
+                    TextField("Descricao", text: $sharedContent.descricao)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(5)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                    
+                    // Componente de entrada para o valor
+                    InputCoin(value: $sharedContent.valor)
+                    
+                    Text("Selecione o peso do objetivo")
+                        .padding(.top, 15)
+                    
+                    // Componente de prioridade
+                    PriorityView(selectNumber: $prioridade)
+                        .padding(.horizontal)
+                    
+                    if !error.isEmpty {
+                        Text(error)
+                            .foregroundStyle(.red)
+                            .padding(.top, 16)
+                    }
+                    
+                    Button(action: {
+                        if sharedContent.descricao.isEmpty || sharedContent.valor == 0 {
+                            error = "O campo de descrição ou o campo de valor estâo vazios"
+                        } else {
+                            print("share, chamou adicionar")
+                            Task {
+                                sendSucesso = false
+                                await addTarget()
+                                if sendSucesso {
+                                    print("share, finalizou adicionar 1")
+                                    KeysStorage.shared.recarregar = true
+                                    dismiss()
+                                }
+                                print("share, finalizou adicionar 2")
+                            }
+                        }
+                    }) {
+                        Text(loading == false ? "Adicionar" : "Enviando...")
+                            .foregroundStyle(.white)
+                            .padding()
+                            .background(Color.blue.opacity(0.85))
+                            .cornerRadius(5.0)
+                    } // MARK: - ENVIAR
+                    .padding(.top, 32)
+                    
+                } else {
+                    // Caso ainda não tenha carregado, exibe a mensagem "Carregando..."
+                    Spacer(minLength: 0)
+                    Text("Carregando...")
+                }
+
+                // Espaço extra no final
+                Spacer(minLength: 0)
+            }
+            .padding(15)
+            .frame(width: geometry.size.width, height: geometry.size.height)//600
+            .onTapGesture {
+                self.hideKeyboard()
+            }
         }
     }
 

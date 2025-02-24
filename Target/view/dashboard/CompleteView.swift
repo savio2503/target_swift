@@ -54,7 +54,6 @@ struct CompleteView: View {
                                         .stroke(Color.gray, lineWidth: 1)
                                 )
                                 .onTapGesture {
-                                    print("Tocou em \(target.descricao)")
                                     targetClicked = target
                                     showDetail.toggle()
                                 }
@@ -73,7 +72,6 @@ struct CompleteView: View {
             // Conteúdo da sheet
         }
         .onAppear {
-            print("onAppear complete")
         }
     }
 }

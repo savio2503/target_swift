@@ -98,8 +98,6 @@ struct LoggedView: View {
             for index in self.historics.indices {
                 self.historics[index].id = index + 1
             }
-            
-            //print("res: \(self.historics)")
         } catch {
             print("erro no historicUser() \(error)")
         }

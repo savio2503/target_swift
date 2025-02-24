@@ -73,7 +73,6 @@ struct ProgressView: View {
                                 )
                                 .frame(minWidth: sizeBlock, maxWidth: sizeBlock, minHeight: sizeBlock, maxHeight: sizeBlock)
                                 .onTapGesture {
-                                    print("tocou em \(target.descricao)")
                                     targetClicked = target
                                     showDetail.toggle()
                                     
@@ -91,9 +90,7 @@ struct ProgressView: View {
         }
         .sheet(isPresented: $showMoney) {
             MoneyView()
-        }.onAppear {
-            //print("onAppear progress")
-        }
+        }.onAppear {}
         .overlay(
             ZStack {
                 Button(action: {

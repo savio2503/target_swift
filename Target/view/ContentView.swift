@@ -29,7 +29,7 @@ struct ContentView: View {
         
         sizeWith = UIScreen.screenWith
         
-        print("sizeWith: \(sizeWith)")
+        print("size: \(sizeWith)")
     }
     
     //MARK: - BODY
@@ -42,7 +42,6 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
-                            print("plus tapped")
                             
                             if KeysStorage.shared.token == nil {
                                 self.showErroAdd.toggle()
@@ -68,7 +67,8 @@ struct ContentView: View {
                             TextField("Buscar...", text: $searchText)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
-                                .frame(maxWidth: sizeWith - 125)
+                                .tint(.black)
+                                .frame(minWidth: sizeWith/2 - 65, maxWidth: sizeWith + 125)
                         } else {
                             Button(action: {
                                 withAnimation {
@@ -94,7 +94,6 @@ struct ContentView: View {
                             }
                         } else {
                             Button(action: {
-                                print("user tapped!")
                                 showLogin = true
                             }) {
                                 Image(systemName: "person.circle.fill")
@@ -106,7 +105,6 @@ struct ContentView: View {
                 .navigationDestination(isPresented: $showLogin) {
                     LoginBaseView()
                         .onDisappear {
-                            print("Login()")
                             
                             if KeysStorage.shared.recarregar {
                                 loading = true
@@ -153,17 +151,10 @@ struct ContentView: View {
     func filterItems() {
         if searchText.isEmpty {
             filteredItems = []
-            print("searchText is empty")
         } else {
             filteredItems = items.filter { target in
                 target.descricao.localizedCaseInsensitiveContains(searchText)
             }
-            
-            print("---")
-            for filter in filteredItems {
-                print("-> \(filter.descricao)")
-            }
-            print("---")
         }
     }
     

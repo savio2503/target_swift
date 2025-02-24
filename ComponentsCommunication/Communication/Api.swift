@@ -29,14 +29,12 @@ public class Api {
     
     public func login(userLogin: LoginRequest) async throws -> String {
         
-        //print("login(\(userLogin))")
-        
         request = URLRequest(url: URL(string: baseURL + "login")!)
         
         request?.httpMethod = "POST"
         request?.setValue("application/json", forHTTPHeaderField: "Content-type")
         
-        request?.timeoutInterval = 10000
+        request?.timeoutInterval = 5000
         
         let encoded = try JSONEncoder().encode(userLogin)
         
@@ -68,8 +66,6 @@ public class Api {
     }
     
     public func signin(userLogin: LoginRequest) async throws -> String {
-        
-        //print("Sigin in (\(userLogin)")
         
         request = URLRequest(url: URL(string: baseURL + "signin")!)
         
@@ -131,8 +127,6 @@ public class Api {
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
         
         let (_, _) = try await URLSession.shared.data(for: request!)
-        
-        //print("removido \(targetId), com sucesso")
     }
     
     public func addTarget(target: Target) async throws -> Target {
@@ -250,8 +244,6 @@ public class Api {
         
         // Convertendo a resposta para string (opcional)
         _ = String(decoding: data, as: UTF8.self)
-        
-        //print("retorno imagem: \(result)")
     }
     
     public func infoUser() async throws -> String {

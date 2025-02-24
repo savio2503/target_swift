@@ -12,8 +12,6 @@ import ComponentsCommunication
 
 func saveImageUrl(idTarget: Int, url: String) async {
     
-    print("Download Image: \(url)")
-    
     let imageBase64 = RemoveBackground.convertImageToBase64(urlString: url)
     
     if imageBase64 != nil {
@@ -27,8 +25,6 @@ func saveImageUrl(idTarget: Int, url: String) async {
         } catch {
             print("Erro ao enviar update de imagem: \(error)")
         }
-        
-        print("retornou")
     }
 }
 

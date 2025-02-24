@@ -50,12 +50,9 @@ func removeAllSaves() {
 
     // Remova cada chave filtrada
     for key in keysToRemove {
-        //print("removendo \(key)")
         defaults.removeObject(forKey: key)
     }
 
     // Sincronize para garantir a persistência
     defaults.synchronize()
-
-    //print("Chaves removidas: \(keysToRemove)")
 }

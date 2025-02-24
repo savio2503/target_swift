@@ -54,7 +54,8 @@ class RemoveBackground {
     }
     
     static private func callRemoveBackgroundService(imageData: Data) async -> UIImage? {
-        let url = URL(string: "http://192.168.3.20:5000/upload")!
+        //let url = URL(string: "http://192.168.3.20:5000/upload")!
+        let url = URL(string: "http://192.168.3.44:8080/upload")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("image/webp", forHTTPHeaderField: "Content-Type")
@@ -93,7 +94,7 @@ class RemoveBackground {
         image.draw(in: rect)
         
         context.setBlendMode(.copy)
-        context.setAlpha(1.0)
+        context.setAlpha(0.0)
         context.setFillColor(UIColor.white.cgColor)
         context.fill(rect)
         

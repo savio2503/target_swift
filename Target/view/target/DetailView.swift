@@ -77,9 +77,7 @@ struct DetailView: View {
                 ScrollView {
 
                     //MARK: - IMAGE
-                    Button(action: {
-                        print("tocou")
-                    }) {
+                    Button(action: {}) {
                         ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
                     }
                     .padding()
@@ -94,6 +92,7 @@ struct DetailView: View {
                     )
                     .padding()
                     .background(Color(.systemGray6))
+                    .tint(.black)
                     .cornerRadius(5.0)
                     .padding(.top, 20)
                     .padding(.horizontal, 20)
@@ -119,6 +118,7 @@ struct DetailView: View {
                         CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                             .padding()
                             .background(Color(.systemGray6))
+                            .tint(.black)
                             .cornerRadius(5.0)
                             .keyboardType(.numberPad)
                             .frame(height: 50)
@@ -173,6 +173,7 @@ struct DetailView: View {
             }
             .navigationTitle("Editar objetivo")
             .navigationBarTitleDisplayMode(.inline)
+            .frame(maxWidth: 650)
             .onTapGesture {
                 hideKeyboard()
             }

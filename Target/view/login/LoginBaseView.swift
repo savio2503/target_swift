@@ -52,8 +52,6 @@ struct LoginBaseView: View {
             } else {
                 tipoLogin = 2
             }
-            
-            //print("token: \(KeysStorage.shared.token ?? "null"), tipo: \(tipoLogin)")
         }
     }
 }

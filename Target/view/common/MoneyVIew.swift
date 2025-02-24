@@ -43,8 +43,6 @@ struct MoneyView: View {
                         Spacer()
                         
                         Button(action: {
-                            print("tocou em deposit")
-                            
                             send = true
                             KeysStorage.shared.recarregar = true
                             
@@ -67,8 +65,6 @@ struct MoneyView: View {
                         Spacer()
                         
                         Button(action: {
-                            print("tocou em Withdrawal")
-                            
                             send = true
                             valor = -1*valor
                             KeysStorage.shared.recarregar = true
