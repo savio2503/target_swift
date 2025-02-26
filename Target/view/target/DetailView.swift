@@ -23,6 +23,10 @@ struct DetailView: View {
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
     @State var urlTarget: String?
+    @Environment(\.colorScheme) var colorScheme
+    var tintColor: Color {
+        colorScheme == .dark ? Color.white : Color.black
+    }
     
     var numberFormatter: NumberFormatter
     
@@ -91,8 +95,8 @@ struct DetailView: View {
                         }
                     )
                     .padding()
-                    .background(Color(.systemGray6))
-                    .tint(.black)
+                    .background(Color.gray.opacity(0.3))
+                    .tint(tintColor)
                     .cornerRadius(5.0)
                     .padding(.top, 20)
                     .padding(.horizontal, 20)
@@ -117,8 +121,8 @@ struct DetailView: View {
                         
                         CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                             .padding()
-                            .background(Color(.systemGray6))
-                            .tint(.black)
+                            .background(Color.gray.opacity(0.3))
+                            .tint(tintColor)
                             .cornerRadius(5.0)
                             .keyboardType(.numberPad)
                             .frame(height: 50)

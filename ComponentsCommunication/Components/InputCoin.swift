@@ -13,6 +13,7 @@ public struct InputCoin: View {
     @State private var textMenu = "R$"
     @State private var typeCoin = 1
     @State private var numberFormatter = NumberFormatter()
+    @Environment(\.colorScheme) var colorScheme
     
     // Inicializador
     public init(value: Binding<Int>) {
@@ -43,7 +44,7 @@ public struct InputCoin: View {
             // Campo de texto com formatação de moeda
             CurrencyTextField(numberFormatter: numberFormatter, value: $value)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(colorScheme == .dark ? Color.black.opacity(0.3) : Color.white.opacity(0.8))
                 .cornerRadius(5)
                 .keyboardType(.numberPad)
                 .frame(height: 50)

@@ -24,6 +24,10 @@ struct AddView: View {
     @Environment(\.dismiss) private var dismiss
     @State var numberFormatter: NumberFormatter
     @State var urlTarget: String? = nil
+    @Environment(\.colorScheme) var colorScheme
+    var tintColor: Color {
+        colorScheme == .dark ? Color.white : Color.black
+    }
     
     init() {
         self.numberFormatter = NumberFormatter()
@@ -51,8 +55,8 @@ struct AddView: View {
                     
                     TextField("Descricao", text: $descricao)
                         .padding()
-                        .background(Color(.systemGray6))
-                        .tint(.black)
+                        .background(Color.gray.opacity(0.3))
+                        .tint(tintColor)
                         .cornerRadius(5.0)
                         .padding(.horizontal, 16)
                         .padding(.top, 16)// MARK: - DESCRICAO
@@ -75,8 +79,8 @@ struct AddView: View {
                         
                         CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                             .padding()
-                            .background(Color(.systemGray6))
-                            .tint(.black)
+                            .background(Color.gray.opacity(0.3))
+                            .tint(tintColor)
                             .cornerRadius(5.0)
                             .keyboardType(.numberPad)
                             .frame(height: 50)
