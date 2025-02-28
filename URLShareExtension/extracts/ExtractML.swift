@@ -44,6 +44,7 @@ class ExtractML {
             }
             
             productPrice = productPrice! + productPriceDecimal!
+            productPrice = productPrice?.replacingOccurrences(of: ".", with: "")
             
             //extrair imagem
             if let imageElement = try document.select("img.ui-pdp-image.ui-pdp-gallery__figure__image").first() {

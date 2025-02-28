@@ -14,6 +14,10 @@ struct MoneyView: View {
     @State var send = false
     @Environment(\.dismiss) private var dismiss
     @State var numberFormatter: NumberFormatter
+    @Environment(\.colorScheme) var colorScheme
+    var tintColor: Color {
+        colorScheme == .dark ? Color.white : Color.black
+    }
     
     init() {
         self.numberFormatter = NumberFormatter()
@@ -31,6 +35,7 @@ struct MoneyView: View {
                 CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                     .padding()
                     .background(Color(.systemGray6))
+                    .tint(tintColor)
                     .cornerRadius(5.0)
                     .keyboardType(.numberPad)
                     .frame(height: 50)
