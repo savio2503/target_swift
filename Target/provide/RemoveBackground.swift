@@ -20,7 +20,7 @@ class RemoveBackground {
             return nil
         }
         
-        let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 300, height: 300))
+        let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 900, height: 900))
         
         if let base64String = resizedImage.jpegData(compressionQuality: 1)?.base64EncodedString() {
             return base64String
@@ -54,8 +54,8 @@ class RemoveBackground {
     }
     
     static private func callRemoveBackgroundService(imageData: Data) async -> UIImage? {
-        //let url = URL(string: "http://192.168.3.20:5000/upload")!
-        let url = URL(string: "http://192.168.3.44:8080/upload")!
+        let url = URL(string: "http://192.168.3.20:8080/upload")!
+        //let url = URL(string: "http://192.168.3.44:8080/upload")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("image/webp", forHTTPHeaderField: "Content-Type")

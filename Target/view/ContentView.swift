@@ -67,7 +67,7 @@ struct ContentView: View {
                             TextField("Buscar...", text: $searchText)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
-                                .tint(.black)
+                                .tint(colorScheme == .dark ? .white : .black)
                                 .frame(minWidth: sizeWith/2 - 65, maxWidth: sizeWith + 125)
                         } else {
                             Button(action: {
@@ -145,7 +145,7 @@ struct ContentView: View {
         .onChange(of: searchText) { _ in
             filterItems()
         }
-        .tint(.white)
+        //.tint(.white)
     }
     
     func filterItems() {

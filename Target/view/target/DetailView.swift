@@ -33,43 +33,43 @@ struct DetailView: View {
     init(target: Target) {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(red: 0.12, green: 0.55, blue: 0.95, alpha: 1.00)
-
+        navBarAppearance.backgroundColor = UIColor(red: 0.12, green: 0.55, blue: 0.95, alpha: 1.00) // Azul
+        
+        // Cor do título "Editar objetivo"
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
 
+        // Cor dos botões da NavigationBar (como "Objetivos" no botão de voltar)
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBarAppearance.buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        // Aplicando a aparência
+        UINavigationBar.appearance().standardAppearance = navBarAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+        UINavigationBar.appearance().compactAppearance = navBarAppearance
 
         self.target = target
-
         _descricao = State(initialValue: self.target.descricao)
         _coin = State(initialValue: self.target.coin!)
 
-        sizeMaxImage =
-            UIScreen.screenWith < UIScreen.screenHeight
-            ? UIScreen.screenWith : UIScreen.screenHeight
+        sizeMaxImage = UIScreen.screenWith < UIScreen.screenHeight ? UIScreen.screenWith : UIScreen.screenHeight
+        sizeMaxImage -= 150
 
-        sizeMaxImage = sizeMaxImage - 150
-        
         self.priority = target.posicao
-        
         _valor = State(initialValue: Int(self.target.valor * 100))
-        
         _source = State(initialValue: self.target.imagem ?? " ")
-        
         _removedBackground = State(initialValue: self.target.removebackground == 1)
-        
         _urlTarget = State(initialValue: self.target.url)
-        
+
         self.numberFormatter = NumberFormatter()
-        self.numberFormatter.numberStyle = NumberFormatter.Style.currency
+        self.numberFormatter.numberStyle = .currency
         self.numberFormatter.maximumFractionDigits = 2
-        
-        if (coin == 1) {
+
+        if coin == 1 {
             self.numberFormatter.locale = Locale(identifier: "pt_BR")
             _textMenu = State(initialValue: "R$")
             _typeCoin = State(initialValue: 1)
         } else {
-            self.numberFormatter.locale = Locale(identifier:  "en_US")
+            self.numberFormatter.locale = Locale(identifier: "en_US")
             _textMenu = State(initialValue: "U$")
             _typeCoin = State(initialValue: 2)
         }
@@ -151,6 +151,8 @@ struct DetailView: View {
                                               descricao: descricao,
                                               valor: Double(Double(valor) / 100),
                                               posicao: priority,
+                                              ativo: target.ativo,
+                                              total: target.total,
                                               porcentagem: target.porcentagem,
                                               imagem: source,
                                               coin: typeCoin,

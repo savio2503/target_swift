@@ -17,6 +17,7 @@ struct LoginView: View {
     @State var logged: Bool = false
     @Environment(\.dismiss) private var dismiss
     @Binding var tipoLogin: Int
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack(spacing: 10) {
@@ -26,7 +27,7 @@ struct LoginView: View {
             })
                 .padding()
                 .background(Color(.systemGray6))
-                .tint(.black)
+                .tint(colorScheme == .dark ? .white : .black)
                 .cornerRadius(5.0)
                 .padding(.top, 20)
                 .keyboardType(.emailAddress)
@@ -34,7 +35,7 @@ struct LoginView: View {
             SecureField("Password", text: $password)
                 .padding()
                 .background(Color(.systemGray6))
-                .tint(.black)
+                .tint(colorScheme == .dark ? .white : .black)
                 .cornerRadius(5.0)
             
             Button(action: {

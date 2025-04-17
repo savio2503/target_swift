@@ -35,7 +35,7 @@ class TargetController {
                 
                 let formatter = DateFormatter()
                 formatter.timeZone = TimeZone(secondsFromGMT: 0)
-                formatter.dateFormat = "dd/MM/yyyy HH:mm"
+                formatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
                 
                 var bufferImage: String? = ""
                 
@@ -62,7 +62,7 @@ class TargetController {
                     if bufferImage != nil && bufferImage!.prefix(5).contains("http") {
                         await saveImageUrl(idTarget: target.id!, url: bufferImage!)
                     } else {
-                        updateImage(idTarget: target.id!, imagem: bufferImage!)
+                        updateImage(idTarget: target.id!, imagem: bufferImage ?? " ")
                     }
                 }
                 

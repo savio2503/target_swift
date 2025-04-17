@@ -110,6 +110,13 @@ struct ButtonEdit: View {
                 targetAux.imagem = nil
             }
             
+            //reativando o objetivo se aumentar o valor
+            //print("valor: \(targetAux.valor), total: \(targetAux.total)")
+            if targetAux.valor > targetAux.total ?? 0 {
+                targetAux.ativo = 1
+                //print("ativando")
+            }
+            
             _ = try await Api.shared.editTarget(target: targetAux)
             
         } catch {

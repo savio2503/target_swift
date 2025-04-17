@@ -101,7 +101,7 @@ class SharedContent: ObservableObject {
 public struct ShareView: View {
     var extensionContext: NSExtensionContext?  // Contexto da extensão
     @ObservedObject var sharedContent: SharedContent  // Observa o conteúdo compartilhado
-    var sizeMaxImage: Double = 200  // Tamanho máximo da imagem
+    var sizeMaxImage: Double = 900  // Tamanho máximo da imagem
     @State var descricao: String = ""  // Descrição
     @State private var textMenu = "R$"  // Texto do menu
     @State var prioridade: Int = 1  // Prioridade do objetivo
@@ -203,6 +203,8 @@ public struct ShareView: View {
             let posicao: Int = self.prioridade
             let imagem: String? = sharedContent.image.isEmpty ? nil : sharedContent.image
             let url: String? = sharedContent.url.isEmpty ? nil : sharedContent.url
+            
+            print("addTarget imagem: \(sharedContent.image.prefix(10))")
 
             // Inicialize o Target explicitamente
             let target = Target(descricao: descricao, valor: _value, posicao: posicao, imagem: imagem, coin: 1, removebackground: 0, comprado: 0, url: url)

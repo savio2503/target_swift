@@ -58,7 +58,8 @@ struct ImageView: View {
                         }
                     }
                 }
-            } else if !source.contains(" ") {
+            }
+            else if !source.contains(" ") {
                 if let data = Data(base64Encoded: source), let uiImage = UIImage(data: data) {
                     VStack {
                         Image(uiImage: uiImage)
@@ -85,7 +86,8 @@ struct ImageView: View {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 Button(action: {
                     isShowingConfirmationDialog = true
                 }) {

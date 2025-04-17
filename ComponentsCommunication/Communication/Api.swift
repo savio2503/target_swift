@@ -29,6 +29,8 @@ public class Api {
     
     public func login(userLogin: LoginRequest) async throws -> String {
         
+        print("login")
+        
         request = URLRequest(url: URL(string: baseURL + "login")!)
         
         request?.httpMethod = "POST"
@@ -67,6 +69,8 @@ public class Api {
     
     public func signin(userLogin: LoginRequest) async throws -> String {
         
+        print("signin")
+        
         request = URLRequest(url: URL(string: baseURL + "signin")!)
         
         request?.httpMethod = "POST"
@@ -98,6 +102,8 @@ public class Api {
     
     public func getAllTarget() async throws -> [Target] {
         
+        print("getAllTarget")
+        
         request = URLRequest(url: URL(string: baseURL + "all")!)
         request?.httpMethod = "GET"
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
@@ -108,6 +114,8 @@ public class Api {
     }
     
     public func getAllDeposity(targetId: Int) async throws -> [Deposit] {
+        
+        print("getAllDeposity")
         
         request = URLRequest(url: URL(string: baseURL + "deposit/\(targetId)")!)
         
@@ -121,6 +129,8 @@ public class Api {
     
     public func removeTarget(targetId: Int) async throws {
         
+        print("removeTarget")
+        
         request = URLRequest(url: URL(string: baseURL + "target/\(targetId)")!)
         
         request?.httpMethod = "DELETE"
@@ -130,6 +140,8 @@ public class Api {
     }
     
     public func addTarget(target: Target) async throws -> Target {
+        
+        print("addTarget")
         
         request = URLRequest(url: URL(string: baseURL + "target")!)
         
@@ -144,7 +156,7 @@ public class Api {
         let (data, response) = try await URLSession.shared.upload(for: request!, from: encoded)
         
         let debug = String(decoding: data, as: UTF8.self)
-        print("add res: \(debug)")
+        //print("add res: \(debug)")
         
         let result: Target = try JSONDecoder().decode(Target.self, from: try mapResponse(response: (data, response)))
         
@@ -154,6 +166,8 @@ public class Api {
     }
     
     public func editTarget(target: Target) async throws -> Target {
+        
+        print("editTarget")
         
         request = URLRequest(url: URL(string: baseURL + "target/\(target.id!)")!)
         
@@ -176,6 +190,8 @@ public class Api {
     
     public func deposit(amount: Double) async throws {
         
+        print("deposit")
+        
         request = URLRequest(url: URL(string: baseURL + "inside")!)
         request?.httpMethod = "POST"
         request?.setValue("application/json", forHTTPHeaderField: "Content-type")
@@ -183,7 +199,7 @@ public class Api {
         
         let encoded = Data("{\"valor\":\(amount)}".utf8)
         
-        let (_, __) = try await URLSession.shared.upload(for: request!, from: encoded)
+        let (_, _) = try await URLSession.shared.upload(for: request!, from: encoded)
         
         KeysStorage.shared.recarregar = true
     }
@@ -207,6 +223,8 @@ public class Api {
     
     public func getImage(idTarget: Int) async throws -> ImageTarget {
         
+        print("getImage")
+        
         do {
             request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/image")!)
             request?.httpMethod = "GET"
@@ -223,6 +241,8 @@ public class Api {
     }
     
     public func changeImage(idTarget: Int, image: String) async throws {
+        
+        print("changeImage")
         
         request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)")!)
         
@@ -248,6 +268,8 @@ public class Api {
     
     public func infoUser() async throws -> String {
         
+        print("infoUser")
+        
         request = URLRequest(url: URL(string: baseURL + "auth/me")!)
         request?.httpMethod = "GET"
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
@@ -270,21 +292,29 @@ public class Api {
     
     public func getHistoricUser() async throws -> [Deposit] {
         
-        request = URLRequest(url: URL(string: baseURL + "historic")!)
-        request?.httpMethod = "GET"
-        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        print("getHistoricUser")
         
-        let (data, response) = try await URLSession.shared.data(for: request!)
-        
-        return  try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
+        do {
+            request = URLRequest(url: URL(string: baseURL + "historic")!)
+            request?.httpMethod = "GET"
+            request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+            
+            let (data, response) = try await URLSession.shared.data(for: request!)
+            
+            return  try JSONDecoder().decode([Deposit].self, from: try mapResponse(response: (data, response)))
+        } catch {
+            return []
+        }
     }
     
     public func comprar(idTarget: Int) async throws {
+        
+        print("comprar")
         request = URLRequest(url: URL(string: baseURL + "comprar/\(idTarget)/1")!)
         
         request?.httpMethod = "PUT"
         request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
         
-        let (_, __) = try await URLSession.shared.data(for: request!)
+        let (_, _) = try await URLSession.shared.data(for: request!)
     }
 }

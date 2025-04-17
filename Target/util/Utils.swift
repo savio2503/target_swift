@@ -108,7 +108,7 @@ extension UIImage {
     func resizeToFill() -> UIImage? {
         
         let newSize: CGSize
-        let maxSize: CGFloat = 300
+        let maxSize: CGFloat = 900
         let aspectRatio = size.width / size.height
         
         if size.width > size.height {
