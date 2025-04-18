@@ -115,6 +115,20 @@ struct ButtonEdit: View {
             if targetAux.valor > targetAux.total ?? 0 {
                 targetAux.ativo = 1
                 //print("ativando")
+            } else if targetAux.valor < targetAux.total ?? 0 {
+                targetAux.ativo = 0
+                
+                var diferenca = targetAux.valor - targetAux.total!
+                
+                print("enviando o negativo \(diferenca) para o target \(targetAux.id!)")
+                _ = try await Api.shared.deposit(amount: diferenca, idTarget: targetAux.id)
+                
+                diferenca *= -1
+                
+                print("distribuindo a diferenca: \(diferenca) para os restantes")
+                _ = try await Api.shared.deposit(amount: diferenca)
+                
+                print("finalizado")
             }
             
             _ = try await Api.shared.editTarget(target: targetAux)

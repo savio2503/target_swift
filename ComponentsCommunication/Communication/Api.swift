@@ -188,18 +188,29 @@ public class Api {
         return result
     }
     
-    public func deposit(amount: Double) async throws {
+    public func deposit(amount: Double, idTarget: Int? = nil) async throws {
         
         print("deposit")
         
-        request = URLRequest(url: URL(string: baseURL + "inside")!)
-        request?.httpMethod = "POST"
-        request?.setValue("application/json", forHTTPHeaderField: "Content-type")
-        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
-        
-        let encoded = Data("{\"valor\":\(amount)}".utf8)
-        
-        let (_, _) = try await URLSession.shared.upload(for: request!, from: encoded)
+        if (idTarget == nil) {
+            request = URLRequest(url: URL(string: baseURL + "inside")!)
+            request?.httpMethod = "POST"
+            request?.setValue("application/json", forHTTPHeaderField: "Content-type")
+            request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+            
+            let encoded = Data("{\"valor\":\(amount)}".utf8)
+            
+            let (_, _) = try await URLSession.shared.upload(for: request!, from: encoded)
+        } else {
+            request = URLRequest(url: URL(string: baseURL + "insideTarget")!)
+            request?.httpMethod = "POST"
+            request?.setValue("application/json", forHTTPHeaderField: "Content-type")
+            request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+            
+            let encoded = Data("{\"id\":\(idTarget!),\"valor\":\(amount)}".utf8)
+            
+            let (_, _) = try await URLSession.shared.upload(for: request!, from: encoded)            
+        }
         
         KeysStorage.shared.recarregar = true
     }
