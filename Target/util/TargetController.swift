@@ -20,6 +20,50 @@ class TargetController {
         }
     }
     
+    static func getImagens(target: Target, tamMax: Int? = nil) async -> String {
+        
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
+        
+        var bufferImage: String? = ""
+        
+        //for target in targets {
+        print("loop para o target: \(target.descricao)")
+        //pegar o id e o update_at
+        let detailImage = await Api.shared.getDetailImage(idTarget: target.id!)
+        let dateImage = detailImage.updatedAt != nil ? formatter.date(from: detailImage.updatedAt!) : Date()
+        
+        //compare com a data salva, se tiver
+        let dateLocal = getLastUpdate(id: target.id!)
+        
+        if (dateLocal != nil && dateLocal! >= dateImage!) {
+            bufferImage = loadImage(id: target.id!)
+        } else {
+            var downImage: ImageTarget = ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
+            
+            do {
+                downImage = try await Api.shared.getImage(idTarget: target.id!, tamMax: tamMax)
+            }catch {
+                print("erro ao baixar imagem: \(error)")
+            }
+            
+            saveImage(image: downImage.imagem ?? " ", id: target.id!)
+            
+            bufferImage = downImage.imagem
+        }
+        
+        if bufferImage != nil && bufferImage!.prefix(5).contains("http") {
+            bufferImage = await getImageUrl(idTarget: target.id!, url: bufferImage!)
+        } else {
+            //updateImage(idTarget: target.id!, imagem: bufferImage ?? " ")
+            bufferImage = bufferImage ?? " "
+        }
+        //}
+        
+        return bufferImage!
+    }
+    
     static func getTargets() async -> [Target] {
         
         loading = true
@@ -32,39 +76,6 @@ class TargetController {
                 targets.removeAll(keepingCapacity: false)
                 
                 targets = response.map { $0 }
-                
-                let formatter = DateFormatter()
-                formatter.timeZone = TimeZone(secondsFromGMT: 0)
-                formatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
-                
-                var bufferImage: String? = ""
-                
-                for target in targets {
-                    
-                    //pegar o id e o update_at
-                    let detailImage = await Api.shared.getDetailImage(idTarget: target.id!)
-                    let dateImage = detailImage.updatedAt != nil ? formatter.date(from: detailImage.updatedAt!) : Date()
-                    
-                    //compare com a data salva, se tiver
-                    let dateLocal = getLastUpdate(id: target.id!)
-                    
-                    if (dateLocal != nil && dateLocal! >= dateImage!) {
-                        bufferImage = loadImage(id: target.id!)
-                    } else {
-                        
-                        let downImage = try await Api.shared.getImage(idTarget: target.id!)
-                        
-                        saveImage(image: downImage.imagem ?? " ", id: target.id!)
-                        
-                        bufferImage = downImage.imagem
-                    }
-                    
-                    if bufferImage != nil && bufferImage!.prefix(5).contains("http") {
-                        await saveImageUrl(idTarget: target.id!, url: bufferImage!)
-                    } else {
-                        updateImage(idTarget: target.id!, imagem: bufferImage ?? " ")
-                    }
-                }
                 
             } catch {
                 KeysStorage.shared.token = nil

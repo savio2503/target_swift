@@ -6,76 +6,90 @@
 //
 
 import SwiftUI
+import Kingfisher
+import ComponentsCommunication
 
 struct ImageWebView: View {
     
     var source: String
-    let defaultImage: Image = Image(systemName: "cart")
+    var imageId: Int
+    var defaultImage: Image = Image(systemName: "cart")
     var imageWidth: Double
     var imageHeight: Double
+   /* var cachedImage: UIImage? {
+        ImageCacheManager.shared.object(forKey: source as NSString)
+    }
     
-    init(source: String, imageWidth: Double = 160, imageHeight: Double = 125) {
+    var decodedImage: UIImage? {
+        guard let data = Data(base64Encoded: source),
+              let image = UIImage(data: data) else {
+            return nil
+        }
+        ImageCacheManager.shared.setObject(image, forKey: source as NSString)
+        return image
+    }*/
+    
+    @State private var loadedImage: UIImage?
+    
+    init(source: String, imageId: Int, imageWidth: Double = 160, imageHeight: Double = 125) {
         self.source = source
+        self.imageId = imageId
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
     }
     
     var body: some View {
-        if source.contains("http") {
-            AsyncImage(url: URL(string: source)) { imagedown in
-                switch imagedown {
-                case .empty:
-                    defaultImage
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: self.imageWidth, height: self.imageHeight)
-                        .cornerRadius(10)
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: self.imageWidth, height: self.imageHeight)
-                        .cornerRadius(10)
-                case .failure(_):
-                    defaultImage
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: self.imageWidth, height: self.imageHeight)
-                        .cornerRadius(10)
-                @unknown default:
-                    defaultImage
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: self.imageWidth, height: self.imageHeight)
-                        .cornerRadius(10)
-                }
-            }
-        } else if !source.contains(" ") {
-            
-            if let data = Data(base64Encoded: source),
-               let uiImage = UIImage(data: data) {
-                
-                Image(uiImage: uiImage)
+        Group {
+            if source.trimmingCharacters(in: .whitespaces).isEmpty {
+                defaultImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: self.imageWidth, height: self.imageHeight)
-                    .cornerRadius(10)
-                
+            } else if source.prefix(5).contains("http") {
+                KFImage(URL(string: source))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else if let image = loadedImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
             } else {
                 defaultImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: self.imageWidth, height: self.imageHeight)
-                    .cornerRadius(10)
             }
-                
-            
-        } else {
-            defaultImage
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: self.imageWidth, height: self.imageHeight)
-                .cornerRadius(10)
+        }
+        .frame(width: imageWidth, height: imageHeight)
+        .cornerRadius(10)
+        .onAppear {
+            loadImage()
+        }
+    }
+    
+    private func loadImage() {
+        guard !source.prefix(5).contains("http"),
+              !source.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+
+        if let cached = ImageCacheManager.shared.image(for: imageId) {
+            DispatchQueue.main.async {
+                self.loadedImage = cached
+            }
+            return
+        }
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let data = Data(base64Encoded: source),
+                  let image = UIImage(data: data) else {
+                print("Falha ao decodificar base64 para UIImage")
+                return
+            }
+
+            ImageCacheManager.shared.setImage(image, for: imageId)
+
+            DispatchQueue.main.async {
+                self.loadedImage = image
+            }
         }
     }
 }

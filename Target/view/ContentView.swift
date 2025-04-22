@@ -113,6 +113,7 @@ struct ContentView: View {
                                 Task {
                                     items = await TargetController.getTargets()
                                     loading = false
+                                    updatesImagemMain()
                                 }
                             }
                         }
@@ -135,6 +136,8 @@ struct ContentView: View {
                     //filteredItems.removeAll(keepingCapacity: false)
                     //filteredItems = items
                     loading = false
+                    
+                    updatesImagemMain()
                 }
             }
             
@@ -142,10 +145,29 @@ struct ContentView: View {
         .onChange(of: colorScheme) { _,__ in
             updateNavigationBarAppearance()
         }
-        .onChange(of: searchText) { _ in
+        .onChange(of: searchText) { _,__ in
             filterItems()
         }
         //.tint(.white)
+    }
+    
+    func updatesImagemMain() {
+        Task {
+            await withTaskGroup(of: (Int, String).self) { group in
+                for (index, target) in items.enumerated() {
+                    group.addTask {
+                        let imagem = await TargetController.getImagens(target: target, tamMax: 100)
+                        return (index, imagem)
+                    }
+                }
+                
+                for await (index, imagem) in group {
+                    DispatchQueue.main.async {
+                        items[index].imagem = imagem
+                    }
+                }
+            }
+        }
     }
     
     func filterItems() {

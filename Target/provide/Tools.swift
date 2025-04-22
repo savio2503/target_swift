@@ -28,6 +28,23 @@ func saveImageUrl(idTarget: Int, url: String) async {
     }
 }
 
+func getImageUrl(idTarget: Int, url: String) async -> String {
+    let imageBase64 = RemoveBackground.convertImageToBase64(urlString: url)
+    
+    if imageBase64 != nil {
+        
+        do {
+            try await Api.shared.changeImage(idTarget: idTarget, image: imageBase64!)
+            
+            return imageBase64!
+        } catch {
+            print("Erro ao enviar update de imagem: \(error)")
+        }
+    }
+    
+    return " "
+}
+
 func diferencaMeses(dataInicial: Date, dataFinal: Date) -> Int {
     
     let calendar = Calendar.current

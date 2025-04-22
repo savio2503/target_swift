@@ -37,7 +37,7 @@ struct CompleteView: View {
                         LazyVGrid(columns: getGridRows(), spacing: 16) {
                             ForEach(targets, id: \.self) { target in
                                 VStack {
-                                    ImageWebView(source: target.imagem ?? " ")
+                                    ImageWebView(source: target.imagem ?? " ", imageId: target.id!)
                                     //     .padding()
                                     
                                     Text(target.descricao)

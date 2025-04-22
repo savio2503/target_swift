@@ -37,51 +37,19 @@ struct ProgressView: View {
                     
                     ScrollView {
                         LazyVGrid(columns: getGridRows(), spacing: 16) {
+                            
                             ForEach(targets, id: \.self) { target in
-                                VStack {
-                                    if target.porcentagem ?? 0.0 < 99.99 {
-                                        ImageWebView(source: target.imagem ?? " ")
-                                        
-                                        Text(target.descricao)
-                                            .lineLimit(1)
-                                            .padding(.horizontal, 6)
-                                        
-                                        Text(formattedPorcentagem(target.porcentagem))
-                                            .foregroundColor(.gray)
-                                    } else {
-                                        ImageWebView(source: target.imagem ?? " ", imageHeight: 100)
-                                        
-                                        Text(target.descricao)
-                                            .lineLimit(1)
-                                            .padding(.horizontal, 6)
-                                            .padding(.top, 2)
-                                        
-                                        Text("Buy")
-                                            .padding(.vertical, 1)
-                                            .padding(.horizontal, 30)
-                                            .background(.green)
-                                            .clipShape(Capsule())
-                                            .foregroundColor(.white)
-                                        
-                                        Spacer().frame(height: 10)
-                                    }
-                                }
-                                .background(Color.blue.opacity(0.1))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                                .frame(minWidth: sizeBlock, maxWidth: sizeBlock, minHeight: sizeBlock, maxHeight: sizeBlock)
-                                .onTapGesture {
-                                    targetClicked = target
+                                TargetItemView(target: target, size: sizeBlock) { tappedTarget in
+                                    targetClicked = tappedTarget
                                     showDetail.toggle()
-                                    
                                 }
                             }
                         }
                         .padding(.horizontal, 16)
                         .padding(.top, 8)
                     }
+                    .scrollIndicators(.hidden)
+                    .scrollTargetBehavior(.paging)
                 }
             }
             .navigationDestination(isPresented: $showDetail) {

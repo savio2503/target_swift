@@ -216,28 +216,41 @@ public class Api {
     }
     
     public func getDetailImage(idTarget: Int) async -> ImageTarget {
-        
+        guard let url = URL(string: "\(baseURL)imagens/\(idTarget)/details") else {
+            print("URL inválida")
+            return ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
+        }
+
+        guard let token = KeysStorage.shared.token else {
+            print("Token não encontrado")
+            return ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "Cookie")
+
         do {
-            request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/details")!)
-            request?.httpMethod = "GET"
-            request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
-            
-            let (data, response) = try await URLSession.shared.data(for: request!)
-            
-            return try JSONDecoder().decode(ImageTarget.self, from: try mapResponse(response: (data, response)))
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let mappedData = try mapResponse(response: (data, response))
+            return try JSONDecoder().decode(ImageTarget.self, from: mappedData)
         } catch {
             print("getDetailImage \(idTarget): \(error)")
+            return ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
         }
-        
-        return ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
     }
     
-    public func getImage(idTarget: Int) async throws -> ImageTarget {
+    public func getImage(idTarget: Int, tamMax: Int? = nil) async throws -> ImageTarget {
         
         print("getImage")
         
         do {
-            request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/image")!)
+            if (tamMax != nil) {
+                request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/image?tamMax=\(tamMax!)")!)
+            } else {
+                request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)/image")!)
+            }
+            
             request?.httpMethod = "GET"
             request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
             

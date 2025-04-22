@@ -196,6 +196,8 @@ struct DetailView: View {
                     self.deposits.removeAll()
 
                     self.deposits = response.map { $0 }
+                    
+                    updatesImagem()
 
                 } catch {
                     print("erro deposits: \(error)")
@@ -220,6 +222,24 @@ struct DetailView: View {
         }
         
         return "Total depositado em \(moeda) foi: \(tipo) \(String(format: "%.02f", result))\(complement)"
+    }
+    
+    func updatesImagem() {
+        Task {
+            if source != " " {
+                print("antes: \(source.count)")
+                do {
+                    let image = try await Api.shared.getImage(idTarget: target.id!)
+                    
+                    DispatchQueue.main.async {
+                        self.source = image.imagem ?? " "
+                        print("depois: \(source.count)")
+                    }
+                }catch {
+                    print("erro ao update imagem em detail: \(error)")
+                }
+            }
+        }
     }
 
 }
