@@ -46,8 +46,11 @@ public struct InputCoin: View {
                 .padding()
                 .background(colorScheme == .dark ? Color.black.opacity(0.3) : Color.white.opacity(0.8))
                 .cornerRadius(5)
+            #if !os(macOS)
                 .keyboardType(.numberPad)
+            #endif
                 .frame(height: 50)
+            
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)

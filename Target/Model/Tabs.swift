@@ -39,7 +39,6 @@ enum Tabs: Equatable, Hashable, Identifiable {
     var isSecondary: Bool {
         switch self {
         case .progress, .complete: false
-        default: true
         }
     }
 }

@@ -14,6 +14,7 @@ struct ButtonEdit: View {
     var imagemOrigem: String
     @State var isLoading: Bool = false
     @Environment(\.dismiss) private var dismiss
+    @Binding var sheetIsPresented: Bool
     
     var body: some View {
         
@@ -27,6 +28,7 @@ struct ButtonEdit: View {
                     Task {
                         await editTarget()
                         dismiss()
+                        sheetIsPresented = false
                     }
                 }) {
                     HStack {
@@ -38,6 +40,7 @@ struct ButtonEdit: View {
                     .background(Color("CardColor"))
                     .cornerRadius(30.0)
                 }
+                .buttonStyle(BorderlessButtonStyle())
                 
                 Spacer()
                 
@@ -65,6 +68,7 @@ struct ButtonEdit: View {
                         .background(Color("CardColor"))
                         .cornerRadius(30.0)
                     }
+                    .buttonStyle(BorderlessButtonStyle())
                     
                     Spacer()
                 }
@@ -91,6 +95,7 @@ struct ButtonEdit: View {
                     .background(Color("CardColor"))
                     .cornerRadius(30.0)
                 }
+                .buttonStyle(BorderlessButtonStyle())
                 
                 Spacer()
             }

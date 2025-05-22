@@ -5,6 +5,7 @@
 //  Created by Sávio Dutra on 05/07/24.
 //
 
+#if !os(macOS)
 import UIKit
 import SwiftUI
 
@@ -70,12 +71,13 @@ public class CurrencyUITextField: UITextField {
     }
 }
 
-extension StringProtocol where Self: RangeReplaceableCollection {
-    var digits: Self { filter (\.isWholeNumber) }
-}
-
 extension String {
     var decimal: Decimal { Decimal(string: digits) ?? 0 }
+}
+#endif
+
+extension StringProtocol where Self: RangeReplaceableCollection {
+    var digits: Self { filter (\.isWholeNumber) }
 }
 
 extension LosslessStringConvertible {

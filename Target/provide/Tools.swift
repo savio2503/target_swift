@@ -5,8 +5,12 @@
 //  Created by Sávio Dutra on 18/05/24.
 //
 
-import Foundation
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+import Foundation
 import SwiftUI
 import ComponentsCommunication
 

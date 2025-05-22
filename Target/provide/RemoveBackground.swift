@@ -4,7 +4,7 @@
 //
 //  Created by Sávio Dutra on 06/04/24.
 //
-
+#if !os(macOS)
 import Foundation
 import UIKit
 
@@ -165,3 +165,4 @@ struct RuntimeError: LocalizedError {
     }
 }
 
+#endif

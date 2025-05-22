@@ -29,7 +29,7 @@ struct ImageWebView: View {
         return image
     }*/
     
-    @State private var loadedImage: UIImage?
+    @State private var loadedImage: PlatformImage?
     
     init(source: String, imageId: Int, imageWidth: Double = 160, imageHeight: Double = 125) {
         self.source = source
@@ -39,7 +39,13 @@ struct ImageWebView: View {
     }
     
     var body: some View {
-        Group {
+        content
+            .frame(width: imageWidth, height: imageHeight)
+            .cornerRadius(10)
+            .onAppear {
+                loadImage()
+            }
+        /*Group {
             if source.trimmingCharacters(in: .whitespaces).isEmpty {
                 defaultImage
                     .resizable()
@@ -62,6 +68,33 @@ struct ImageWebView: View {
         .cornerRadius(10)
         .onAppear {
             loadImage()
+        }*/
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if source.trimmingCharacters(in: .whitespaces).isEmpty {
+            defaultImage
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else if source.prefix(5).contains("http") {
+            KFImage(URL(string: source))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else if let image = loadedImage {
+            #if !os(macOS)
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            #else
+            Image(nsImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            #endif
+        } else {
+            defaultImage
+                .resizable()
+                .aspectRatio(contentMode: .fit)
         }
     }
     
@@ -71,16 +104,16 @@ struct ImageWebView: View {
             return
         }
 
-        if let cached = ImageCacheManager.shared.image(for: imageId) {
+        /*if let cached = ImageCacheManager.shared.image(for: imageId) {
             DispatchQueue.main.async {
                 self.loadedImage = cached
             }
             return
-        }
+        }*/
 
         DispatchQueue.global(qos: .userInitiated).async {
             guard let data = Data(base64Encoded: source),
-                  let image = UIImage(data: data) else {
+                  let image = PlatformImage(data: data) else {
                 print("Falha ao decodificar base64 para UIImage")
                 return
             }

@@ -28,8 +28,7 @@ class TargetController {
         
         var bufferImage: String? = ""
         
-        //for target in targets {
-        print("loop para o target: \(target.descricao)")
+        //print("loop para o target: \(target.descricao)")
         //pegar o id e o update_at
         let detailImage = await Api.shared.getDetailImage(idTarget: target.id!)
         let dateImage = detailImage.updatedAt != nil ? formatter.date(from: detailImage.updatedAt!) : Date()
@@ -37,9 +36,13 @@ class TargetController {
         //compare com a data salva, se tiver
         let dateLocal = getLastUpdate(id: target.id!)
         
+        //print("id: \(target.id!), data local: \(dateLocal ?? formatter.date(from: "01/01/2000 00:00:00")), data remote: \(dateImage!)")
+        
         if (dateLocal != nil && dateLocal! >= dateImage!) {
+            //print("usando o local")
             bufferImage = loadImage(id: target.id!)
         } else {
+            //print("usando o server")
             var downImage: ImageTarget = ImageTarget(id: nil, idTarget: nil, updatedAt: nil, imagem: nil)
             
             do {
@@ -48,7 +51,7 @@ class TargetController {
                 print("erro ao baixar imagem: \(error)")
             }
             
-            saveImage(image: downImage.imagem ?? " ", id: target.id!)
+            saveImage(image: downImage.imagem ?? " ", id: target.id!, dateServer: dateImage)
             
             bufferImage = downImage.imagem
         }
@@ -56,10 +59,10 @@ class TargetController {
         if bufferImage != nil && bufferImage!.prefix(5).contains("http") {
             bufferImage = await getImageUrl(idTarget: target.id!, url: bufferImage!)
         } else {
-            //updateImage(idTarget: target.id!, imagem: bufferImage ?? " ")
             bufferImage = bufferImage ?? " "
         }
-        //}
+        
+        //print("buffer: \(bufferImage!.substring(from: 25, length: 10))")
         
         return bufferImage!
     }

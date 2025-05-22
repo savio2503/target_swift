@@ -5,7 +5,11 @@
 //  Created by Sávio Dutra on 17/12/23.
 //
 
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public class Api {
     
@@ -57,6 +61,7 @@ public class Api {
                 }
                 session = matchStrings.joined(separator: ";")
             }
+            
         } else {
             let msgErro = try JSONDecoder().decode(ErrorResponse.self, from: data)
             
@@ -242,7 +247,7 @@ public class Api {
     
     public func getImage(idTarget: Int, tamMax: Int? = nil) async throws -> ImageTarget {
         
-        print("getImage")
+        //print("getImage")
         
         do {
             if (tamMax != nil) {
@@ -294,15 +299,26 @@ public class Api {
         
         print("infoUser")
         
-        request = URLRequest(url: URL(string: baseURL + "auth/me")!)
-        request?.httpMethod = "GET"
-        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        guard let url = URL(string: "\(baseURL)auth/me") else {
+            print("URL inválida")
+            return ""
+        }
         
-        let (data, _) = try await URLSession.shared.data(for: request!)
+        guard let token = KeysStorage.shared.token else {
+            print("Token não encontrado")
+            return ""
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "Cookie")
         
         var result = ""
         
         do {
+        
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
             if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                let email = jsonDict["email"] as? String {
                 result = email 

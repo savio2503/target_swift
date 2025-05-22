@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if !os(macOS)
 
 struct ImagePicker: UIViewControllerRepresentable {
     
@@ -49,3 +50,26 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
+#else
+import AppKit
+
+struct ImagePicker: View {
+    @Binding var selectedImage: NSImage
+    
+    var body: some View {
+        Button("Selecionar Imagem") {
+            let panel = NSOpenPanel()
+            panel.allowedFileTypes = ["png", "jpg", "jpeg"]
+            panel.allowsMultipleSelection = false
+            panel.canChooseDirectories = false
+            
+            if panel.runModal() == .OK,
+               let url = panel.url,
+               let nsImage = NSImage(contentsOf: url) {
+                selectedImage = nsImage
+            }
+        }
+            
+    }
+}
+#endif

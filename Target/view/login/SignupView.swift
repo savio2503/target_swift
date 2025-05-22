@@ -49,7 +49,9 @@ struct SignupView: View {
                     .background(Color("BgColor"))
                     .cornerRadius(50)
                     .shadow(color: Color.black.opacity(0.2), radius: 30, x: 2, y: 2)
+                #if !os(macOS)
                     .keyboardType(.emailAddress)
+                #endif
                 
                 SecureField("Enter your password", text: $password)
                     .font(.title3)

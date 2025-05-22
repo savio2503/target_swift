@@ -22,6 +22,7 @@ struct UrlView: View {
                     isShowingURLInput.toggle()
                 }
                 .padding(.horizontal, 20)
+                .buttonStyle(BorderlessButtonStyle())
                 .foregroundColor(.white)
                 .background(.blue.opacity(0.8))
                 .cornerRadius(8.0)
@@ -33,6 +34,7 @@ struct UrlView: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .buttonStyle(BorderlessButtonStyle())
                 .foregroundColor(.white)
                 .background(validUrl ? .blue.opacity(0.8) : .gray.opacity(0.8))
                 .cornerRadius(8.0)
@@ -42,6 +44,7 @@ struct UrlView: View {
                     isShowingURLInput.toggle()
                 }
                 .padding(.horizontal, 20)
+                .buttonStyle(BorderlessButtonStyle())
                 .foregroundColor(.white)
                 .background(.blue.opacity(0.8))
                 .cornerRadius(8.0)
@@ -63,21 +66,41 @@ struct UrlView: View {
     }
     
     func validateUrl() {
+        
+        validUrl = false
+        
         if (urlSource == nil) {
-            validUrl = false
             return
         }
         
-        guard let url = URL(string: urlSource!), UIApplication.shared.canOpenURL(url) else {
+        /*guard let url = URL(string: urlSource!), UIApplication.shared.canOpenURL(url) else {
             validUrl = false
             return
+        }*/
+        if let url = URL(string: urlSource ?? "") {
+            
+            #if !os(macOS)
+            if UIApplication.shared.canOpenURL(url) {
+                validUrl = true
+            }
+            #else
+            if NSWorkspace.shared.urlForApplication(toOpen: url) != nil {
+                validUrl = true
+            }
+            #endif
+        } else {
+            validUrl = false
         }
-        
-        validUrl = true
     }
     
     func callNavigation() {
-        UIApplication.shared.open(URL(string: urlSource!)!)
+        guard let url = URL(string: urlSource ?? "") else { return }
+        
+        #if os(macOS)
+        NSWorkspace.shared.open(url)
+        #else
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        #endif
     }
 }
 

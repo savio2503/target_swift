@@ -7,6 +7,33 @@
 
 import SwiftUI
 
+#if os(macOS)
+public struct CurrencyTextField: NSViewRepresentable {
+    
+    public typealias NSViewType = CurrencyNSTextField
+    
+    let numberFormatter: NumberFormatter
+    @Binding var value: Int
+    
+    public init(numberFormatter: NumberFormatter, value: Binding<Int>)
+    {
+        self.numberFormatter = numberFormatter
+        self._value = value
+    }
+    
+    public func makeNSView(context: Context) -> CurrencyNSTextField {
+        return CurrencyNSTextField(formatter: numberFormatter, value: $value)
+    }
+    
+    public func updateNSView(_ nsView: CurrencyNSTextField, context: Context) {
+        let expected = numberFormatter.string(from: NSNumber(value: Double(value) / 100.0)) ?? ""
+        if nsView.stringValue != expected {
+            nsView.stringValue = expected
+        }
+    }
+}
+#else
+
 public struct CurrencyTextField: UIViewRepresentable {
     
     public typealias UIViewType = CurrencyUITextField
@@ -27,3 +54,4 @@ public struct CurrencyTextField: UIViewRepresentable {
         
     }
 }
+#endif

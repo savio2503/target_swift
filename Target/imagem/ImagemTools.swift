@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-func saveImage(image: String, id: Int) {
+func saveImage(image: String, id: Int, dateServer: Date? = Date()) {
     let key = "image_\(id)"
-    let date = Date()
+    let date = dateServer
     
     UserDefaults.standard.set(image, forKey: key)
     UserDefaults.standard.set(date, forKey: "\(key)_lastUpdated")
@@ -29,10 +29,6 @@ func getLastUpdate(id: Int) -> Date? {
     let key = "image_\(id)"
     
     if let date = UserDefaults.standard.object(forKey: "\(key)_lastUpdated") as? Date {
-        /*let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "dd/MM/yyyy HH:mm"
-        return formatter.string(from: date)*/
         return date
     }
     
@@ -50,6 +46,7 @@ func removeAllSaves() {
 
     // Remova cada chave filtrada
     for key in keysToRemove {
+        print("removendo: \(key) ")
         defaults.removeObject(forKey: key)
     }
 

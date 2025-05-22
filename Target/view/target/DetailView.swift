@@ -5,15 +5,18 @@
 //  Created by Sávio Dutra on 01/01/24.
 //
 
+#if os(macOS)
+import AppKit
+#endif
 import SwiftUI
 import ComponentsCommunication
 
 struct DetailView: View {
-
+    
+    private var target: Target
     @State var descricao: String = ""
     @State var valor = 0
     @State var msgError: String = ""
-    private var target: Target
     @State var deposits: [Deposit] = []
     private var sizeMaxImage: Double = 0.0
     @State var priority: Int
@@ -29,30 +32,25 @@ struct DetailView: View {
     }
     
     var numberFormatter: NumberFormatter
+    @Binding var sheetIsPresented: Bool
     
-    init(target: Target) {
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(red: 0.12, green: 0.55, blue: 0.95, alpha: 1.00) // Azul
-        
-        // Cor do título "Editar objetivo"
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-
-        // Cor dos botões da NavigationBar (como "Objetivos" no botão de voltar)
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
-        // Aplicando a aparência
-        UINavigationBar.appearance().standardAppearance = navBarAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
-        UINavigationBar.appearance().compactAppearance = navBarAppearance
+    init(target: Target, sheetIsPresented: Binding<Bool>) {
 
         self.target = target
+        _sheetIsPresented = sheetIsPresented
+        
+        print("Detail -> \(target.descricao)")
         _descricao = State(initialValue: self.target.descricao)
         _coin = State(initialValue: self.target.coin!)
 
-        sizeMaxImage = UIScreen.screenWith < UIScreen.screenHeight ? UIScreen.screenWith : UIScreen.screenHeight
-        sizeMaxImage -= 150
+        #if os(macOS)
+        let screenSize = NSScreen.main?.frame.size ?? .zero
+        let _sizeMaxImage = min(screenSize.width, screenSize.height)
+        #else
+        let screenSize = UIScreen.main.bounds.size
+        let _sizeMaxImage = min(screenSize.width, screenSize.height)
+        #endif
+        sizeMaxImage = _sizeMaxImage - 150
 
         self.priority = target.posicao
         _valor = State(initialValue: Int(self.target.valor * 100))
@@ -77,112 +75,7 @@ struct DetailView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                ScrollView {
-
-                    //MARK: - IMAGE
-                    Button(action: {}) {
-                        ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
-                    }
-                    .padding()
-                    .padding(.top, 12)
-
-                    //MARK: - DESCRIPTION
-                    TextField(
-                        "Descrição", text: $descricao,
-                        onEditingChanged: { changed in
-                            msgError = ""
-                        }
-                    )
-                    .padding()
-                    .background(Color.gray.opacity(0.3))
-                    .tint(tintColor)
-                    .cornerRadius(5.0)
-                    .padding(.top, 20)
-                    .padding(.horizontal, 20)
-
-                    //MARK: - VALOR
-                    HStack {
-                        
-                        Menu(textMenu) {
-                            Button("Real, R$") {
-                                textMenu = "R$"
-                                typeCoin = 1
-                            }
-                            Button("Dolar, U$") {
-                                textMenu = "U$"
-                                typeCoin = 2
-                            }
-                        }
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(.blue.opacity(0.8))
-                        .cornerRadius(8.0)
-                        
-                        CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
-                            .padding()
-                            .background(Color.gray.opacity(0.3))
-                            .tint(tintColor)
-                            .cornerRadius(5.0)
-                            .keyboardType(.numberPad)
-                            .frame(height: 50)
-
-                    }
-                    .padding(.horizontal, 16)
-                    
-                    //MARK: - URL
-                    Text("Pagina web do objetivo")
-                        .padding(.top, 16)
-                    UrlView(urlSource: $urlTarget)
-                        .padding(.top, 4)
-                    
-                    //MARK: - PESO
-                    VStack {
-                        Text("Selecione o peso do objetivo")
-
-                        PriorityView(selectNumber: self.$priority)
-                            .padding(.top, 4)
-
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
-
-                    ButtonEdit(target: Target(id: target.id,
-                                              descricao: descricao,
-                                              valor: Double(Double(valor) / 100),
-                                              posicao: priority,
-                                              ativo: target.ativo,
-                                              total: target.total,
-                                              porcentagem: target.porcentagem,
-                                              imagem: source,
-                                              coin: typeCoin,
-                                              removebackground: removedBackground ? 1 : 0,
-                                              comprado: target.comprado,
-                                              url: urlTarget),
-                               imagemOrigem: self.target.imagem ?? " ")
-                        .padding(.top, 20)
-
-                    Divider()
-                        .padding(.top, 20)
-
-                    Text(sumDeposit())
-                        .padding(.vertical, 3)
-
-                    Divider()
-
-                    Text("Historico")
-                        .padding(.vertical, 3)
-                                     
-                    DepositsView(deposits: $deposits)
-                        .padding(.horizontal)
-                }
-            }
-            .navigationTitle("Editar objetivo")
-            .navigationBarTitleDisplayMode(.inline)
-            .frame(maxWidth: 650)
-            .onTapGesture {
-                hideKeyboard()
-            }
+            content
         }
         .onChange(of: typeCoin) {
             self.numberFormatter.locale = Locale(identifier: typeCoin == 1 ? "pt_BR" : "en_US")
@@ -206,6 +99,252 @@ struct DetailView: View {
             }
         }
     }
+    
+    #if os(macOS)
+    private var content: some View {
+        
+        HStack{
+            //MARK: - IMAGE
+            Button(action: {}) {
+                ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
+            }
+            .padding()
+            .buttonStyle(BorderlessButtonStyle())
+            .padding(.top, 12)
+            .frame(minWidth: 250)
+            
+            //MARK: - EDICAO
+            VStack {
+
+                //MARK: - DESCRIPTION
+                TextField(
+                    "Descrição", text: $descricao,
+                    onEditingChanged: { changed in
+                        msgError = ""
+                    }
+                )
+                .padding()
+                .textFieldStyle(PlainTextFieldStyle())
+                .background(Color.gray.opacity(0.3))
+                .tint(tintColor)
+                .cornerRadius(5.0)
+                .padding(.top, 20)
+                .padding(.horizontal, 20)
+
+                //MARK: - VALOR
+                HStack {
+                    
+                    Menu(textMenu) {
+                        Button("Real, R$") {
+                            textMenu = "R$"
+                            typeCoin = 1
+                        }
+                        Button("Dolar, U$") {
+                            textMenu = "U$"
+                            typeCoin = 2
+                        }
+                    }
+                    .padding()
+                    .buttonStyle(BorderlessButtonStyle())
+                    .foregroundColor(.white)
+                    .background(.blue.opacity(0.8))
+                    .cornerRadius(8.0)
+                    .frame(maxWidth: 100)
+                    
+                    //#if !os(macOS)
+                    CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
+                        .padding()
+                        .background(Color.gray.opacity(0.3))
+                        .tint(tintColor)
+                        .cornerRadius(5.0)
+                        .frame(height: 50)
+                    //#endif
+
+                }
+                .padding(.horizontal, 16)
+                
+                //MARK: - URL
+                Text("Pagina web do objetivo")
+                    .padding(.top, 16)
+                UrlView(urlSource: $urlTarget)
+                    .padding(.top, 4)
+                
+                //MARK: - PESO
+                VStack {
+                    Text("Selecione o peso do objetivo")
+
+                    PriorityView(selectNumber: self.$priority)
+                        .padding(.top, 4)
+
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+
+                ButtonEdit(target: Target(id: target.id,
+                                          descricao: descricao,
+                                          valor: Double(Double(valor) / 100),
+                                          posicao: priority,
+                                          ativo: target.ativo,
+                                          total: target.total,
+                                          porcentagem: target.porcentagem,
+                                          imagem: source,
+                                          coin: typeCoin,
+                                          removebackground: removedBackground ? 1 : 0,
+                                          comprado: target.comprado,
+                                          url: urlTarget),
+                           imagemOrigem: self.target.imagem ?? " ",
+                           sheetIsPresented: $sheetIsPresented)
+                    .padding(.top, 20)
+            }
+            .frame(minWidth: 350)
+            
+            //MARK: - HISTORIC
+            ScrollView {
+
+                Divider()
+                    .padding(.top, 20)
+
+                Text(sumDeposit())
+                    .padding(.vertical, 3)
+
+                Divider()
+
+                Text("Historico")
+                    .padding(.vertical, 3)
+                                 
+                DepositsView(deposits: $deposits)
+                    .padding(.horizontal)
+            }
+            .scrollIndicators(.hidden)
+            .frame(minWidth: 300)
+        }
+        .navigationTitle("Editar objetivo")
+        .frame(minWidth: 1000, idealHeight: 450)
+    }
+    #else
+    private var content: some View {
+        VStack {
+            ScrollView {
+
+                //MARK: - IMAGE
+                Button(action: {}) {
+                    ImageView(source: $source, removedbackground: $removedBackground, sizeMaxImage: self.sizeMaxImage)
+                }
+                .padding()
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.top, 12)
+
+                //MARK: - DESCRIPTION
+                TextField(
+                    "Descrição", text: $descricao,
+                    onEditingChanged: { changed in
+                        msgError = ""
+                    }
+                )
+                .padding()
+                .textFieldStyle(PlainTextFieldStyle())
+                .background(Color.gray.opacity(0.3))
+                .tint(tintColor)
+                .cornerRadius(5.0)
+                .padding(.top, 20)
+                .padding(.horizontal, 20)
+
+                //MARK: - VALOR
+                HStack {
+                    
+                    Menu(textMenu) {
+                        Button("Real, R$") {
+                            textMenu = "R$"
+                            typeCoin = 1
+                        }
+                        Button("Dolar, U$") {
+                            textMenu = "U$"
+                            typeCoin = 2
+                        }
+                    }
+                    .padding()
+                    .buttonStyle(BorderlessButtonStyle())
+                    .foregroundColor(.white)
+                    .background(.blue.opacity(0.8))
+                    .cornerRadius(8.0)
+                    #if os(macOS)
+                    .frame(maxWidth: 100)
+                    #endif
+                    
+                    //#if !os(macOS)
+                    CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
+                        .padding()
+                        .background(Color.gray.opacity(0.3))
+                        .tint(tintColor)
+                        .cornerRadius(5.0)
+                    #if !os(macOS)
+                        .keyboardType(.numberPad)
+                    #endif
+                        .frame(height: 50)
+                    //#endif
+
+                }
+                .padding(.horizontal, 16)
+                
+                //MARK: - URL
+                Text("Pagina web do objetivo")
+                    .padding(.top, 16)
+                UrlView(urlSource: $urlTarget)
+                    .padding(.top, 4)
+                
+                //MARK: - PESO
+                VStack {
+                    Text("Selecione o peso do objetivo")
+
+                    PriorityView(selectNumber: self.$priority)
+                        .padding(.top, 4)
+
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+
+                ButtonEdit(target: Target(id: target.id,
+                                          descricao: descricao,
+                                          valor: Double(Double(valor) / 100),
+                                          posicao: priority,
+                                          ativo: target.ativo,
+                                          total: target.total,
+                                          porcentagem: target.porcentagem,
+                                          imagem: source,
+                                          coin: typeCoin,
+                                          removebackground: removedBackground ? 1 : 0,
+                                          comprado: target.comprado,
+                                          url: urlTarget),
+                           imagemOrigem: self.target.imagem ?? " ",
+                           sheetIsPresented: $sheetIsPresented)
+                    .padding(.top, 20)
+
+                Divider()
+                    .padding(.top, 20)
+
+                Text(sumDeposit())
+                    .padding(.vertical, 3)
+
+                Divider()
+
+                Text("Historico")
+                    .padding(.vertical, 3)
+                                 
+                DepositsView(deposits: $deposits)
+                    .padding(.horizontal)
+            }
+            .scrollIndicators(.hidden)
+        }
+        .navigationTitle("Editar objetivo")
+        #if !os(macOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .frame(maxWidth: 650)
+        .onTapGesture {
+            hideKeyboard()
+        }
+    }
+    #endif
 
     func sumDeposit() -> String {
 
@@ -227,13 +366,13 @@ struct DetailView: View {
     func updatesImagem() {
         Task {
             if source != " " {
-                print("antes: \(source.count)")
+                //print("antes: \(source.count)")
                 do {
                     let image = try await Api.shared.getImage(idTarget: target.id!)
                     
                     DispatchQueue.main.async {
                         self.source = image.imagem ?? " "
-                        print("depois: \(source.count)")
+                        //print("depois: \(source.count)")
                     }
                 }catch {
                     print("erro ao update imagem em detail: \(error)")
@@ -245,6 +384,6 @@ struct DetailView: View {
 }
 
 /*#Preview {
-    DetailView(target: Target(id: 1, descricao: "teste", valor: 10.5, posicao: 1, ativo: 1, total: 100, porcetagem: 1.25, imagem: " ", coin: 1, removebackground: 0))
+    DetailView(target: Target(id: 1, descricao: "Teste Padrao", valor: 200.0, posicao: 5, porcentagem: 0.0, imagem: "https://colorindonuvens.com/wp-content/uploads/2018/12/Wallpaper4k-cidade-Colorindonuvens-5.jpg", removebackground: 0))
 }*/
 

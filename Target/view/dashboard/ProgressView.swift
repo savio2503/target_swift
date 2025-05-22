@@ -15,14 +15,19 @@ struct ProgressView: View {
     @Binding var targets: [Target]
     @Binding var total: Double
     @Binding var showMoney: Bool
-    
+    @Binding var porcentagem: Double
+    private var defaultTarget: Target {
+        Target(id: 1, descricao: "", valor: 0.0, posicao: 1, porcentagem: 0.0, imagem: " ", removebackground: 0)
+    }
     private let sizeBlock = 170.0
+    
+    @State private var gridRows = getGridRows()
 
     var body: some View {
         NavigationStack {
             VStack {
                 
-                Text("Total value in progress: \(total.toCurrency() ?? "0.00")")
+                Text("Total value in progress: \(total.toCurrency() ?? "0.00") = \(porcentagem, specifier: "%.2f")%")
                     .padding(.top, 8)
                 
                 if (targets.isEmpty) {
@@ -36,12 +41,15 @@ struct ProgressView: View {
                 } else {
                     
                     ScrollView {
-                        LazyVGrid(columns: getGridRows(), spacing: 16) {
+                        LazyVGrid(columns: gridRows, spacing: 16) {
                             
                             ForEach(targets, id: \.self) { target in
                                 TargetItemView(target: target, size: sizeBlock) { tappedTarget in
-                                    targetClicked = tappedTarget
-                                    showDetail.toggle()
+                                    DispatchQueue.main.async {
+                                        print("\(showDetail) progress, tapped: \(tappedTarget.id ?? 0)")
+                                        self.targetClicked = tappedTarget
+                                        self.showDetail = true
+                                    }
                                 }
                             }
                         }
@@ -49,35 +57,39 @@ struct ProgressView: View {
                         .padding(.top, 8)
                     }
                     .scrollIndicators(.hidden)
-                    .scrollTargetBehavior(.paging)
+                    //.scrollTargetBehavior(.paging)
                 }
             }
+            #if os(macOS)
+            .sheet(isPresented: $showDetail) {
+                if (showDetail) {
+                    DetailView(target: targetClicked ?? defaultTarget, sheetIsPresented: $showDetail)
+                }
+            }
+            #else
             .navigationDestination(isPresented: $showDetail) {
-                DetailView(target: targetClicked ?? Target(id: 1, descricao: "", valor: 0.0, posicao: 1, imagem: " ", removebackground: 0))
+                //print("\(showDetail)")
+                if (showDetail) {
+                    DetailView(target: targetClicked ?? defaultTarget, sheetIsPresented: $showDetail)
+                }
+            }
+            #endif
+        }
+        .onChange(of: showDetail) { newValue in
+            if !newValue && KeysStorage.shared.recarregar {
+                print("ParaAtualizar")
+                showMoney.toggle()
             }
         }
-        .sheet(isPresented: $showMoney) {
-            MoneyView()
-        }.onAppear {}
-        .overlay(
-            ZStack {
-                Button(action: {
-                    self.showMoney.toggle()
-                }) {
-                    if KeysStorage.shared.token != nil && !self.targets.isEmpty {
-                        Image("exchange")
-                            .resizable()
-                            .scaledToFit()
-                            .background(Circle().fill(.clear))
-                            .frame(width: 48, height: 48, alignment: .center)
-                    }
-                }  //: BUTTON
-                .tint(.blue)
-
-            }  //: ZSTACK
-            .padding(.bottom, 15)
-            .padding(.trailing, 15), alignment: .bottomTrailing
-        )//: OVERLAY 
+        .onAppear {
+            print("onAppear ProgressView")
+        }
+        #if !os(macOS)
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+            print("Dispositivo girou")
+            gridRows = getGridRows()
+        }
+        #endif
     }
     
     

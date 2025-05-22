@@ -65,7 +65,7 @@ struct CompleteView: View {
                 }
             }
             .navigationDestination(isPresented: $showDetail) {
-                DetailView(target: targetClicked ?? Target(id: 1, descricao: "", valor: 0.0, posicao: 1, imagem: " ", removebackground: 0))
+                DetailView(target: targetClicked ?? Target(id: 1, descricao: "", valor: 0.0, posicao: 1, imagem: " ", removebackground: 0), sheetIsPresented: $showDetail)
             }
         }
         .sheet(isPresented: $showMoney) {

@@ -10,6 +10,7 @@ import Social
 import SwiftUI
 import SwiftSoup
 import ComponentsCommunication
+import UniformTypeIdentifiers
 
 class ShareViewController: UIViewController {
     override func viewDidLoad() {
@@ -26,7 +27,16 @@ class ShareViewController: UIViewController {
             for item in inputItems {
                 if let attachments = item.attachments {
                     for attachment in attachments {
-                        if attachment.hasItemConformingToTypeIdentifier("public.url") {
+                        if attachment.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                            attachment.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, error in
+                                if let uiImage = UIImage(data: data!) {
+                                    DispatchQueue.main.async {
+                                        sharedContent.imageRoot = Image(uiImage: uiImage)
+                                        sharedContent.finished = true
+                                    }
+                                }
+                            }
+                        } else if attachment.hasItemConformingToTypeIdentifier("public.url") {
                             attachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
                                 if let url = data as? URL {
                                     DispatchQueue.main.async {
@@ -95,6 +105,7 @@ class SharedContent: ObservableObject {
     @Published var valor: Int = 0
     @Published var image: String = ""
     @Published var url: String = ""
+    @Published var imageRoot: Image? = nil
 }
 
 
@@ -121,7 +132,7 @@ public struct ShareView: View {
 
             if sharedContent.finished {
                 // Exibição da imagem, se a requisição foi finalizada
-                ImageWeb(imageurl: sharedContent.image, sizeMaxImage: sizeMaxImage)
+                ImageWeb(imageurl: sharedContent.image, imageroot: sharedContent.imageRoot, sizeMaxImage: sizeMaxImage)
 
                 // Campo de texto para a descrição
                 TextField("Descricao", text: $sharedContent.descricao)

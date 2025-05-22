@@ -51,6 +51,6 @@ struct TargetItemView: View {
         .frame(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size)
         .onTapGesture {
             onTap(target)
-        }        
+        }
     }
 }

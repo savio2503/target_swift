@@ -12,46 +12,57 @@ struct LoginBaseView: View {
     
     @State private var tipoLogin = 1
     
-    init() {
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(red: 0.12, green: 0.55, blue: 0.95, alpha: 1.00)
-        
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
-        let backItemAppearance = UIBarButtonItemAppearance()
-        backItemAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
-        navBarAppearance.backButtonAppearance = backItemAppearance
-        
-        let image = UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        
-        navBarAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
-        
-        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+    var body: some View {
+        #if os(macOS)
+        macOSView
+        #else
+        iOSView
+        #endif
     }
     
-    var body: some View {
+    #if os(macOS)
+    private var macOSView: some View {
+        VStack {
+            Text("Login")
+                .font(.title)
+                .padding()
+            
+            contentView
+        }
+        .frame(minWidth: 400, minHeight: 400)
+        .onAppear(perform: handleLoginState)
+    }
+    #else
+    private var iOSView: some View {
         NavigationStack {
-            VStack {
-                if (tipoLogin == 1) {
-                    LoginView(tipoLogin: $tipoLogin)
-                } else if (tipoLogin == 2) {
-                    LoggedView()
-                } else if (tipoLogin == 3) {
-                    SignupView()
-                }
-            }
-            .navigationTitle("Login")
-            .navigationBarTitleDisplayMode(.inline)
-        }.onAppear {
-            
-            
-            if (KeysStorage.shared.token ?? "").isEmpty {
-                tipoLogin = 1
-            } else {
-                tipoLogin = 2
-            }
+            contentView
+                .navigationTitle("Login")
+                .navigationBarTitleDisplayMode(.inline)
+        }
+        .onAppear(perform: handleLoginState)
+    }
+    #endif
+    
+    @ViewBuilder
+    private var contentView: some View {
+        if tipoLogin == 1 {
+            LoginView(tipoLogin: $tipoLogin)
+        } else if tipoLogin == 2 {
+            LoggedView()
+        } else if tipoLogin == 3 {
+            SignupView()
         }
     }
+    
+    private func handleLoginState() {
+        if (KeysStorage.shared.token ?? "").isEmpty {
+            tipoLogin = 1
+        } else {
+            tipoLogin = 2
+        }
+    }
+}
+
+#Preview {
+    LoginBaseView()
 }

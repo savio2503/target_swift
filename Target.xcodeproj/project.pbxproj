@@ -9,10 +9,15 @@
 /* Begin PBXBuildFile section */
 		2818A53F2D7521220081B3A1 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2818A53E2D7521220081B3A1 /* Tabs.swift */; };
 		281BFAC22DB708400049014B /* TargetItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281BFAC12DB708400049014B /* TargetItemView.swift */; };
+		282DDFF42DCB726C00505023 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DDFF32DCB726C00505023 /* SidebarView.swift */; };
+		282DDFF62DCB749800505023 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DDFF52DCB749800505023 /* AuthViewModel.swift */; };
+		282DDFF82DCB7BA400505023 /* DrawerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DDFF72DCB7BA400505023 /* DrawerWrapper.swift */; };
+		282DDFFA2DCB7C8C00505023 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DDFF92DCB7C8C00505023 /* MainView.swift */; };
+		282DDFFC2DCB809F00505023 /* RemoveBackgroundMacos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DDFFB2DCB809F00505023 /* RemoveBackgroundMacos.swift */; };
 		2857B3372D1C8B4C0060C9E0 /* ComponentsCommunication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2857B32F2D1C8B4C0060C9E0 /* ComponentsCommunication.framework */; };
 		2857B3382D1C8B4C0060C9E0 /* ComponentsCommunication.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2857B32F2D1C8B4C0060C9E0 /* ComponentsCommunication.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		287BDFA42D1B47B70082161E /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 287BDFA32D1B47B70082161E /* SwiftSoup */; };
-		287BDFB32D1B67EA0082161E /* URLShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 287BDFA92D1B67EA0082161E /* URLShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		287BDFB32D1B67EA0082161E /* URLShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 287BDFA92D1B67EA0082161E /* URLShareExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		287BDFEC2D1B8BFE0082161E /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 287BDFEB2D1B8BFE0082161E /* SwiftSoup */; };
 		28953CDB2D2B210A00EDE104 /* UrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28953CDA2D2B210300EDE104 /* UrlView.swift */; };
 		28A2EB582D467EB2003232EE /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 28A2EB572D467EB2003232EE /* GoogleSignIn */; };
@@ -92,6 +97,11 @@
 /* Begin PBXFileReference section */
 		2818A53E2D7521220081B3A1 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		281BFAC12DB708400049014B /* TargetItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetItemView.swift; sourceTree = "<group>"; };
+		282DDFF32DCB726C00505023 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		282DDFF52DCB749800505023 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		282DDFF72DCB7BA400505023 /* DrawerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerWrapper.swift; sourceTree = "<group>"; };
+		282DDFF92DCB7C8C00505023 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		282DDFFB2DCB809F00505023 /* RemoveBackgroundMacos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBackgroundMacos.swift; sourceTree = "<group>"; };
 		2857B32F2D1C8B4C0060C9E0 /* ComponentsCommunication.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ComponentsCommunication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		287BDFA12D1B47620082161E /* Testes.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Testes.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		287BDFA92D1B67EA0082161E /* URLShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = URLShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -264,6 +274,10 @@
 				A2FA68132C5572EB00D2E8D1 /* target */,
 				A2094EAF2B3A2EB200A3F897 /* login */,
 				A263066E2B2F578A00465B55 /* ContentView.swift */,
+				282DDFF32DCB726C00505023 /* SidebarView.swift */,
+				282DDFF52DCB749800505023 /* AuthViewModel.swift */,
+				282DDFF72DCB7BA400505023 /* DrawerWrapper.swift */,
+				282DDFF92DCB7C8C00505023 /* MainView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -273,6 +287,7 @@
 			children = (
 				A21C12DE2BC18CF400C41143 /* RemoveBackground.swift */,
 				A24DFC902BF9391200B97541 /* Tools.swift */,
+				282DDFFB2DCB809F00505023 /* RemoveBackgroundMacos.swift */,
 			);
 			path = provide;
 			sourceTree = "<group>";
@@ -515,23 +530,28 @@
 				A2480F692B498D5E00989641 /* ImageView.swift in Sources */,
 				A20E90FA2B51832C002D294C /* MoneyVIew.swift in Sources */,
 				A2094EB52B3A322B00A3F897 /* LoggedView.swift in Sources */,
+				282DDFFC2DCB809F00505023 /* RemoveBackgroundMacos.swift in Sources */,
 				A2094EB12B3A2F7800A3F897 /* LoginBaseView.swift in Sources */,
 				A2ADB9502B549A5E00EEAB16 /* ButtonEdit.swift in Sources */,
 				A2393CDD2B6C6C9100EADC7F /* TabMainView.swift in Sources */,
 				A2A8F76D2B4203BD00FE4006 /* Utils.swift in Sources */,
 				A20E90F82B517B9D002D294C /* AddView.swift in Sources */,
 				A2B7FEC12B9E07A40027699B /* TargetController.swift in Sources */,
+				282DDFF42DCB726C00505023 /* SidebarView.swift in Sources */,
+				282DDFF82DCB7BA400505023 /* DrawerWrapper.swift in Sources */,
 				A28F13E92B5FDFB7000F3425 /* CompleteView.swift in Sources */,
 				A263066F2B2F578A00465B55 /* ContentView.swift in Sources */,
 				A2A656882BACFE4F00C33CC5 /* DepositsView.swift in Sources */,
 				281BFAC22DB708400049014B /* TargetItemView.swift in Sources */,
 				A21C12DF2BC18CF400C41143 /* RemoveBackground.swift in Sources */,
+				282DDFF62DCB749800505023 /* AuthViewModel.swift in Sources */,
 				A24DFC912BF9391200B97541 /* Tools.swift in Sources */,
 				A229968F2B6E6AF0003BE88C /* ImageWebView.swift in Sources */,
 				A2094EB32B3A31F800A3F897 /* LoginView.swift in Sources */,
 				A263066D2B2F578A00465B55 /* targetApp.swift in Sources */,
 				A2A8F7712B43A71E00FE4006 /* DetailView.swift in Sources */,
 				28953CDB2D2B210A00EDE104 /* UrlView.swift in Sources */,
+				282DDFFA2DCB7C8C00505023 /* MainView.swift in Sources */,
 				A28F13EB2B5FDFDA000F3425 /* ProgressView.swift in Sources */,
 				A27C04462D05F27400B47736 /* ImagemTools.swift in Sources */,
 				2818A53F2D7521220081B3A1 /* Tabs.swift in Sources */,
@@ -548,6 +568,7 @@
 		};
 		287BDFB22D1B67EA0082161E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 287BDFA82D1B67EA0082161E /* URLShareExtension */;
 			targetProxy = 287BDFB12D1B67EA0082161E /* PBXContainerItemProxy */;
 		};
@@ -581,8 +602,9 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio.ComponentsCommunication;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -623,8 +645,9 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio.ComponentsCommunication;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -657,6 +680,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio2503.target.URLShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -688,6 +712,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio2503.target.URLShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -822,12 +847,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIconMac;
 				CODE_SIGN_ENTITLEMENTS = target/target.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"target/Preview Content\"";
 				DEVELOPMENT_TEAM = NYSLTBQZ24;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "@executable_path/../Frameworks";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = target/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = target;
@@ -841,11 +868,13 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio2503.target;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -859,12 +888,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIconMac;
 				CODE_SIGN_ENTITLEMENTS = target/target.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"target/Preview Content\"";
 				DEVELOPMENT_TEAM = NYSLTBQZ24;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "@executable_path/../Frameworks";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = target/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = target;
@@ -878,11 +909,13 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.savio2503.target;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;

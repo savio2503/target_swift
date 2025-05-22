@@ -34,10 +34,9 @@ struct MoneyView: View {
                 
                 CurrencyTextField(numberFormatter: numberFormatter, value: $valor)
                     .padding()
-                    .background(Color(.systemGray6))
+                    .background(Color.gray.opacity(0.3))
                     .tint(tintColor)
                     .cornerRadius(5.0)
-                    .keyboardType(.numberPad)
                     .frame(height: 50)
                 
                 Spacer()
@@ -66,6 +65,7 @@ struct MoneyView: View {
                             .cornerRadius(30.0)
                         }
                         .padding()
+                        .buttonStyle(BorderlessButtonStyle())
                         
                         Spacer()
                         
@@ -89,6 +89,7 @@ struct MoneyView: View {
                             .cornerRadius(30.0)
                         }
                         .padding()
+                        .buttonStyle(BorderlessButtonStyle())
                         
                         Spacer()
                     }
@@ -99,8 +100,11 @@ struct MoneyView: View {
                         .padding(.bottom, 50)
                 }
             }
+            .frame(width: 400)
             .navigationTitle("Add a new Deposit or Withdrawal")
+            #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
         }//: NAVIGATION STACK
     }
     

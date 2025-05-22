@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ImageWeb: View {
     var imageurl: String
+    var imageroot: Image?
     var sizeMaxImage: Double
     var body: some View {
         VStack {
@@ -31,7 +32,15 @@ struct ImageWeb: View {
                         }
                     }
                 }
-            } else {
+            } else if imageroot != nil {
+                VStack {
+                    imageroot!
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: sizeMaxImage, maxHeight: sizeMaxImage)
+                        .padding(.bottom, 2)                    
+                }
+            }else {
                 Image(systemName: "xmark.circle")
             }
         }

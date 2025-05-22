@@ -28,6 +28,7 @@ public struct PriorityView: View {
                             }
                         }
                         .padding()
+                        .buttonStyle(BorderlessButtonStyle())
                         .foregroundColor(itemId == selectNumber ? .black : (colorScheme == .dark ? .white : .black))
                         .background(itemId == selectNumber ? Color.blue.opacity(0.8) : Color.clear)
                         .cornerRadius(8)
