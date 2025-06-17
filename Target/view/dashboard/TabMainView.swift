@@ -61,24 +61,24 @@ struct TabMainView: View {
             #endif
             .onAppear {
                 print("onApper TabMain")
-                if KeysStorage.shared.token != nil && KeysStorage.shared.recarregar {
+                if KeysStorage.shared.token != nil &&
+                    KeysStorage.shared.recarregar &&
+                    !loading {
                     
+                    print("recarregar false tabmainView 1")
                     KeysStorage.shared.recarregar = false
                     
                     Task {
                         print(1)
-                        items = await TargetController.getTargets()
                         fill()
                         updatesImagemMain()
                     }
-                } /*else {
-                    print(2)
-                    fill()
-                    updatesImagemMain()
-                }*/
+                }
             }
             .onChange(of: auth.updateTarget) { newValue in
                 if newValue && KeysStorage.shared.recarregar {
+                    
+                    print("recarregar false tabmainView 2")
                     KeysStorage.shared.recarregar = false
                     auth.updateTarget = false
                     print("atualizar apos add tabmain")
@@ -92,6 +92,8 @@ struct TabMainView: View {
             }
             .onChange(of: sendMoney) {
                 if (KeysStorage.shared.recarregar) {
+                    
+                    print("recarregar false tabmainView 3")
                     KeysStorage.shared.recarregar = false
                     
                     Task {
@@ -108,6 +110,7 @@ struct TabMainView: View {
             #if !os(macOS)
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             
+                print("recarregar false tabmainView 4")
                 KeysStorage.shared.recarregar = false
                 
                 Task {
@@ -161,24 +164,26 @@ struct TabMainView: View {
     }
     
     private func fill() {
-        progressTarget.removeAll(keepingCapacity: false)
-        completeTarget.removeAll(keepingCapacity: false)
-        totalComplete = 0.0
-        totalProgress = 0.0
-        var totalAberto: Double = 0.0
-        
-        items.forEach({ item in
-            if (item.comprado ?? 0 == 0) {
-                progressTarget.append(item)
-                totalProgress += item.total ?? 0.0
-                totalAberto += item.valor
-            } else {
-                completeTarget.append(item)
-                totalComplete += item.valor
-            }
-        })
-        
-        porcetagemProgress = (totalProgress / totalAberto) * 100
+        DispatchQueue.main.async {
+            progressTarget.removeAll()
+            completeTarget.removeAll()
+            totalComplete = 0.0
+            totalProgress = 0.0
+            var totalAberto: Double = 0.0
+            
+            items.forEach({ item in
+                if (item.comprado ?? 0 == 0) {
+                    progressTarget.append(item)
+                    totalProgress += item.total ?? 0.0
+                    totalAberto += item.valor
+                } else {
+                    completeTarget.append(item)
+                    totalComplete += item.valor
+                }
+            })
+            
+            porcetagemProgress = (totalProgress / totalAberto) * 100
+        }
     }
 }
 

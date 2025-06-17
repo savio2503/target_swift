@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @StateObject var auth = AuthViewModel.shared
     
+       
     //MARK: - BODY
     var body: some View {
         

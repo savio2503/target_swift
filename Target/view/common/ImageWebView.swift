@@ -14,61 +14,21 @@ struct ImageWebView: View {
     var source: String
     var imageId: Int
     var defaultImage: Image = Image(systemName: "cart")
-    var imageWidth: Double
-    var imageHeight: Double
-   /* var cachedImage: UIImage? {
-        ImageCacheManager.shared.object(forKey: source as NSString)
-    }
-    
-    var decodedImage: UIImage? {
-        guard let data = Data(base64Encoded: source),
-              let image = UIImage(data: data) else {
-            return nil
-        }
-        ImageCacheManager.shared.setObject(image, forKey: source as NSString)
-        return image
-    }*/
     
     @State private var loadedImage: PlatformImage?
     
-    init(source: String, imageId: Int, imageWidth: Double = 160, imageHeight: Double = 125) {
+    init(source: String, imageId: Int) {
         self.source = source
         self.imageId = imageId
-        self.imageWidth = imageWidth
-        self.imageHeight = imageHeight
     }
     
     var body: some View {
         content
-            .frame(width: imageWidth, height: imageHeight)
             .cornerRadius(10)
             .onAppear {
                 loadImage()
             }
-        /*Group {
-            if source.trimmingCharacters(in: .whitespaces).isEmpty {
-                defaultImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else if source.prefix(5).contains("http") {
-                KFImage(URL(string: source))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else if let image = loadedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                defaultImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            }
-        }
-        .frame(width: imageWidth, height: imageHeight)
-        .cornerRadius(10)
-        .onAppear {
-            loadImage()
-        }*/
+            .clipped()
     }
     
     @ViewBuilder
@@ -103,13 +63,6 @@ struct ImageWebView: View {
               !source.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
-
-        /*if let cached = ImageCacheManager.shared.image(for: imageId) {
-            DispatchQueue.main.async {
-                self.loadedImage = cached
-            }
-            return
-        }*/
 
         DispatchQueue.global(qos: .userInitiated).async {
             guard let data = Data(base64Encoded: source),

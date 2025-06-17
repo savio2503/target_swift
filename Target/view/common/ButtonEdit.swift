@@ -81,6 +81,7 @@ struct ButtonEdit: View {
                             try await Api.shared.removeTarget(targetId: target.id!)
                             KeysStorage.shared.recarregar = true
                             dismiss()
+                            sheetIsPresented = false
                         }
                         print("isLoading = false")
                         isLoading = false

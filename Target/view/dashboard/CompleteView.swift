@@ -10,11 +10,10 @@ import ComponentsCommunication
 
 struct CompleteView: View {
     
-    @State private var showMoney = false
-    @State private var showDetail = false
-    @State private var targetClicked: Target?
     @Binding var targets: [Target]
     @Binding var total: Double
+    @State var showMoney = false
+    @StateObject var auth = AuthViewModel.shared
 
     var body: some View {
         NavigationStack {
@@ -34,44 +33,16 @@ struct CompleteView: View {
                 } else {
                     
                     ScrollView {
-                        LazyVGrid(columns: getGridRows(), spacing: 16) {
-                            ForEach(targets, id: \.self) { target in
-                                VStack {
-                                    ImageWebView(source: target.imagem ?? " ", imageId: target.id!)
-                                    //     .padding()
-                                    
-                                    Text(target.descricao)
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 6)
-                                    
-                                    Text(formattedPorcentagem(target.porcentagem))
-                                        .foregroundColor(.gray)
-                                }
-                                .background(Color.blue.opacity(0.1))
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                                .onTapGesture {
-                                    targetClicked = target
-                                    showDetail.toggle()
-                                }
-                            }
-                        }
+                        GroupTargetsView(listTarget: $targets, showMoney: $showMoney)
                         .padding(.horizontal, 16)
                         .padding(.top, 8)
                     }
+                    .scrollIndicators(.hidden)
                 }
             }
-            .navigationDestination(isPresented: $showDetail) {
-                DetailView(target: targetClicked ?? Target(id: 1, descricao: "", valor: 0.0, posicao: 1, imagem: " ", removebackground: 0), sheetIsPresented: $showDetail)
-            }
-        }
-        .sheet(isPresented: $showMoney) {
-            // Conteúdo da sheet
         }
         .onAppear {
+            print("onAppear CompleteView")
         }
     }
 }

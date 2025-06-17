@@ -7,6 +7,10 @@
 
 import SwiftUI
 import ComponentsCommunication
+#if !os(macOS)
+import GoogleSignInSwift
+import AuthenticationServices
+#endif
 
 struct LoginView: View {
     
@@ -19,6 +23,12 @@ struct LoginView: View {
     @Binding var tipoLogin: Int
     @Environment(\.colorScheme) var colorScheme
     @State var alert = false
+    
+    @StateObject var auth = AuthViewModel.shared
+    
+    private enum kindSignIn {
+        case google, apple
+    }
     
     #if os(macOS)
     var screen = NSScreen.main?.visibleFrame
@@ -211,7 +221,7 @@ struct LoginView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.blue, lineWidth: 1)
                 )
-                .foregroundColor(.white)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
             
@@ -221,7 +231,7 @@ struct LoginView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.blue, lineWidth: 1)
                 )
-                .foregroundColor(.white)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
                 .autocapitalization(.none)
             
             Button(action: {
@@ -259,8 +269,48 @@ struct LoginView: View {
             .padding(.top, msgError.isEmpty ? -20 : 0)
             
             VStack(spacing: 12) {
-                socialButton(icon: "globe", text: "Entrar com Google")
-                socialButton(icon: "apple.logo", text: "Entrar com Apple")
+                
+                Button(action: {
+                    Task {
+                        do {
+                            try await auth.signInWithGoogle()
+                        } catch {
+                            print("Erro no login: \(error.localizedDescription)")
+                        }
+                    }
+                }) {
+                    HStack {
+                        Spacer()
+                        
+                        Image("google")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                        
+                        Text("Entrar com Google")
+                            .foregroundColor(.white)
+                            .font(.system(size: 16, weight: .medium))
+                        
+                        Spacer()
+                    }
+                }
+                .frame(height: 45)
+                .background(Color(red: 66/255, green: 133/255, blue: 244/255))
+                .cornerRadius(8)
+                
+                SignInWithAppleButton(.signIn, onRequest: { request in
+                        request.requestedScopes = [.fullName, .email]
+                    }, onCompletion: { result in
+                        switch result {
+                        case .success(let authResults):
+                            handleAuthorization(authResults)
+                        case .failure(let error):
+                            print("Authorization failed: \(error.localizedDescription)")
+                        }
+                    }
+                )
+                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                .frame(height: 45)
+                .padding(.top, 0)
             }
             .padding(.top, 10)
             
@@ -284,22 +334,21 @@ struct LoginView: View {
         #endif
     }
     
-    func socialButton(icon: String, text: String) -> some View {
-        Button(action: {}) {
-            HStack {
-                Image(systemName: icon)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                Text(text)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 30)
-                    .stroke(Color.gray, lineWidth: 1)
-            )
+    #if !os(macOS)
+    private func handleAuthorization(_ authResults: ASAuthorization) {
+        if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
+            let userId = appleIDCredential.user
+            let email = appleIDCredential.email
+            let fullName = appleIDCredential.fullName
+
+            print("User ID: \(userId)")
+            print("Email: \(email ?? "No Email")")
+            print("Full Name: \(fullName?.givenName ?? "No Name")")
+
+            // Aqui você pode salvar o userId no Keychain e usá-lo para autenticar no backend.
         }
     }
+    #endif
     
     private func login() async {
         

@@ -93,6 +93,13 @@ struct ImageView: View {
         .onLongPressGesture {
             isShowingConfirmationDialog.toggle()
         }
+        #if os(macOS)
+        .contextMenu {
+            Button("Editar Imagem") {
+                isShowingConfirmationDialog.toggle()
+            }
+        }
+        #endif
     }
     
     private func removerBackground() async -> String? {

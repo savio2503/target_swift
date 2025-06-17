@@ -273,12 +273,22 @@ public class Api {
         
         print("changeImage")
         
-        request = URLRequest(url: URL(string: baseURL + "imagens/\(idTarget)")!)
+        guard let url = URL(string: "\(baseURL)imagens/\(idTarget)") else {
+            print("URL inválida")
+            return
+        }
         
-        request?.httpMethod = "PUT"
+        guard let token = KeysStorage.shared.token else {
+            print("Token não encontrado")
+            return
+        }
+        
+        var request = URLRequest(url: url)
         let contentHeader = "application/json"
-        request?.setValue(contentHeader, forHTTPHeaderField: "Content-type")
-        request?.setValue("\(KeysStorage.shared.token!)", forHTTPHeaderField: "Cookie")
+        
+        request.httpMethod = "PUT"
+        request.setValue(token, forHTTPHeaderField: "Cookie")
+        request.setValue(contentHeader, forHTTPHeaderField: "Content-type")
         
         // Criando o JSON como dicionário
         let body: [String: Any] = [
@@ -289,7 +299,7 @@ public class Api {
         let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
         
         // Enviando a requisição usando URLSession
-        let (data, _) = try await URLSession.shared.upload(for: request!, from: jsonData)
+        let (data, _) = try await URLSession.shared.upload(for: request, from: jsonData)
         
         // Convertendo a resposta para string (opcional)
         _ = String(decoding: data, as: UTF8.self)

@@ -35,7 +35,10 @@ struct MainView: View {
     @StateObject var auth = AuthViewModel.shared
     
     init() {
-        KeysStorage.shared.recarregar = true
+        if KeysStorage.shared.started {
+            KeysStorage.shared.recarregar = true
+            KeysStorage.shared.started = false
+        }
     }
     
     var body: some View {
@@ -43,7 +46,42 @@ struct MainView: View {
             
             TabMainView(loading: $loading, items: filteredItems.isEmpty ? $items : $filteredItems)
                 .navigationTitle(isSearching ? "" : "Objetivos")
-            #if !os(macOS)
+            #if os(macOS)
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        if isSearching {
+                            TextField("Buscar...", text: $searchText)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .foregroundColor(tintColor)
+                                .tint(tintColor)
+                                .frame(minWidth: 100, maxWidth: 500)
+                        } else {
+                            Button(action: {
+                                withAnimation {
+                                    isSearching.toggle()
+                                }
+                            }) {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(tintColor)
+                            }
+                        }
+                    }
+                    ToolbarItem(placement: .primaryAction) {
+                        if isSearching {
+                            Button(action: {
+                                withAnimation {
+                                    isSearching.toggle()
+                                    searchText = ""
+                                    filteredItems = []
+                                }
+                            }) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(tintColor)
+                            }
+                        }
+                    }
+                }
+            #else
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -84,13 +122,17 @@ struct MainView: View {
         .onAppear {
             updateNavigationBarAppearance()
             
+            print("recarregar main? \(KeysStorage.shared.recarregar)")
             if KeysStorage.shared.recarregar {
+                print("loading main true")
                 loading = true
-                KeysStorage.shared.recarregar = false
                 
                 Task {
                     items = await TargetController.getTargets()
                     loading = false
+                    print("loading main false")
+                    //print("recarregar false mainview 1")
+                    //KeysStorage.shared.recarregar = false
                 }
             }
             

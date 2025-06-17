@@ -62,7 +62,7 @@ struct SidebarView: View {
             .disabled(KeysStorage.shared.token == nil)
             .frame(maxWidth: 140)
             
-            Divider()
+            divisor(texto: "Movimentaçao")
             
             // Depositos/Saques
             Button(action: {
@@ -72,6 +72,20 @@ struct SidebarView: View {
                 Label("Depositos/Sacar", systemImage: "banknote")
             }
             .disabled(KeysStorage.shared.token == nil)
+            
+            divisor(texto: "Visualizar")
+            
+            //Visualizacao
+            
+            Menu {
+                Button("Bloco") { auth.isBloco = true }
+                Button("Lista") { auth.isBloco = false }
+            } label: {
+                Label(auth.isBloco ? "Bloco" : "Lista", systemImage: auth.isBloco ? "square.grid.3x3.fill" : "line.3.horizontal")
+                    .fixedSize()
+            }
+            .disabled(KeysStorage.shared.token == nil)
+            .frame(maxWidth: 100)
             
             Spacer()
             
@@ -158,12 +172,39 @@ struct SidebarView: View {
             }
         }
     }
+    
+    private func divisor(texto: String) -> some View {
+        HStack {
+            // Divider da esquerda
+            Rectangle()
+                .frame(maxWidth: .infinity) // Largura fixa para o divisor vertical
+                .frame(height: 1) // Altura máxima possível
+                .foregroundColor(.gray)
+
+            Text(texto)
+                .fixedSize() // Garante que não quebre nem abrevie
+                .padding(.horizontal, 8)
+
+            // Divider da direita
+            Rectangle()
+                .frame(maxWidth: .infinity) // Largura fixa para o divisor vertical
+                .frame(height: 1) // Altura máxima possível
+                .foregroundColor(.gray)
+        }
+    }
 }
 
-/*#Preview {
+#Preview {
+    
+    @Previewable @State var isOn = true
     
     var auth = AuthViewModel.shared
     
+    #if os(macOS)
     SidebarView()
         .environmentObject(auth)
-}*/
+    #else
+    SidebarView(showSidebar: $isOn)
+        .environmentObject(auth)
+    #endif
+}

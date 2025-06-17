@@ -30,6 +30,16 @@ public class KeysStorage {
         }
     }
     
+    private var _started: Bool = true
+    public var started: Bool {
+        get {
+            return _started
+        }
+        set (value) {
+            _started = value
+        }
+    }
+    
     private let sharedDefaults: UserDefaults
     
     public static var shared: KeysStorage = {
